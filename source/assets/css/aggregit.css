@@ -1,0 +1,275 @@
+/*! 
+ * quilt.css
+ * Used for project site and css file example, but NOT needed to use quilt 
+ * Copyright 2015 Timothy Davenport; Licensed MIT
+ */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  margin-top: 64px;
+  margin-bottom: 64px;
+}
+/* adds navbar offset for anchor linking */
+h1[id]::before,
+h2[id]::before,
+h3[id]::before,
+h4[id]::before,
+h5[id]::before,
+h6[id]::before {
+    display:block;
+    content: " ";
+    height: 64px;
+    margin-top: -64px;
+    visibility: hidden;
+}
+
+sup[id*="fnref-"]::before {
+    display:inline-block;
+    content: " ";
+    height: 80px;
+    margin-top: -80px;
+    visibility: hidden;
+}
+li[id*="fn-"]::before {
+    display:block;
+    content: " ";
+    height: 80px;
+    margin-top: -90px;
+    line-height: 185px;
+}
+
+mark code {
+    background-color: #fff8eb;
+}
+ul.keeppad {
+    padding-left: 20px;
+}
+.footnote ol {
+    margin: 0px;
+}
+ul {
+    padding-start:20px;
+}
+li.file,
+li.dir {
+    list-style: none;
+}
+li.file::before,
+li.dir::before {
+    content: " ";
+    display: inline-block;
+    margin: 2px;
+    padding: 0px;
+    height: 19px;
+    width:19px; 
+    background-image: url(../imgs/folder.svg);
+}
+li.file::before {
+    width:16px; 
+    background-image: url(../imgs/file.svg);
+}
+.readme-panel {
+    margin-left: 32px;
+    margin-right: 32px;
+}
+.navbar {
+    background-color: rgba(255,255,255,0.96);
+}
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+/*  height: 60px;*/
+}
+footer hr {
+    margin: 5px;
+}
+.container-fluid {
+    padding: 0;
+}
+.logo {
+    float:left;
+    font-size: 10px;
+    padding:0;
+    margin: 6px 16px 0px 16px;
+}
+.logo li {
+    padding:0;
+    margin:0;
+    margin-top: -7px;
+}
+.logo li code {
+    padding: 1px 2px;
+}
+.codehilite pre {
+    margin-left:32px;
+    margin-right:32px;
+}
+.single-file .codehilite pre {
+    margin: 0px 32px;
+}
+.panel .codehilite pre {
+    margin-left:0px;
+    margin-right:0px;
+}
+.example {
+    margin-top: 20px;
+}
+.example pre::before {
+    content: "syntax example";
+    position: absolute;
+    padding: 0px 6px;
+    margin-top: -17px;
+    right:47px;
+    font-size: 10px;
+    color: #333;
+    background: #c1e2b3;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+.codezwj {
+    margin-left: -4px; 
+    margin-right: -4px; 
+}
+.abbr {
+    border-bottom: 3px dotted #777 !important;
+}
+.nav-search {
+    position: absolute;
+    top:0px;
+    right: 64px;
+}
+.nav-search .navbar-form {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.tt-hint {
+  color: #999
+}
+
+.tt-dropdown-menu {
+  width: 256px;
+  margin-top: 12px;
+  padding: 8px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  max-height: 256px;
+  overflow-y: auto;
+  box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+.tt-dropdown-menu {
+}
+.tt-suggestion {
+  padding: 2px 8px;
+}
+.tt-suggestion.tt-cursor {
+  color: #fff;
+  background-color: #0097cf;
+
+}
+.tt-suggestion p {
+  margin: 0;
+}
+
+.empty-message {
+  padding: 5px 10px;
+  text-align: center;
+}
+.checklist {
+    list-style: none;
+}
+
+.affix-right {
+    right:0;
+}
+.headerlink {
+    margin-left: 8px;
+}
+.post-link hr {
+    margin: 4px 0px;
+}
+
+del,
+ins {
+    background: #d06060;
+    padding: .2em;
+    color: #000;
+}
+ins {
+    background: #42c35f;
+}
+
+.markdown-link {
+    position: fixed;
+    bottom: 32px;
+    left: -90px;
+    border-right: 10px solid #005496;
+    background: #addbff;
+    color: #eee;
+    padding: 4px 16px;
+    z-index:1000;
+}
+.markdown-link:hover {
+    left: 0px;    
+    background: #2196f3;
+    border-right: 3px solid #addbff;
+    color: #eee;
+}
+
+input[type="checkbox"]::after, 
+.checkbox input[type="checkbox"]::after, 
+.checkbox-inline input[type="checkbox"]::after {
+    content: "x";
+    line-height: 0.8;
+    color: #eee;
+    font-size: 16px;
+    padding-left: 3px;
+}
+input[type="checkbox"]:checked::after, 
+.checkbox input[type="checkbox"]:checked::after, 
+.checkbox-inline input[type="checkbox"]:checked::after {
+    content: "x";
+}
+.toc {
+    position: relative;
+    float: right;
+    max-width: 300px;
+    margin: 16px;
+    padding: 8px;
+    background-color: #fdfdfd;
+    border: 1px solid #e6e6e6;
+    box-shadow: 0px 2px 2px rgba(0,0,0,0.2);
+}
+.toc ul {
+    padding-start:20px;
+}
+.toc li {
+    list-style-type: upper-alpha;
+    word-break: break-all;
+}
+h2[id="file"] + p {
+    word-break: break-all;
+    word-wrap: break-word;
+    white-space: pre
+}
+h1[id] a[title="Permanent link"],
+h2[id] a[title="Permanent link"],
+h3[id] a[title="Permanent link"],
+h4[id] a[title="Permanent link"],
+h5[id] a[title="Permanent link"],
+h6[id] a[title="Permanent link"] {
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+h1[id]:hover a[title="Permanent link"],
+h2[id]:hover a[title="Permanent link"],
+h3[id]:hover a[title="Permanent link"],
+h4[id]:hover a[title="Permanent link"],
+h5[id]:hover a[title="Permanent link"],
+h6[id]:hover a[title="Permanent link"] {
+    opacity: 1;
+}

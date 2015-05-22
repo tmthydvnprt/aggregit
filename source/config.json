@@ -1,0 +1,23 @@
+{
+    "name"        : "aggregit",
+    "domain"      : "aggregit.com",
+    "title"       : "aggregit",
+    "author"      : "tmthydvnprt",
+    "email"       : "tim@tmthydvnprt.com",
+    "description" : "aggregit all of a github user's data",
+    "keywords"    : ["aggregate", "git", "user", "profile", "data"],
+    "changefreq"  : "monthly",
+    "priority"    : "0.5",
+    "local"       : false,
+    "patchcomment": true,
+    "quiltcomment": false,
+    "assetcomment": true,
+    "pagecomment" : false,
+    "pageobject"  : false,
+    "buildblog"   : false,
+    "buildatom"   : false,
+    "buildrss"    : false,
+    "copydate"    : 2015,
+    "combinejs"   : false,
+    "copyrighter" : "tmthydvnprt"
+}

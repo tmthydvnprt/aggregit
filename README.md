@@ -1,2 +1,4 @@
-# aggregit
+aggregit
+========
+
 aggregate GitHub user data

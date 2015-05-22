@@ -17,6 +17,25 @@
 <link href="../../../../../../img/icon_152x152.png" rel="apple-touch-icon" sizes="152x152"/>
 <link href="../../../../../../css/bootstrap_aggregit.css" rel="stylesheet" type="text/css"/></head>
 <body>
+<!--quilted nav patch-->
+<nav class="navbar navbar-default navbar-fixed-top" id="nav">
+<div class="container">
+<div class="navbar-header">
+<button aria-controls="navbar" aria-expanded="false" class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse" type="button">
+<span class="sr-only">Toggle navigation</span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
+<a alt="home" class="navbar-brand" href="../../../../../../index.html" title="aggregit">aggregit</a>
+</div>
+<div class="navbar-collapse collapse" id="navbar">
+<ul class="nav navbar-nav navbar-left">
+<li><a alt="404" href="../../../../../../404.html" title="404">404</a></li>
+</ul>
+</div>
+</div>
+</nav>
 <!--quilted page patch-->
 <div class="container text-center" id="page">
 <h2><br/></h2>

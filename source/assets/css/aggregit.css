@@ -60,6 +60,7 @@ input[type="checkbox"]:checked::after,
     content: "x";
 }
 
+.force-hover[title]::before,
 abbr[title]::before,
 a[href]:not(.no-hover)::before,
 time[datetime]:not(.no-hover)::before {
@@ -68,10 +69,13 @@ time[datetime]:not(.no-hover)::before {
 	padding: 4px;
 	background-color: #30c2a4;
 	color:#fdfefd;
+	white-space: nowrap;
+	word-break: break-all!important;
 	opacity: 0;
 	transition: all 0.5s ease;
 	z-index: 20;
 }
+.force-hover[title]::before,
 abbr[title]::before {
 	content: " (" attr(title) ")";
 }
@@ -81,19 +85,20 @@ a[href]:not(.no-hover)::before {
 time[datetime]:not(.no-hover)::before {
 	content: " (ISO8601 : " attr(datetime) ")";
 }
+.force-hover[title]:hover::before,
 abbr[title]:hover::before,
 a[href]:not(.no-hover):hover::before,
 time[datetime]:not(.no-hover):hover::before {
 	opacity: 1;
 	margin-top:-32px;
 }
+nav .force-hover[title]:hover::before,
 nav abbr[title]:hover::before,
 nav a[href]:not(.no-hover):hover::before,
 nav time[datetime]:not(.no-hover):hover::before {
 	opacity: 1;
-	margin-top:32px;
+	margin-top:48px;
 }
-
 .tooltip {
 	position: absolute;
 	margin-top:-16px;
@@ -103,6 +108,28 @@ nav time[datetime]:not(.no-hover):hover::before {
 	transition: all 0.5s ease;
 	z-index: 20;
     pointer-events: none;			
+}
+#help-arrow {
+    position: absolute;
+    top:65px;
+    left:200px;
+    font-size: 500%;
+    color:#b2dbfb;
+	animation: pulsecolor 600ms ease 300ms infinite alternate;
+}
+.input-group-addon.help-pulse {
+	animation: pulsecolor 600ms ease 0s infinite alternate;
+}
+.form-control.help-pulse {
+	animation: pulseborder 600ms ease 300ms infinite alternate;
+}
+@keyframes pulsecolor {
+	0%   {color:#b2dbfb;}
+	100% {color:#ff9800;}
+}
+@keyframes pulseborder {
+	0%   {box-shadow: inset 0 -2px 0 #b2dbfb;}
+	100% {box-shadow: inset 0 -2px 0 #ff9800;}
 }
 
 /* Navbar
@@ -128,8 +155,8 @@ nav time[datetime]:not(.no-hover):hover::before {
 }
 .navbar-brand {
     margin-left:0px!important;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-left: 4px;
+    padding-right: 4px;
 }
 .navbar-nav.navbar-left {
     float: left!important;
@@ -143,7 +170,7 @@ nav time[datetime]:not(.no-hover):hover::before {
     float:left!important;
 }
 .navbar-nav>li>a {
-    padding: 21px 8px;
+    padding: 21px 4px;
     height: 64px;
 }
 .navbar-form.navbar-left {
@@ -173,6 +200,10 @@ nav time[datetime]:not(.no-hover):hover::before {
     display: inline-block!important;
     width: auto!important;
     vertical-align: middle!important;
+}
+.navbar-form .input-group-addon {
+    padding-left: 4px!important;
+    padding-right: 4px!important;
 }
 
 /* User Info
@@ -206,6 +237,10 @@ nav time[datetime]:not(.no-hover):hover::before {
 }
 .aggregitting {
     font-size: 15px;
+}
+
+#rate-limit h1 {
+    color:#fff!important;
 }
 
 /* User Punch Card

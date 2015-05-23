@@ -1,14 +1,17 @@
 <nav class="navbar navbar-inverse navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">           
-            <a class="navbar-brand" href="{{relativepath}}index.html" alt="home"><span>aggre</span><span>git</span></a>
+            <a class="navbar-brand" href="{{relativepath}}index.html" alt="home" title="home">
+                <i class="fa fa-home"></i>
+                <span>aggre</span><span>git</span>
+            </a>
             <span id="beta" class="label label-warning">beta</span>
         </div>
         <div class="">
             <form class="nav-search navbar-form navbar-left">
-                <div class="input-group">
-                    <span class="input-group-addon" alt="search" title="search"><i class="fa fa-search fa-2x"></i></span>
-                    <input id="username" type="text" class="form-control" placeholder="Search for username" alt="Search for username" title="Search for username">
+                <div class="input-group force-hover"  alt="Search for username" title="Search for username">
+                    <span class="input-group-addon"><i class="fa fa-search fa-2x"></i></span>
+                    <input id="username" type="text" class="form-control" placeholder="Search for username">
                 </div>
             </form>
             <ul class="nav navbar-nav navbar-right">

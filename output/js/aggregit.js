@@ -518,8 +518,10 @@ $(document).ready(function () {
         // update the DOM
         if (errors) {
             $('title').text('aggregit: error');
-            $('#username').text('Error');
-            $('#user').html(errors.responseJSON.message);
+            
+            $('#user-info').html(
+                $('#error-template').html()
+            );
         } else {
             var REPO_CHECKLIST_TEMPLATE = '<li><input {1} type="checkbox" name="{0}">{2}{0}</li>',
                 repoChecklist = [];
@@ -748,7 +750,7 @@ $(document).ready(function () {
                 renderTemplate(page, 'home', 'aggregit');
             },
             user : function (username) {
-                var hardcode = true;
+                var hardcode = false;
                 // aggregit it all
                 username = username || 'tmthydvnprt';
                 renderTemplate(page, 'user', 'aggregit: ' + username);
@@ -762,6 +764,10 @@ $(document).ready(function () {
             },
             about : function () {
                 renderTemplate(page, 'about', 'aggregit: about');
+            },
+            help : function () {
+                renderTemplate(page, 'help', 'aggregit: help');
+                $('.nav-search .input-group-addon, .nav-search .form-control').addClass('help-pulse');
             }
         };
     
@@ -769,6 +775,7 @@ $(document).ready(function () {
 	function router(e) {
         		
         // clear last page stuff
+        $('.help-pulse').removeClass('help-pulse');
 		$('.holdoff-time').removeClass('holdoff-time');
 
 		// cache page, hash, and filename

@@ -12,6 +12,7 @@ body {
   margin-bottom: 64px;
 }
 /* adds navbar offset for anchor linking */
+/*
 h1[id]::before,
 h2[id]::before,
 h3[id]::before,
@@ -24,6 +25,9 @@ h6[id]::before {
     margin-top: -64px;
     visibility: hidden;
 }
+*/
+
+
 
 sup[id*="fnref-"]::before {
     display:inline-block;
@@ -74,9 +78,74 @@ li.file::before {
     margin-left: 32px;
     margin-right: 32px;
 }
+
 .navbar {
-    background-color: rgba(255,255,255,0.96);
+    background-color: rgba(12, 132, 228, 0.96);
 }
+.navbar .input-group-addon {
+    color:#b2dbfb;
+}
+/* this navbar does not collapse */
+.navbar-header {
+    float:left!important;
+    margin-right: 0px!important;
+    margin-left: 0px!important;
+}
+.navbar-brand {
+    margin-left:0px!important;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+.navbar-nav.navbar-left {
+    float: left!important;
+    margin: 0;
+}
+.navbar-nav.navbar-right {
+    float: right!important;
+    margin: 0;
+}
+.navbar-nav>li {
+    float:left!important;
+}
+.navbar-nav>li>a {
+    padding: 21px 8px;
+    height: 64px;
+}
+.navbar-form.navbar-left {
+    float:left!important
+}
+.navbar-form.navbar-right {
+    float:right!important
+}
+.navbar-form {
+    width: auto!important;
+    border: 0!important;
+    margin-left: 0!important;
+    margin-right: 0!important;
+    padding: 0!important;
+    box-shadow: none!important;
+}
+.navbar-form .input-group {
+    display: inline-table!important;
+    vertical-align: middle!important;
+}
+.navbar-form .input-group .input-group-addon, .navbar-form .input-group .input-group-btn, .navbar-form .input-group .form-control {
+    width: auto!important;
+}
+.navbar-form .form-control {
+    display: inline-block!important;
+    width: auto!important;
+    vertical-align: middle!important;
+}
+
+#avatar {
+    width: 128px;
+    height: 128px;
+    padding: 4px;
+    border: 1px solid #ddd;
+}
+
+
 footer {
   position: absolute;
   bottom: 0;
@@ -135,44 +204,6 @@ footer hr {
 }
 .abbr {
     border-bottom: 3px dotted #777 !important;
-}
-.nav-search {
-    position: absolute;
-    top:0px;
-    right: 64px;
-}
-.nav-search .navbar-form {
-    padding-top: 0;
-    padding-bottom: 0;
-}
-
-.tt-hint {
-  color: #999
-}
-
-.tt-dropdown-menu {
-  width: 256px;
-  margin-top: 12px;
-  padding: 8px 0;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  max-height: 256px;
-  overflow-y: auto;
-  box-shadow: 0 5px 10px rgba(0,0,0,.2);
-}
-.tt-dropdown-menu {
-}
-.tt-suggestion {
-  padding: 2px 8px;
-}
-.tt-suggestion.tt-cursor {
-  color: #fff;
-  background-color: #0097cf;
-
-}
-.tt-suggestion p {
-  margin: 0;
 }
 
 .empty-message {

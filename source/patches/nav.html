@@ -2,18 +2,20 @@
     <div class="container">
         <div class="navbar-header">           
             <a class="navbar-brand" href="{{relativepath}}index.html" alt="home"><span>aggre</span><span>git</span></a>
+            <span id="beta" class="label label-warning">beta</span>
         </div>
         <div class="">
             <form class="nav-search navbar-form navbar-left">
                 <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-search fa-2x"></i></span>
-                    <input id="username" type="text" class="form-control" placeholder="Search for username">
+                    <span class="input-group-addon" alt="search" title="search"><i class="fa fa-search fa-2x"></i></span>
+                    <input id="username" type="text" class="form-control" placeholder="Search for username" alt="Search for username" title="Search for username">
                 </div>
-            </form>       
+            </form>
             <ul class="nav navbar-nav navbar-right">
-                <li><a id="nav-github" href="https://github.com" target="_blank"><i class="fa fa-github fa-2x"></i></a></li>
-                <li><a id="nav-user" href="#" target="_blank"><i class="fa fa-user fa-2x"></i></a></li>
-                <li><a href="#!/about"><i class="fa fa-question-circle fa-2x"></i></a></li>
+                <li><a href="#!/about" alt="about this!" title="about this!"><i class="fa fa-info-circle fa-2x"></i></a></li>
+                <li><a href="#!/help" alt="need help?" title="need help?"><i class="fa fa-question-circle fa-2x"></i></a></li>
+                <li><a id="nav-user" href="#" target="_blank" alt="go to user" title="go to user"><i class="fa fa-user fa-2x"></i></a></li>
+                <li><a id="nav-github" href="https://github.com" target="_blank" alt="go to GitHub" title="go to GitHub"><i class="fa fa-github fa-2x"></i></a></li>
             </ul> 
         </div>
     </div>

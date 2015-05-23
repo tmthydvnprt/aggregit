@@ -22,18 +22,20 @@
 <div class="container">
 <div class="navbar-header">
 <a alt="home" class="navbar-brand" href="index.html" title="aggregit"><span>aggre</span><span>git</span></a>
+<span class="label label-warning" id="beta">beta</span>
 </div>
 <div class="">
 <form class="nav-search navbar-form navbar-left">
 <div class="input-group">
-<span class="input-group-addon"><i class="fa fa-search fa-2x"></i></span>
-<input class="form-control" id="username" placeholder="Search for username" type="text"/>
+<span alt="search" class="input-group-addon" title="search"><i class="fa fa-search fa-2x"></i></span>
+<input alt="Search for username" class="form-control" id="username" placeholder="Search for username" title="Search for username" type="text"/>
 </div>
 </form>
 <ul class="nav navbar-nav navbar-right">
-<li><a alt="" href="https://github.com" id="nav-github" target="_blank" title=""><i class="fa fa-github fa-2x"></i></a></li>
-<li><a alt="" href="#" id="nav-user" target="_blank" title=""><i class="fa fa-user fa-2x"></i></a></li>
-<li><a alt="" href="#!/about" title=""><i class="fa fa-question-circle fa-2x"></i></a></li>
+<li><a alt="about this!" href="#!/about" title="about this!"><i class="fa fa-info-circle fa-2x"></i></a></li>
+<li><a alt="need help?" href="#!/help" title="need help?"><i class="fa fa-question-circle fa-2x"></i></a></li>
+<li><a alt="go to user" href="#" id="nav-user" target="_blank" title="go to user"><i class="fa fa-user fa-2x"></i></a></li>
+<li><a alt="go to GitHub" href="https://github.com" id="nav-github" target="_blank" title="go to GitHub"><i class="fa fa-github fa-2x"></i></a></li>
 </ul>
 </div>
 </div>
@@ -92,6 +94,71 @@
 </div>
 </div>
 </template>
+<template id="user-data-template">
+<div class="row">
+<div class="col-sm-10 col-sm-offset-1">
+<h2>When does {login} code?</h2>
+<hr/>
+<div class="well well-sm">
+<div class="row">
+<div class="col-xs-2">
+<p class="text-right"><strong>Repos:</strong></p>
+</div>
+<div class="col-xs-10">
+<ul class="checklist list-inline" id="punchcard-checklist"></ul>
+</div>
+</div>
+</div>
+<div id="punchcard"></div>
+<h2>How long has {login} been coding?</h2>
+<hr/>
+<div class="well well-sm">
+<div class="row">
+<div class="col-xs-2">
+<p class="text-right"><strong>Repos:</strong></p>
+</div>
+<div class="col-xs-10">
+<ul class="checklist list-inline" id="participation-checklist"></ul>
+</div>
+</div>
+<div class="row">
+<div class="col-xs-2">
+<p class="text-right"><strong>Who:</strong></p>
+</div>
+<div class="col-xs-4">
+<ul class="checklist list-inline" id="ownerall-checklist">
+<li><input checked="" name="owner" type="checkbox"/>owner</li>
+<li><input name="all" type="checkbox"/>all</li>
+</ul>
+</div>
+<div class="col-xs-2">
+<p class="text-right"><strong>Zoom:</strong></p>
+</div>
+<div class="col-xs-4">
+<ul class="checklist list-inline" id="zoom-checklist">
+<li><input checked="" name="owner" type="checkbox"/>ignore time before first commit</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="participation"></div>
+<div id="heatmap"></div>
+<h2>What languages does {login} speak?</h2>
+<hr/>
+<div class="well well-sm">
+<div class="row">
+<div class="col-xs-3">
+<p><strong>Repos:</strong></p>
+<ul class="checklist" id="languages-checklist"></ul>
+</div>
+<div class="col-xs-9">
+<div id="languages"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</template>
 <template id="user-template">
 <section class="bringIn">
 <div class="jumbotron">
@@ -100,7 +167,7 @@
 <div id="user-data"></div>
 </section>
 </template>
-<template id="user-data-template">
+<template id="repo-info-template">
 </template>
 <template id="about-template">
 <section class="bringIn">
@@ -108,8 +175,8 @@
 <div class="col-sm-8 col-sm-offset-2">
 <h1>About Aggregit</h1>
 <hr/>
-<h3>Multi-Repo Punch Card</h3>
-<p class="lead">Ever wanted to see your punch card for all repos? your non-<code>master</code> contributions in the heat map? <em>all</em> your language stats? Well, those are the reasons for building this.</p>
+<h3>Multi-Repo Punch Card Anyone?</h3>
+<p class="lead">Ever wanted to see your punch card for <em>all</em> your repos? your non-<code>master</code> contributions in the heat map? <em>all</em> your language stats? Well, those are the reasons for building this.</p>
 <h4>Data, Data, Data!</h4>
 <p class="lead">The page makes a bunch of unauthenticated calls to the GitHub API to get a whole mess of <code>json</code> that can be plotted or presented in a beautiful way.</p>
 </div>
@@ -140,6 +207,7 @@
 </template>
 <!--quilted scripts patch-->
 <script id="scripts" rel="javascript" src="js/jquery-1.11.2.min.js" type="text/javascript"></script>
+<script rel="javascript" src="js/d3.min.js" type="text/javascript"></script>
 <script rel="javascript" src="js/aggregit.js" type="text/javascript"></script>
 </body>
 </html>

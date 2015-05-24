@@ -916,12 +916,14 @@ $(document).ready(function () {
                 if (cachedUser && cachedUser.login === username) {
                     console.log('Using Cached User Data (already requested this)');
                     console.log('---------------------------------------------');
+                    console.log('');
                     renderUser(cachedUser, '');
                 } else {
                     // decide what data to get
                     if (username === 'aggregit_example') {
                         console.log('Requesting Example User Data (local)');
                         console.log('---------------------------------------------');
+                        console.log('');
                         $.getJSON('data/user.json', function (user) {
                             renderUser(user, '');
                         });
@@ -929,6 +931,7 @@ $(document).ready(function () {
                         // aggregit it all
                         console.log('Requesting GitHub User Data');
                         console.log('---------------------------------------------');
+                        console.log('');
                         getGitHubUser(username, renderUser);
                     }
                 }
@@ -938,14 +941,14 @@ $(document).ready(function () {
             },
             help : function () {
                 renderTemplate(page, 'help', 'aggregit: help');
-                $('.nav-search .input-group-addon, .nav-search .form-control').addClass('help-pulse');
+                $('#nav-search .input-group-addon, #nav-search .form-control').addClass('help-pulse');
             },
             contact : function () {
                 renderTemplate(page, 'contact', 'aggregit: contact');
             },
             unknown : function () {
                 renderTemplate(page, 'unknown', 'aggregit: unknown?');
-            },
+            }
         };
 
 	// route hashchanges to page
@@ -1011,14 +1014,16 @@ $(document).ready(function () {
                         // stop auto scroll
                         keepScroll = document.body.scrollTop;
                     });
-                    // band enter clicks on input
-                    $("input").on("keydown", function (e) {
-                        if (e.keyCode === 13) {
-                            var username = $(this).val();
-                            e.preventDefault();
-                            location.hash = '#!/user=' + username;
-                            router();
-                        }
+                    // bind enter clicks on input
+                    $("#nav-search").submit(function () {
+                        var username = $('#nav-search-user').val();
+                        location.hash = '#!/user=' + username;
+                        router();
+                    });
+                    $("#home-search").submit(function () {
+                        var username = $('#home-search-user').val();
+                        location.hash = '#!/user=' + username;
+                        router();
                     });
 
                     clearInterval(bringOut);

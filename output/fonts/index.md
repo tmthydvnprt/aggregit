@@ -234,6 +234,7 @@
 <!--quilted scripts patch-->
 <script id="scripts" rel="javascript" src="../../../../../../js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script rel="javascript" src="../../../../../../js/d3.min.js" type="text/javascript"></script>
+<script rel="javascript" src="../../../../../../js/cookieJar.js" type="text/javascript"></script>
 <script rel="javascript" src="../../../../../../js/aggregit.js" type="text/javascript"></script>
 </body>
 </html>

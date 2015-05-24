@@ -1,13 +1,12 @@
-/*globals $,console,d3 */
+/*globals $,console,d3,cookieJar */
 /*!
  * aggregit.js
- * 
+ *
  * Copyright 2015 Timothy Davenport; Licensed MIT
  */
-
 $(document).ready(function () {
     'use strict';
-    
+
     // Utility functions
 	// -------------------------------------------------------------------------------------
     function isObject(a) {
@@ -26,6 +25,10 @@ $(document).ready(function () {
             }
         }
         return a;
+    }
+    // clena url to use a key
+    function unurl(url) {
+        return url.replace(/\//ig, '_');
     }
 
     // add string formatting
@@ -47,32 +50,33 @@ $(document).ready(function () {
             return str;
         };
     }
-        
+
 	// Unique functions
 	// -------------------------------------------------------------------------------------
     function formatDate(d) {
         var MONTHS = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ');
         return MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
     }
-    
+
     function renderTemplate(elem, name, titleText) {
 		if (titleText) {
 			$('title').html(titleText);
 		} else {
 			$('title').text(name);
 		}
-        console.log(name);
+        console.log('Rendering Page: ' + name);
+        console.log('');
 		elem.html($('#' + name + '-template').html());
 		$(elem.children()[0]).attr('id', name);
 	}
-    
+
     function renderPunchCard(elem, data) {
         // reference: http://swizec.com/blog/quick-scatterplot-tutorial-for-d3-js/swizec/5337
         console.log('punchcard');
-        
+
         // remove last plot if there
         d3.select("#punchcard-svg").remove();
-        
+
         // setup parameters and variables
         var w = 940,
             h = 300,
@@ -87,32 +91,32 @@ $(document).ready(function () {
             x = d3.scale.linear().domain([0, 23]).range([left_pad, w - pad]),
             y = d3.scale.linear().domain([0, 6]).range([pad, h - pad * 2]),
             xAxis = d3.svg.axis().scale(x).orient("bottom")
-                    .ticks(24)
-                    .tickFormat(function (d) {
-                        var m = (d > 12) ? 'p' : 'a';
-                            d = (d % 12 === 0) ? 12 : (d % 12);
-                        return d + m;
-                    }),
+                .ticks(24)
+                .tickFormat(function (d) {
+                    var m = (d > 12) ? 'p' : 'a';
+                    d = (d % 12 === 0) ? 12 : (d % 12);
+                    return d + m;
+                }),
             yAxis = d3.svg.axis().scale(y).orient("left")
-                    .ticks(7)
-                    .tickFormat(function (d) {
-                        return DAYS[d];
-                    }),
+                .ticks(7)
+                .tickFormat(function (d) {
+                    return DAYS[d];
+                }),
             max_r = d3.max(data.map(function (d) {
-                        return d[2];
-                    })),
+                return d[2];
+            })),
             r = d3.scale.linear()
-                    .domain([0, d3.max(data, function (d) {
-                        return d[2];
-                    })])
-                    .range([0, 12]),
+                .domain([0, d3.max(data, function (d) {
+                    return d[2];
+                })])
+                .range([0, 12]),
             punchTooltip = d3.select("body")
-                    .append("div")
-                    .attr("id", "punchcard-tooltip")
-                    .attr("class", "tooltip")               
-                    .style("opacity", 0)
-                    .text("punchcard");
-        
+                .append("div")
+                .attr("id", "punchcard-tooltip")
+                .attr("class", "tooltip")
+                .style("opacity", 0)
+                .text("punchcard");
+
         // add axis
         svg.append("g")
             .attr("class", "axis")
@@ -122,7 +126,7 @@ $(document).ready(function () {
             .attr("class", "axis")
             .attr("transform", "translate(" + (left_pad - pad) + ", 0)")
             .call(yAxis);
-        
+
         // add loading text
         svg.append("text")
             .attr("class", "aggregitting")
@@ -133,17 +137,17 @@ $(document).ready(function () {
             .attr("y", function () {
                 return (h / 2) - 5;
             });
-                
+
         // remove loading text
         svg.selectAll(".aggregitting").remove();
-        
+
         // plot the data!
         svg.selectAll("circle")
             .data(data)
             .enter()
             .append("circle")
             .attr("class", "circle")
-            .attr("cx", function (d) { 
+            .attr("cx", function (d) {
                 return x(d[1]);
             })
             .attr("cy", function (d) {
@@ -152,32 +156,32 @@ $(document).ready(function () {
             .attr("r", function (d) {
                 return 0;
             })
-            .on("mouseover", function(d) {      
-                punchTooltip.html(d[2])  
-                    .style("left", (d3.event.pageX) + "px")     
-                    .style("top", (d3.event.pageY - 10) + "px");    
-                punchTooltip.transition()        
-                    .duration(200)      
-                    .style("opacity", 0.9);      
-            })            
-            .on("mouseout", function(d) {       
-                punchTooltip.transition()        
+            .on("mouseover", function (d) {
+                punchTooltip.html(d[2])
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 10) + "px");
+                punchTooltip.transition()
+                    .duration(200)
+                    .style("opacity", 0.9);
+            })
+            .on("mouseout", function (d) {
+                punchTooltip.transition()
                     .duration(500)
-                    .style("opacity", 0);   
+                    .style("opacity", 0);
             })
             .transition(1000)
             .attr("r", function (d) {
                 return r(d[2]);
-            });       
+            });
 
     }
     function renderParticipation(elem, data) {
         // reference: http://bl.ocks.org/mbostock/3884955
         console.log('participation');
-        
+
         // remove last plot if there
         d3.select("#participation-svg").remove();
-        
+
         // setup parameters and variables
         var w = 940,
             h = 300,
@@ -187,53 +191,55 @@ $(document).ready(function () {
             participations,
             MAX_X = data.length,
             MAX_Y = d3.max(data.map(function (d) {
-                        return d3.max([d.owner, d.all]);
-                    })),
+                return d3.max([d.owner, d.all]);
+            })),
             color = d3.scale.category10(),
             lines,
-            line = d3.svg.line()
-                .interpolate("basis")
-                .x(function(d, i) {
-                    return x(i);
-                })
-                .y(function(d, i) {
-                    return y(d);
-                }),
             svg = d3.select(elem)
                 .append("svg")
                 .attr("id", "participation-svg")
                 .attr("width", w)
                 .attr("height", h),
-            x = d3.scale.linear().domain([0, MAX_X-1]).range([left_pad, w - pad]),
-            y = d3.scale.linear().domain([d3.max(data, function (d) {
-                        return d3.max([d.owner, d.all]);
-                    }), 0]).range([pad, h - bottom_pad - pad]),
+            x = d3.scale.linear().domain([0, MAX_X - 1]).range([left_pad, w - pad]),
+            y = d3.scale.linear()
+                .domain([d3.max(data, function (d) {
+                    return d3.max([d.owner, d.all]);
+                }), 0])
+                .range([pad, h - bottom_pad - pad]),
+            line = d3.svg.line()
+                .interpolate("basis")
+                .x(function (d, i) {
+                    return x(i);
+                })
+                .y(function (d, i) {
+                    return y(d);
+                }),
             xAxis = d3.svg.axis().scale(x).orient("bottom")
-                    .ticks(MAX_X)
-                    .tickFormat(function (d) {
-                        return MAX_X - d;
-                    }),
+                .ticks(MAX_X)
+                .tickFormat(function (d) {
+                    return MAX_X - d;
+                }),
             yAxis = d3.svg.axis().scale(y).orient("left"),
             partTooltip = d3.select("body")
-                    .append("div")
-                    .attr("id", "participation-tooltip")
-                    .attr("class", "tooltip")               
-                    .style("opacity", 0)
-                    .text("participation");
-        
+                .append("div")
+                .attr("id", "participation-tooltip")
+                .attr("class", "tooltip")
+                .style("opacity", 0)
+                .text("participation");
+
         // use object keys for series color domain
         color.domain(d3.keys(data[0]));
-        
+
         // repackage data for plotting
-        participations = color.domain().map(function(name) {
+        participations = color.domain().map(function (name) {
             return {
                 name: name,
-                values: data.map(function(d) {
+                values: data.map(function (d) {
                     return +d[name];
                 })
             };
         });
-        
+
         // add axis
         svg.append("g")
             .attr("class", "axis")
@@ -267,35 +273,35 @@ $(document).ready(function () {
             .attr("y", function () {
                 return (h / 2) - 5;
             });
-        
+
         // remove loading text
         svg.selectAll(".aggregitting").remove();
-        
+
         // plot the data!
         lines = svg.selectAll(".participation")
             .data(participations)
             .enter()
             .append("g")
             .attr("class", "participation");
-        
+
         lines.append("path")
             .attr("class", "line")
-            .attr("d", function(d) {
+            .attr("d", function (d) {
                 return line(d.values);
             })
-            .style("stroke", function(d) {
+            .style("stroke", function (d) {
                 return color(d.name);
             });
     }
     function renderLanguages(elem, data) {
         // reference: http://bl.ocks.org/mbostock/3887193
-        // reference: http://jsfiddle.net/Nw62g/1/ 
+        // reference: http://jsfiddle.net/Nw62g/1/
         console.log('languages');
-        
+
         // remove last plot if there
-        d3.select("#languages-svg").remove();        
-        d3.select("#languages-tooltip").remove();        
-        
+        d3.select("#languages-svg").remove();
+        d3.select("#languages-tooltip").remove();
+
         // setup parameters and variables
         var w = 627,
             h = 300,
@@ -313,7 +319,7 @@ $(document).ready(function () {
             MAX_LANG = d3.keys(data).length,
             pie = d3.layout.pie()
                 .sort(null)
-                .value(function(d) {
+                .value(function (d) {
                     return d.kiB;
                 }),
             svg = d3.select(elem)
@@ -323,25 +329,25 @@ $(document).ready(function () {
                 .attr("height", h)
                 .append("g")
                 .attr("transform", "translate(" + w / 2 + "," + h / 2 + ")"),
-            
+
             langTooltip = d3.select(elem)
                 .append("div")
                 .attr("id", "languages-tooltip")
-                .attr("class", "tooltip")               
+                .attr("class", "tooltip")
                 .style("opacity", 1)
                 .html('<strong>' + MAX_LANG + ' languages</strong><br>' + MAX_kiB + ' kiB');
-        
+
         // use object keys for series color domain
-        color.domain(d3.keys(data));        
-        
+        color.domain(d3.keys(data));
+
         // repackage data for plotting
-        languages = color.domain().map(function(name) {
+        languages = color.domain().map(function (name) {
             return {
                 language: name,
                 kiB: Math.floor(data[name] / 10.24) / 100
             };
         });
-            
+
         // add loading text
         svg.append("text")
             .attr("class", "aggregitting")
@@ -352,10 +358,10 @@ $(document).ready(function () {
             .attr("y", function () {
                 return (h / 2) - 5;
             });
-        
+
         // remove loading text
         svg.selectAll(".aggregitting").remove();
-        
+
         // plot the data!
         g = svg.selectAll(".arc")
             .data(pie(languages))
@@ -364,28 +370,28 @@ $(document).ready(function () {
             .attr("class", "arc");
         g.append("path")
             //.attr("d", arc)
-            .style("fill", function(d) {
+            .style("fill", function (d) {
                 return color(d.data.language);
             })
-            .on("mouseover", function(d) {      
-                langTooltip.html('<strong>' + d.data.language + '</strong><br>' + d.data.kiB + ' kiB');      
-            })            
-            .on("mouseout", function(d) {     
-                langTooltip.html('<strong>' + MAX_LANG + ' languages</strong><br>' + MAX_kiB + ' kiB');     
+            .on("mouseover", function (d) {
+                langTooltip.html('<strong>' + d.data.language + '</strong><br>' + d.data.kiB + ' kiB');
+            })
+            .on("mouseout", function (d) {
+                langTooltip.html('<strong>' + MAX_LANG + ' languages</strong><br>' + MAX_kiB + ' kiB');
             })
             .transition()
-            .delay(function(d, i) {
+            .delay(function (d, i) {
                 return i * 256;
             })
             .duration(256)
-            .attrTween('d', function(d) {
+            .attrTween('d', function (d) {
                 var i = d3.interpolate(d.startAngle + 0.1, d.endAngle);
-                    return function(t) {
-                        d.endAngle = i(t);
-                        return arc(d);
-                    }
+                return function (t) {
+                    d.endAngle = i(t);
+                    return arc(d);
+                };
             });
-        
+
 //        g.append("text")
 //            .attr("transform", function(d) {
 //                return "translate(" + arc.centroid(d) + ")";
@@ -397,9 +403,9 @@ $(document).ready(function () {
 //            });
 
     }
-    
+
     function aggregatePunchCard(user) {
-        
+
         var aggPunchCard = [],
             h = 0,
             d = 0,
@@ -411,16 +417,17 @@ $(document).ready(function () {
                 aggPunchCard.push([d, h, 0]);
             }
         }
-        
+
         //gather which repos to include
-        $('#punchcard-checklist input:checked').each(function() {
+        $('#punchcard-checklist input:checked').each(function () {
             punchRepos.push($(this).attr('name'));
         });
-        
+
         // aggregate punch card data
+        console.log('Aggregating Punch Card:');
         user.repos.forEach(function (repo, i) {
             if ($.inArray(repo.name, punchRepos) > -1) {
-                console.log('adding ' + repo.name + ' to punch card');
+                console.log('    ' + repo.name);
                 repo.stats.punch_card.forEach(function (punch, i) {
                     aggPunchCard[i][2] += punch[2];
                 });
@@ -429,7 +436,7 @@ $(document).ready(function () {
 
         renderPunchCard('#punchcard', aggPunchCard);
     }
-    
+
     function aggregateParticipation(user) {
         var aggParticipation = [],
             d = 0,
@@ -440,14 +447,14 @@ $(document).ready(function () {
             owner = false,
             all = false,
             zoom = false;
-        
+
         //gather which repos, time, and who to include
-        $('#participation-checklist input:checked').each(function() {
+        $('#participation-checklist input:checked').each(function () {
             punchRepos.push($(this).attr('name'));
         });
-        $('#ownerall-checklist input:checked').each(function() {
-            owner = ($(this).attr('name') == 'owner') ? true : owner;
-            all = ($(this).attr('name') == 'all') ? true : all;
+        $('#ownerall-checklist input:checked').each(function () {
+            owner = ($(this).attr('name') === 'owner') ? true : owner;
+            all = ($(this).attr('name') === 'all') ? true : all;
         });
         zoom = $('#zoom-checklist input:checked').length > 0 ? true : zoom;
 
@@ -461,12 +468,13 @@ $(document).ready(function () {
                 x.all = 0;
             }
             aggParticipation.push(x);
-        }        
-        
+        }
+
         // aggregate participation data
+        console.log('Aggregating participation:');
         user.repos.forEach(function (repo, i) {
             if ($.inArray(repo.name, punchRepos) > -1) {
-                console.log('adding ' + repo.name + ' to participation');                
+                console.log('    ' + repo.name);
                 for (d = 0; d < PARTICIPATION_SIZE; d += 1) {
                     if (owner) {
                         aggParticipation[d].owner += repo.stats.participation.owner[d];
@@ -478,7 +486,7 @@ $(document).ready(function () {
             }
         });
         if (zoom) {
-            for (z = 0; z < aggParticipation.length; z += 1 ) {
+            for (z = 0; z < aggParticipation.length; z += 1) {
                 if (aggParticipation[z].owner > 0 || aggParticipation[z].all > 0) {
                     aggParticipation = aggParticipation.slice(z);
                     break;
@@ -487,94 +495,102 @@ $(document).ready(function () {
         }
         renderParticipation('#participation', aggParticipation);
     }
-    
+
     function aggregateLanguages(user) {
         var aggLanguages = [],
             punchRepos = [],
             language;
-        
+
         //gather which repos, time, and who to include
-        $('#languages-checklist input:checked').each(function() {
+        $('#languages-checklist input:checked').each(function () {
             punchRepos.push($(this).attr('name'));
-        }); 
-        
+        });
+
         // aggregate language data
+        console.log('Aggregating languages:');
         user.repos.forEach(function (repo, i) {
+            var language;
             if ($.inArray(repo.name, punchRepos) > -1) {
-                console.log('adding ' + repo.name + ' to languages');                
+                console.log('    ' + repo.name);
                 for (language in repo.languages) {
-                    if (aggLanguages.hasOwnProperty(language)) {
-                        aggLanguages[language] += repo.languages[language];
-                    } else {
-                        aggLanguages[language] = repo.languages[language];
+                    if (repo.languages.hasOwnProperty(language)) {
+                        if (aggLanguages.hasOwnProperty(language)) {
+                            aggLanguages[language] += repo.languages[language];
+                        } else {
+                            aggLanguages[language] = repo.languages[language];
+                        }
                     }
                 }
             }
         });
         renderLanguages('#languages', aggLanguages);
     }
-    
+
     function renderUser(user, errors) {
+
+        console.log('Render the User');
+        console.log('---------------------------------------------');
         // update the DOM
         if (errors) {
+            console.log('Errors! Rate-limit');
             $('title').text('aggregit: error');
-            
+
             $('#user-info').html(
                 $('#error-template').html()
             );
         } else {
             var REPO_CHECKLIST_TEMPLATE = '<li><input {1} type="checkbox" name="{0}">{2}{0}</li>',
                 repoChecklist = [];
-            
+
             // format dates
             user.created_at = formatDate(new Date(user.created_at));
             user.updated_at = formatDate(new Date(user.updated_at));
-            
+
             // update user info
             $('title').text('aggregit: ' + user.login);
             $('#nav-user').attr('href', user.html_url);
             $('#user-info').html(
                 $('#user-info-template').html().format(user)
             );
-            
+
             // update user data
             $('#user-data').html(
                 $('#user-data-template').html().format(user)
             );
-            
+
             // build repos selector
-            user.repos.forEach(function(repo, i) {
+            user.repos.forEach(function (repo, i) {
                 var check = (repo.fork) ? '' : 'checked=""',
                     fork = (repo.fork) ? '<i class="fa fa-code-fork text-info"></i> ' : '';
                 repoChecklist.push(REPO_CHECKLIST_TEMPLATE.format(repo.name, check, fork));
             });
-            
+
             // draw punchcard, and update when repo selector clicked
             $('#punchcard-checklist').html(repoChecklist.join(''));
             aggregatePunchCard(user);
-            $('#punchcard-checklist input').click(function() {
+            $('#punchcard-checklist input').click(function () {
                 aggregatePunchCard(user);
             });
-            
+
             // draw participation, and update when clicked
             $('#participation-checklist').html(repoChecklist.join(''));
             aggregateParticipation(user);
-            $('#participation-checklist input').click(function() {
+            $('#participation-checklist input').click(function () {
                 aggregateParticipation(user);
-            });  
-            $('#ownerall-checklist input').click(function() {
+            });
+            $('#ownerall-checklist input').click(function () {
                 aggregateParticipation(user);
-            });       
-            $('#zoom-checklist input').click(function() {
+            });
+            $('#zoom-checklist input').click(function () {
                 aggregateParticipation(user);
-            }); 
-            
+            });
+
             // draw languages, and update when repo selector clicked
             $('#languages-checklist').html(repoChecklist.join(''));
             aggregateLanguages(user);
-            $('#languages-checklist input').click(function() {
+            $('#languages-checklist input').click(function () {
                 aggregateLanguages(user);
-            });       
+            });
 
         }
     }
@@ -582,6 +598,8 @@ $(document).ready(function () {
     function getGitHubUser(username, callback) {
         var API_URL = 'https://api.github.com/users/',
             REPO_STATS_URLS = ['contributors', 'commit_activity', 'code_frequency', 'participation', 'punch_card'],
+            HOUR_IN_MS = 60 * 60 * 1000,
+            api_calls = 0,
             user = {
                 "login": "",
                 "id": 0,
@@ -635,63 +653,180 @@ $(document).ready(function () {
                 "watchers": 0,
                 "default_branch": ""
             };
-                
+
         function getUser(username) {
-            return $.getJSON(API_URL + username);
+            var userCookie = null,
+                userData = null,
+                dfUser =  null,
+                blank =  null,
+                userKey = unurl(username);
+
+            // check if cookies exists for username
+            if (cookieJar.has(userKey)) {
+                userCookie = JSON.parse(cookieJar.get(userKey));
+                // check if it is over an hour old
+                if ((new Date() - new Date(userCookie.time)) < HOUR_IN_MS) {
+                    userData = userCookie.data;
+                }
+            }
+            // only look up data if it is old or if we ran out of api calls
+            if (userData || api_calls > 60) {
+                // create a deferred object so we can use
+                // the same interface for cookie data as api data
+                dfUser = $.Deferred();
+                if (userData) {
+                    console.log('using cookie: {0}'.format(userKey));
+                    dfUser.resolve(userData);
+                } else {
+                    console.log('TOO MANY api calls: {0}'.format(api_calls));
+                    blank = $.extend(true, {}, user);
+                    dfUser.resolve(blank);
+                }
+                return dfUser;
+            } else {
+                api_calls += 1;
+                console.log('({0}) making request: {1}'.format(api_calls, username));
+                return $.getJSON(API_URL + username);
+            }
         }
 
         function getRepos(repos_url) {
-            return $.getJSON(repos_url);
+            var reposCookie = null,
+                reposData = null,
+                dfRepos =  null,
+                blank =  null,
+                reposKey = unurl(repos_url);
+
+            // check if cookies exists for username
+            if (cookieJar.has(reposKey)) {
+                reposCookie = JSON.parse(cookieJar.get(reposKey));
+                // check if it is over an hour old
+                if ((new Date() - new Date(reposCookie.time)) < HOUR_IN_MS) {
+                    reposData = reposCookie.data;
+                }
+            }
+            // only look up data if it is old or if we ran out of api calls
+            if (reposData || api_calls > 59) {
+                // create a deferred object so we can use
+                // the same interface for cookie data as api data
+                dfRepos = $.Deferred();
+                if (reposData) {
+                    console.log('using cookie: {0}'.format(reposKey));
+                    dfRepos.resolve(reposData);
+                } else {
+                    console.log('TOO MANY api calls: {0}'.format(api_calls));
+                    blank = $.extend(true, {}, repo);
+                    dfRepos.resolve([blank]);
+                }
+                return dfRepos;
+            } else {
+                api_calls += 1;
+                console.log('({0}) making request: {1}'.format(api_calls, repos_url));
+                return $.getJSON(repos_url);
+            }
         }
 
         // get the user
         $.when(getUser(username)).done(function (userData) {
-            var key;
-            
+            var key = '',
+                userCookie = null,
+                storeResponse = false,
+                userKey = unurl(userData.login),
+                cookieString = '';
+
+            // if api data, store as cookie
+            if (!userData.hasOwnProperty('is_cookie')) {
+                // add flag and package up together with time
+                userData.is_cookie = true;
+                userCookie = {
+                    'data' : userData,
+                    'time' : new Date()
+                };
+                // store
+                cookieString = JSON.stringify(userCookie);
+                storeResponse = cookieJar.set(userKey, cookieString);
+                if (storeResponse) {
+                    console.log('request done, storing cookie: {0}'.format(userKey));
+                } else {
+                    console.log('TROUBLE storing cookie: {0}'.format(userKey));
+                }
+            }
+
             // grab only the data we need
             user = copyBIfInA(user, userData);
-            
+
             // get the repos
             $.when(getRepos(userData.repos_url)).done(function (reposData) {
-                var getJsonArray = [],
+                var reposCookie = null,
+                    getJsonArray = [],
                     langHash = {},
-                    statsHash = {};
+                    statsHash = {},
+                    storeResponse = false,
+                    reposKey = unurl(userData.repos_url),
+                    cookieString = '';
+
+                console.log('repos request done');
+                // if api data, store as cookie
+                if (!reposData.hasOwnProperty('is_cookie')) {
+                    // add flag and package up together with time
+                    reposData.is_cookie = true;
+                    reposCookie = {
+                        'data' : reposData,
+                        'time' : new Date()
+                    };
+                    console.log(reposCookie);
+                    // store
+                    cookieString = JSON.stringify(reposCookie);
+                    storeResponse = cookieJar.set(reposKey, cookieString);
+                    if (storeResponse) {
+                        console.log('request done, storing cookie: {0}'.format(reposKey));
+                        console.log(cookieString.length);
+                        console.log(cookieString);
+                    } else {
+                        console.log('TROUBLE storing cookie: {0}'.format(reposKey));
+                        console.log(cookieString.length);
+                        console.log(cookieString);
+                    }
+                }
                 
                 function getRepoLangs(languagesUrl, index) {
+                    api_calls += 1;
+                    console.log('({0}) making request: {1}'.format(api_calls, languagesUrl));
                     return $.getJSON(languagesUrl, function (language) {
                         langHash[index] = language;
                     });
                 }
                 function getRepoStats(statUrl, index, stat) {
+                    api_calls += 1;
+                    console.log('({0}) making request: {1}'.format(api_calls, statUrl));
                     return $.getJSON(statUrl, function (stats) {
                         statsHash[index][stat] = stats;
                     });
                 }
-                
+
                 // loop thru the repos
                 reposData.forEach(function (repoData, i) {
                     var key = '',
                         tempRepo = {};
-                
+
                     // grab only the data we need
                     tempRepo = copyBIfInA(repo, repoData);
-                                        
+
                     // add the repo to the user
                     user.repos[i] = $.extend(true, {}, tempRepo);
-                    
-                    //get the languages
+
+                    //get the languages ans stats
                     getJsonArray.push(getRepoLangs(repoData.languages_url, i));
                     REPO_STATS_URLS.forEach(function (stat) {
                         statsHash[i] = {};
                         getJsonArray.push(getRepoStats(repoData.url + '/stats/' + stat, i, stat));
                     });
-                    
+
                 });
-                                                
+
                 // wait until all the json requests are done
                 $.when.apply($, getJsonArray).done(function (response) {
-                    console.log('done');
-                    console.log(response);
+                    console.log('languages and stats request done');
                     var index,
                         stat;
                     // add languages to repos
@@ -711,54 +846,61 @@ $(document).ready(function () {
                         }
                     }
                 }).fail(function (response) {
-                    console.log('fail');
-                    console.log(response);
-                    
+                    console.log('languages or stats request failed');
+
                 }).always(function (response) {
-                    console.log('always');
-                    console.log(response);
+                    console.log('all requests done!');
+                    console.log(cookieJar.cookies());
+                    console.log('');
                     // ALL DONE!
                     return callback(user, '');
                 });
             }).fail(function (response) {
-                console.log(response);
+                console.log('repos request failed');
                 callback(user, response);
             });
         }).fail(function (response) {
-            console.log(response);
+            console.log('user request failed');
             callback(user, response);
         });
     }
-    
+
     // page js
     // -------------------------------------------------------------------------------------
-    var page              = $('#page'),
-        hashparams        = [],
-        hash              = '',
-        params            = '',
-        urlpath           = '',
-        filename          = '',
-        newlocation       = '',
-        initHoldOff       = 0,
-        bringOut          = 0,
-        
+    var page        = $('#page'),
+        hashparams  = [],
+        hash        = '',
+        params      = '',
+        urlpath     = '',
+        filename    = '',
+        newlocation = '',
+        initHoldOff = 0,
+        bringOut    = 0,
+        // cookies
+        lastvisit   = null,
         //this will store the scroll position
-        keepScroll        = false,
+        keepScroll  = false,
         // store pages
         pages = {
             home : function () {
                 renderTemplate(page, 'home', 'aggregit');
             },
             user : function (username) {
-                var hardcode = false;
-                // aggregit it all
-                username = username || 'tmthydvnprt';
+                // username fallback
+                username = username || 'aggregit_example';
+                // start rendering page
                 renderTemplate(page, 'user', 'aggregit: ' + username);
-                if (hardcode) {
+                // decide what data to get
+                if (username === 'aggregit_example') {
+                    console.log('Requesting Example User Data (local)');
+                    console.log('---------------------------------------------');
                     $.getJSON('data/user.json', function (user) {
                         renderUser(user, '');
                     });
                 } else {
+                    // aggregit it all
+                    console.log('Requesting GitHub User Data');
+                    console.log('---------------------------------------------');
                     getGitHubUser(username, renderUser);
                 }
             },
@@ -770,10 +912,10 @@ $(document).ready(function () {
                 $('.nav-search .input-group-addon, .nav-search .form-control').addClass('help-pulse');
             }
         };
-    
+
 	// route hashchanges to page
 	function router(e) {
-        		
+
         // clear last page stuff
         $('.help-pulse').removeClass('help-pulse');
 		$('.holdoff-time').removeClass('holdoff-time');
@@ -785,27 +927,29 @@ $(document).ready(function () {
         filename = urlpath.slice(-1)[0];
         hash = hashparams[0];
         params = hashparams[1];
-        
-        console.log('page    : ' + page);
-        console.log('hash    : ' + hash);
-        console.log('params  : ' + params);
-        console.log('urlpath : ' + urlpath);
-        console.log('filename: ' + filename);
-        
+
+        console.log('Routing');
+        console.log('-----------------------------------------');
+        console.log('    urlpath : ' + urlpath);
+        console.log('    filename: ' + filename);
+        console.log('    hash    : ' + hash);
+        console.log('    params  : ' + params);
+        console.log('');
+
         // index page with internal hash routing
         if (filename === 'index.html') {
-            
+
             // default to home if on index page
             hash = hash || '!/home';
-            
+
             // on-page hash
             if (hash.slice(0, 2) === '!/') {
-                
+
                 // zoom to the top
                 $('html,body').animate({
                     scrollTop: 0
                 }, 300);
-                
+
                 // animate out
                 $('#page section').addClass('bringOut');
 
@@ -834,7 +978,6 @@ $(document).ready(function () {
                         if (e.keyCode === 13) {
                             var username = $(this).val();
                             e.preventDefault();
-                            console.log(username);
                             location.hash = '#!/user=' + username;
                             router();
                         }
@@ -866,17 +1009,32 @@ $(document).ready(function () {
                 newlocation = urlpath.join("/") + location.hash;
                 location.assign(newlocation);
             } else {
-                console.log('do nothing');
+                console.log('routed nowhere?');
             }
         }
-        
+
         return false;
 	}
-    
+
 	initHoldOff = setTimeout(function () {
 		$('.holdoff').removeClass('holdoff');
 		clearTimeout(initHoldOff);
 	}, 256);
+
+    if (!cookieJar.has('lastvisit')) {
+        lastvisit = (new Date()).toISOString();
+        cookieJar.set('lastvisit', lastvisit);
+        console.log('welcome');
+        console.log('');
+    } else {
+        lastvisit = cookieJar.get('visit');
+        console.log('welcome back, your last visit was ' + lastvisit);
+        console.log('');
+        console.log('these are your stored cookie:');
+        console.log(cookieJar.cookies());
+        console.log('');
+        
+    }
 
 	// listen for hash change or page load
 	$(window).on('hashchange', router);

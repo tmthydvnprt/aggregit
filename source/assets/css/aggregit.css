@@ -219,8 +219,8 @@ nav time[datetime]:not(.no-hover):hover::before {
 	animation: slidein 1000ms ease 200ms 1 both;
 }
 @keyframes slidein {
-	0%   {transform: rotate(-23deg) scale(1.2) translate(-16px, -16px);}
-    100% {transform: rotate(-23deg) scale(1.0) translate(8px, 8px);}
+	0%   {opacity: 0; transform: rotate(23deg) scale(2) translate(8px, 0px);}
+    100% {opacity: 1; transform: rotate(-23deg) scale(1) translate(8px, 12px);}
 }
 
 nav #nav-search-user.form-control {

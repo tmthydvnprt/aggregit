@@ -13,10 +13,12 @@ html {
 }
 body {
     margin-top: 64px;
-    margin-bottom: 64px;
+    margin-bottom: 48px;
     overflow-x: hidden;
 }
-
+nav {
+    margin-bottom: 0;
+}
 mark code {
     background-color: #fff8eb;
 }
@@ -31,16 +33,26 @@ footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-/*  height: 60px;*/
+  height: 48px;
 }
 footer hr {
     margin: 5px;
 }
+footer p {
+    margin: 0 auto;
+    padding-bottom:  0;
+}
+footer a::before {
+    margin-top:-24px!important; 
+}
+footer a:hover::before {
+    margin-top:-48px!important; 
+}
 .container-fluid {
     padding: 0;
 }
-.abbr {
-    border-bottom: 3px dotted #777 !important;
+.abbr[title] {
+    border-bottom: 2px dotted black!important;
 }
 .checklist {
     list-style: none;
@@ -65,32 +77,61 @@ abbr[title]::before,
 a[href]:not(.no-hover)::before,
 time[datetime]:not(.no-hover)::before {
 	position: absolute;
-	margin-top:-16px;
+	margin-top:0px;
 	padding: 4px;
 	background-color: #30c2a4;
 	color:#fdfefd;
-	white-space: nowrap;
+    text-align: center;
+	white-space: pre;
 	word-break: break-all!important;
 	opacity: 0;
 	transition: all 0.5s ease;
 	z-index: 20;
+    pointer-events: none;
+}
+
+
+.pull-right .force-hover[title]::before,
+.pull-right abbr[title]::before,
+.pull-right a[href]:not(.no-hover)::before,
+.pull-right time[datetime]:not(.no-hover)::before {
+    right: 2px;
+}
+.pull-left .force-hover[title]::before,
+.pull-left abbr[title]::before,
+.pull-left a[href]:not(.no-hover)::before,
+.pull-left time[datetime]:not(.no-hover)::before {
+    left: 4px;
+}
+.navbar-right .force-hover[title]::before,
+.navbar-right abbr[title]::before,
+.navbar-right a[href]:not(.no-hover)::before,
+.navbar-right time[datetime]:not(.no-hover)::before {
+    right: 2px;
+}
+
+time[datetime]:not(.no-hover)::before {
+	background-color: #24af92;
+}
+abbr[title]::before {
+	background-color: #1a9d82;
 }
 .force-hover[title]::before,
 abbr[title]::before {
-	content: " (" attr(title) ")";
+	content: attr(title);
 }
 a[href]:not(.no-hover)::before {
-	content: " (" attr(href) ")";
+	content: attr(href) "\a(" attr(alt) ")";
 }
 time[datetime]:not(.no-hover)::before {
-	content: " (ISO8601 : " attr(datetime) ")";
+	content: "ISO8601 : " attr(datetime);
 }
 .force-hover[title]:hover::before,
 abbr[title]:hover::before,
 a[href]:not(.no-hover):hover::before,
 time[datetime]:not(.no-hover):hover::before {
 	opacity: 1;
-	margin-top:-32px;
+	margin-top:-48px;
 }
 nav .force-hover[title]:hover::before,
 nav abbr[title]:hover::before,
@@ -208,6 +249,10 @@ nav time[datetime]:not(.no-hover):hover::before {
 
 /* User Info
  ---------------------- */
+#user-info .media,
+#user-info .media-body {
+    overflow: visible;
+}
 #avatar {
     width: 128px;
     height: 128px;

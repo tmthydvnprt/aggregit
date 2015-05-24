@@ -548,7 +548,11 @@ $(document).ready(function () {
 
             // update user info
             $('title').text('aggregit: ' + user.login);
+            $('#username').val('');
+            $('#username').attr('placeholder', user.login);
             $('#nav-user').attr('href', user.html_url);
+            $('#nav-user').attr('title', "Go to User");
+            $('#nav-user').attr('alt', "Go to User");
             $('#user-info').html(
                 $('#user-info-template').html().format(user)
             );
@@ -919,6 +923,9 @@ $(document).ready(function () {
         // clear last page stuff
         $('.help-pulse').removeClass('help-pulse');
 		$('.holdoff-time').removeClass('holdoff-time');
+        $('#nav-user').attr('href', "https://github.com");
+        $('#nav-user').attr('title', "Go to GitHub");
+        $('#nav-user').attr('alt', "Go to GitHub");
 
 		// cache page, hash, and filename
 		page = page || $('#page');

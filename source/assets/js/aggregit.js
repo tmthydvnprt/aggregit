@@ -74,7 +74,8 @@ $(document).ready(function () {
 
     function renderPunchCard(elem, data) {
         // reference: http://swizec.com/blog/quick-scatterplot-tutorial-for-d3-js/swizec/5337
-        console.log('punchcard');
+        console.log('Rendering Punchcard');
+        console.log('');
 
         // remove last plot if there
         d3.select("#punchcard-svg").remove();
@@ -179,7 +180,8 @@ $(document).ready(function () {
     }
     function renderParticipation(elem, data) {
         // reference: http://bl.ocks.org/mbostock/3884955
-        console.log('participation');
+        console.log('Rendering Participation');
+        console.log('');
 
         // remove last plot if there
         d3.select("#participation-svg").remove();
@@ -298,7 +300,8 @@ $(document).ready(function () {
     function renderLanguages(elem, data) {
         // reference: http://bl.ocks.org/mbostock/3887193
         // reference: http://jsfiddle.net/Nw62g/1/
-        console.log('languages');
+        console.log('Rendering Languages');
+        console.log('');
 
         // remove last plot if there
         d3.select("#languages-svg").remove();
@@ -435,7 +438,7 @@ $(document).ready(function () {
                 });
             }
         });
-
+        console.log('');
         renderPunchCard('#punchcard', aggPunchCard);
     }
 
@@ -473,7 +476,7 @@ $(document).ready(function () {
         }
 
         // aggregate participation data
-        console.log('Aggregating participation:');
+        console.log('Aggregating Participation:');
         user.repos.forEach(function (repo, i) {
             if ($.inArray(repo.name, punchRepos) > -1) {
                 console.log('    ' + repo.name);
@@ -495,6 +498,7 @@ $(document).ready(function () {
                 }
             }
         }
+        console.log('');
         renderParticipation('#participation', aggParticipation);
     }
 
@@ -509,7 +513,7 @@ $(document).ready(function () {
         });
 
         // aggregate language data
-        console.log('Aggregating languages:');
+        console.log('Aggregating Languages:');
         user.repos.forEach(function (repo, i) {
             var language;
             if ($.inArray(repo.name, punchRepos) > -1) {
@@ -525,6 +529,7 @@ $(document).ready(function () {
                 }
             }
         });
+        console.log('');
         renderLanguages('#languages', aggLanguages);
     }
 
@@ -547,6 +552,8 @@ $(document).ready(function () {
             // format dates
             user.created_at = formatDate(new Date(user.created_at));
             user.updated_at = formatDate(new Date(user.updated_at));
+            user.site_admin = user.site_admin ? '<i class="fa fa-fw fa-github-alt"></i> site admint' : '';
+            user.hireable = user.hireable ? '<i class="fa fa-fw fa-check-circle"></i> hireable' : '';
 
             // update user info
             $('title').text('aggregit: ' + user.login);
@@ -612,8 +619,6 @@ $(document).ready(function () {
                 "id": 0,
                 "avatar_url": "",
                 "html_url": "",
-                "repos": [],
-                "type": "",
                 "site_admin": false,
                 "name": "",
                 "company": "",
@@ -621,7 +626,6 @@ $(document).ready(function () {
                 "location": "",
                 "email": "",
                 "hireable": false,
-                "bio": null,
                 "public_repos": 0,
                 "public_gists": 0,
                 "followers": 0,
@@ -631,35 +635,20 @@ $(document).ready(function () {
                 "is_cookie" : false
             },
             repo = {
-                "id": 0,
                 "name": "",
-                "full_name": "",
                 "owner": {"login": ""},
-                "private": false,
-                "html_url": "",
+//                "html_url": "",
                 "description": "",
                 "fork": false,
                 "created_at": null,
                 "updated_at": null,
                 "pushed_at": null,
-                "homepage": null,
                 "size": 0,
                 "stargazers_count": 0,
                 "watchers_count": 0,
-                "language": "",
-                "languages": {},
-                "stats" : {},
-                "has_issues": true,
-                "has_downloads": true,
-                "has_wiki": true,
                 "has_pages": true,
                 "forks_count": 0,
-                "mirror_url": null,
                 "open_issues_count": 0,
-                "forks": 0,
-                "open_issues": 0,
-                "watchers": 0,
-                "default_branch": "",
                 "is_cookie" : false
             },
             repos = [];
@@ -772,7 +761,8 @@ $(document).ready(function () {
                     statsHash = {},
                     storeResponse = false,
                     repos_url = [USERS_API_URL, username, 'repos'].join('/'),
-                    cookieString = '';
+                    cookieString = '',
+                    r = 0;
 
                 // loop thru the repos
                 reposData.forEach(function (repoData, i) {
@@ -783,14 +773,16 @@ $(document).ready(function () {
                 // if api data, store as cookie
                 if (!repos[0].is_cookie) {
                     // add flag and package up together with time
-                    repos[0].is_cookie = true;
+                    for (r = 0; r < repos.length; r += 1) {
+                        repos[r].is_cookie = true;
+                    }                        
                     reposCookie = {
                         'data' : repos,
                         'time' : new Date()
                     };
                     console.log(reposCookie);
                     // store
-                    cookieString = JSON.stringify(repos);
+                    cookieString = JSON.stringify(reposCookie);
                     storeResponse = cookieJar.set(repos_url, cookieString);
                     if (storeResponse) {
                         console.log('request done, storing cookie: {0}'.format(repos_url));
@@ -817,7 +809,8 @@ $(document).ready(function () {
                         statsHash[index][stat] = stats;
                     });
                 }
-
+                
+                user.repos = [];
                 // loop thru the repos
                 repos.forEach(function (repoData, i) {
                     var key = '',
@@ -849,6 +842,7 @@ $(document).ready(function () {
                     // add stats to repos
                     for (index in statsHash) {
                         if (statsHash.hasOwnProperty(index)) {
+                            user.repos[index].stats = {};
                             for (stat in statsHash[index]) {
                                 if (statsHash[index].hasOwnProperty(stat)) {
                                     user.repos[index].stats[stat] = statsHash[index][stat];
@@ -924,7 +918,7 @@ $(document).ready(function () {
                         console.log('Requesting Example User Data (local)');
                         console.log('---------------------------------------------');
                         console.log('');
-                        $.getJSON('data/user.json', function (user) {
+                        $.getJSON('data/example_user.json', function (user) {
                             renderUser(user, '');
                         });
                     } else {
@@ -1018,12 +1012,14 @@ $(document).ready(function () {
                     $("#nav-search").submit(function () {
                         var username = $('#nav-search-user').val();
                         location.hash = '#!/user=' + username;
-                        router();
+
+                        return false;
                     });
                     $("#home-search").submit(function () {
                         var username = $('#home-search-user').val();
                         location.hash = '#!/user=' + username;
-                        router();
+
+                        return false;
                     });
 
                     clearInterval(bringOut);

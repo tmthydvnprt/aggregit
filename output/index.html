@@ -65,27 +65,41 @@
 <div class="col-sm-6">
 <div class="media">
 <div class="media-left">
-<a alt="{login} avatar" href="{html_url}" target="_blank" title="{login} avatar"><img alt="{login} avatar" class="media-object" id="avatar" src="{avatar_url}" title="{login} avatar"/></a>
+<a alt="{login} avatar" href="{html_url}" target="_blank" title="{login} avatar">
+<img alt="{login} avatar" class="media-object" id="avatar" src="{avatar_url}" title="{login} avatar"/>
+</a>
+<ul class="list-unstyled" id="badge-list">
+<li><span alt="hireable" class="force-hover" id="hireable" title="hireable">{hireable}</span></li>
+<li><span alt="site admin" class="force-hover" id="site_admin" title="site admin">{site_admin}</span></li>
+</ul>
+<hr/>
+<ul class="list-inline" id="repogist-list">
+<li><i class="fa fa-fw fa-book"></i> <span alt="repos: {public_repos}" class="force-hover" id="repos" title="repos: {public_repos}">{public_repos}</span></li>
+<li><i class="fa fa-fw fa-file-text-o"></i> <span alt="gists: {public_gists}" class="force-hover" id="gists" title="gists: {public_gists}">{public_gists}</span></li>
+</ul>
+<ul class="list-inline" id="follower-list">
+<li><i class="fa fa-fw fa-users"></i> <span alt="followers: {followers}" class="force-hover" id="followers" title="followers: {followers}">{followers}</span></li>
+<li><i class="fa fa-fw fa-user-plus"></i> <span alt="following: {following}" class="force-hover" id="following" title="following: {following}">{following}</span></li>
+</ul>
+<hr/>
 </div>
 <div class="media-body">
-<h1 class="media-heading"><span id="name">{name}</span><br/><small id="username">{login}</small></h1>
+<h1 class="media-heading">
+<span id="name">{name}</span><br/>
+<small alt="username" class="force-hover" id="username" title="username">{login}</small>
+</h1>
+<hr/>
 <ul class="list-inline">
 <li><i class="fa fa-fw fa-envelope-o"></i> <a alt="email: {email}" href="mailto:{email}" id="email" title="email: {email}">{email}</a></li>
 <li><i class="fa fa-fw fa-link"></i> <a alt="blog: {blog}" href="http://{blog}" id="blog" title="blog: {blog}">{blog}</a></li>
 </ul>
 <ul class="list-inline">
-<li><i class="fa fa-fw fa-building-o"></i> <span alt="company: {company}" id="company" title="company: {company}">{company}</span></li>
-<li><i class="fa fa-fw fa-location-arrow"></i> <span alt="location: {location}" id="location" title="location: {location}">{location}</span></li>
+<li><i class="fa fa-fw fa-building-o"></i> <span alt="company: {company}" class="force-hover" id="company" title="company: {company}">{company}</span></li>
+<li><i class="fa fa-fw fa-location-arrow"></i> <span alt="location: {location}" class="force-hover" id="location" title="location: {location}">{location}</span></li>
 </ul>
-<ul class="list-inline">
-<li><i class="fa fa-fw fa-clock-o"></i> <span alt="created: {created_at}" id="created">{created_at}</span></li>
-<li><i class="fa fa-fw fa-refresh"></i> <span alt="updated: {updated_at}" id="updated">{updated_at}</span></li>
-</ul>
-<ul class="list-inline">
-<li><i class="fa fa-fw fa-book"></i> <span alt="repos: {public_repos}" id="repos">{public_repos}</span></li>
-<li><i class="fa fa-fw fa-file-text-o"></i> <span alt="gists: {public_gists}" id="gists">{public_gists}</span></li>
-<li><i class="fa fa-fw fa-users"></i> <span alt="followers: {followers}" id="followers">{followers}</span></li>
-<li><i class="fa fa-fw fa-user-plus"></i> <span alt="following: {following}" id="following">{following}</span></li>
+<ul class="list-inline text-muted">
+<li><i class="fa fa-fw fa-clock-o"></i> <span alt="created: {created_at}" class="force-hover" id="created" title="created: {created_at}">{created_at}</span></li>
+<li><i class="fa fa-fw fa-refresh"></i> <span alt="updated: {updated_at}" class="force-hover" id="updated" title="updated: {updated_at}">{updated_at}</span></li>
 </ul>
 </div>
 </div>

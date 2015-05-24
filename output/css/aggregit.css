@@ -17,6 +17,27 @@ body {
     overflow-x: hidden;
 }
 nav {
+	animation: introDn 512ms ease 0s 1 both;
+}
+footer {
+	animation: introUp 1024ms ease 0s 1 both;
+}
+.bringIn {
+	animation: introOut 256ms ease 0s 1 both;
+}
+@keyframes introDn {
+	0%   {opacity: 0; transform: scale(1.02) translateY(-64px);}
+	100% {opacity: 1; transform: scale(1) translateY(  0px);}
+}
+@keyframes introUp {
+	0%   {opacity: 0; transform: scale(0.98) translateY(32px);}
+	100% {opacity: 1; transform: scale(1) translateY( 0px);}
+}
+@keyframes introOut {
+	0%   {opacity: 0; transform: scale(0.95) translateY(10px);}
+	100% {opacity: 1; transform: scale(1) translateY( 0px);}
+}
+nav {
     margin-bottom: 0;
 }
 mark code {
@@ -89,8 +110,6 @@ time[datetime]:not(.no-hover)::before {
 	z-index: 20;
     pointer-events: none;
 }
-
-
 .pull-right .force-hover[title]::before,
 .pull-right abbr[title]::before,
 .pull-right a[href]:not(.no-hover)::before,
@@ -178,21 +197,36 @@ nav time[datetime]:not(.no-hover):hover::before {
 .navbar {
     background-color: rgba(12, 132, 228, 0.96);
 }
+.navbar .input-group-addon a,
 .navbar .input-group-addon {
     color:#b2dbfb;
 }
+#cached-user {
+	animation: fadein 1000ms ease 100ms 1 both;
+}
+@keyframes fadein {
+	0%   {opacity: 0;}
+	100% {opacity: 1;}
+}
+.navbar .input-group-addon a:hover {
+    color:#fff;
+}
 #beta {
     position: absolute;
-    top:-16px;
-    left:-16px;
-    transform: rotate(-23deg) translate(-50%, -50%);
-    transform-origin: 0% 0%;
+    top:0;
+    left:0;
+    transform-origin: 50% 50%;
 	animation: slidein 1000ms ease 200ms 1 both;
 }
 @keyframes slidein {
-	0%   {top:-16px; left:-16px;}
-    100% {top: 16px; left: 24px;}
+	0%   {transform: rotate(-23deg) scale(1.2) translate(-16px, -16px);}
+    100% {transform: rotate(-23deg) scale(1.0) translate(8px, 8px);}
 }
+
+nav #nav-search-user.form-control {
+    width:170px!important;
+}
+
 /* No Collapse Navbar
  ---------------------- */
 .navbar-header {

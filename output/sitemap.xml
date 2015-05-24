@@ -2,229 +2,229 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>aggregit.com/404.html</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/404.md</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/index.html</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/index.md</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/robots.txt</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/search.json</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/css/aggregit.css</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/css/bootstrap.css</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/css/bootstrap_font-awesome.min_aggregit.css</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/css/font-awesome.min.css</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/css/index.html</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/css/index.md</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.5</priority>
-    </url>
-    <url>
-        <loc>aggregit.com/data/example_user.json</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/data/index.html</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/data/index.md</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>aggregit.com/data/tmthydvnprt_example.json</loc>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/fonts/.DS_Store</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/fonts/fontawesome-webfont.eot</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/fonts/fontawesome-webfont.svg</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/fonts/fontawesome-webfont.ttf</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/fonts/fontawesome-webfont.woff</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/fonts/fontawesome-webfont.woff2</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/fonts/FontAwesome.otf</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/fonts/index.html</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/fonts/index.md</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/fonts/webhostinghub-glyphs.eot</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/fonts/webhostinghub-glyphs.svg</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/fonts/webhostinghub-glyphs.ttf</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/imgs/index.html</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/imgs/index.md</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/js/.DS_Store</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/js/aggregit.js</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/js/cookieJar.js</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/js/crossfilter.min.js</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/js/d3.min.js</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/js/dc.min.js</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/js/index.html</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/js/index.md</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>aggregit.com/js/jquery-1.11.2.min.js</loc>
-        <lastmod>2015-05-24T13:43:56-7:00</lastmod>
+        <lastmod>2015-05-24T14:54:34-7:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>

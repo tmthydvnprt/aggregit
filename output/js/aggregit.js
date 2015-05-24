@@ -555,6 +555,14 @@ $(document).ready(function () {
             user.site_admin = user.site_admin ? '<i class="fa fa-fw fa-github-alt"></i> site admint' : '';
             user.hireable = user.hireable ? '<i class="fa fa-fw fa-check-circle"></i> hireable' : '';
 
+            // add cached data button
+            if ($('#cached-user').length === 0) {
+                $('#nav-search .input-group').append(
+                    '<span id="cached-user" class="input-group-addon"><a href="#!/user={0}" alt="User Data" title="User Data"><i class="fa fa-area-chart fa-2x"></i></a></span>'.format(user.login)
+                );
+            }
+            $('#cached-user').attr("href", "#!/user={0}".format(user.login));
+            
             // update user info
             $('title').text('aggregit: ' + user.login);
             $('#username').val('');
@@ -903,7 +911,7 @@ $(document).ready(function () {
             },
             user : function (username) {
                 // username fallback
-                username = username || 'aggregit_example';
+                username = username || 'tmthydvnprt_example';
                 // start rendering page
                 renderTemplate(page, 'user', 'aggregit: ' + username);
                 // check if cached user exists
@@ -914,15 +922,16 @@ $(document).ready(function () {
                     renderUser(cachedUser, '');
                 } else {
                     // decide what data to get
-                    if (username === 'aggregit_example') {
+                    if (username === 'tmthydvnprt_example') {
                         console.log('Requesting Example User Data (local)');
                         console.log('---------------------------------------------');
                         console.log('');
-                        $.getJSON('data/example_user.json', function (user) {
+                        $.getJSON('data/tmthydvnprt_example.json', function (user) {
                             renderUser(user, '');
                         });
                     } else {
                         // aggregit it all
+                        $('#cached-user').remove();
                         console.log('Requesting GitHub User Data');
                         console.log('---------------------------------------------');
                         console.log('');

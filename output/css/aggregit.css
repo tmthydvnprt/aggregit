@@ -171,9 +171,12 @@ nav time[datetime]:not(.no-hover):hover::before {
 }
 #help-arrow {
     position: absolute;
-    top:65px;
+    top:-28px;
     left:200px;
     font-size: 500%;
+	animation: introUp 1024ms ease 0s 1 both;
+}
+#help-arrow i {
     color:#b2dbfb;
 	animation: pulsecolor 600ms ease 300ms infinite alternate;
 }
@@ -317,6 +320,10 @@ nav #nav-search-user.form-control {
 
 /* User Data
  ---------------------- */
+#user-data {
+    margin-right: 16px;
+    margin-left: 16px;
+}
 .checklist.list-inline li {
     margin-left: 25px;
 }

@@ -183,10 +183,16 @@ nav time[datetime]:not(.no-hover):hover::before {
 }
 #beta {
     position: absolute;
-    top:8%;
-    left:8%;
+    top:-16px;
+    left:-16px;
+    transform: rotate(-23deg) translate(-50%, -50%);
+    transform-origin: 0% 0%;
+	animation: slidein 1000ms ease 200ms 1 both;
 }
-
+@keyframes slidein {
+	0%   {top:-16px; left:-16px;}
+    100% {top: 16px; left: 24px;}
+}
 /* No Collapse Navbar
  ---------------------- */
 .navbar-header {

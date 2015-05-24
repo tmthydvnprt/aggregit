@@ -7,6 +7,8 @@
 $(document).ready(function () {
     'use strict';
 
+    var cachedUser  = null;
+    
     // Utility functions
 	// -------------------------------------------------------------------------------------
     function isObject(a) {
@@ -600,7 +602,8 @@ $(document).ready(function () {
     }
 
     function getGitHubUser(username, callback) {
-        var API_URL = 'https://api.github.com/users/',
+        var USERS_API_URL = 'https://api.github.com/users',
+            REPOS_API_URL = 'https://api.github.com/repos',
             REPO_STATS_URLS = ['contributors', 'commit_activity', 'code_frequency', 'participation', 'punch_card'],
             HOUR_IN_MS = 60 * 60 * 1000,
             api_calls = 0,
@@ -624,7 +627,8 @@ $(document).ready(function () {
                 "followers": 0,
                 "following": 0,
                 "created_at": null,
-                "updated_at": null
+                "updated_at": null,
+                "is_cookie" : false
             },
             repo = {
                 "id": 0,
@@ -655,8 +659,10 @@ $(document).ready(function () {
                 "forks": 0,
                 "open_issues": 0,
                 "watchers": 0,
-                "default_branch": ""
-            };
+                "default_branch": "",
+                "is_cookie" : false
+            },
+            repos = [];
 
         function getUser(username) {
             var userCookie = null,
@@ -690,20 +696,20 @@ $(document).ready(function () {
             } else {
                 api_calls += 1;
                 console.log('({0}) making request: {1}'.format(api_calls, username));
-                return $.getJSON(API_URL + username);
+                return $.getJSON([USERS_API_URL, username].join('/'));
             }
         }
 
-        function getRepos(repos_url) {
+        function getRepos(username) {
             var reposCookie = null,
                 reposData = null,
                 dfRepos =  null,
                 blank =  null,
-                reposKey = unurl(repos_url);
+                repos_url = [USERS_API_URL, username, 'repos'].join('/');
 
             // check if cookies exists for username
-            if (cookieJar.has(reposKey)) {
-                reposCookie = JSON.parse(cookieJar.get(reposKey));
+            if (cookieJar.has(repos_url)) {
+                reposCookie = JSON.parse(cookieJar.get(repos_url));
                 // check if it is over an hour old
                 if ((new Date() - new Date(reposCookie.time)) < HOUR_IN_MS) {
                     reposData = reposCookie.data;
@@ -715,7 +721,7 @@ $(document).ready(function () {
                 // the same interface for cookie data as api data
                 dfRepos = $.Deferred();
                 if (reposData) {
-                    console.log('using cookie: {0}'.format(reposKey));
+                    console.log('using cookie: {0}'.format(repos_url));
                     dfRepos.resolve(reposData);
                 } else {
                     console.log('TOO MANY api calls: {0}'.format(api_calls));
@@ -735,59 +741,63 @@ $(document).ready(function () {
             var key = '',
                 userCookie = null,
                 storeResponse = false,
-                userKey = unurl(userData.login),
                 cookieString = '';
 
+            // grab only the data we need
+            user = copyBIfInA(user, userData);
+            
             // if api data, store as cookie
-            if (!userData.hasOwnProperty('is_cookie')) {
+            if (!user.is_cookie) {
                 // add flag and package up together with time
-                userData.is_cookie = true;
+                user.is_cookie = true;
                 userCookie = {
-                    'data' : userData,
+                    'data' : user,
                     'time' : new Date()
                 };
                 // store
                 cookieString = JSON.stringify(userCookie);
-                storeResponse = cookieJar.set(userKey, cookieString);
+                storeResponse = cookieJar.set(user.login, cookieString);
                 if (storeResponse) {
-                    console.log('request done, storing cookie: {0}'.format(userKey));
+                    console.log('request done, storing cookie: {0}'.format(user.login));
                 } else {
-                    console.log('TROUBLE storing cookie: {0}'.format(userKey));
+                    console.log('TROUBLE storing cookie: {0}'.format(user.login));
                 }
             }
 
-            // grab only the data we need
-            user = copyBIfInA(user, userData);
-
             // get the repos
-            $.when(getRepos(userData.repos_url)).done(function (reposData) {
+            $.when(getRepos(userData.login)).done(function (reposData) {
                 var reposCookie = null,
                     getJsonArray = [],
                     langHash = {},
                     statsHash = {},
                     storeResponse = false,
-                    reposKey = unurl(userData.repos_url),
+                    repos_url = [USERS_API_URL, username, 'repos'].join('/'),
                     cookieString = '';
 
-                console.log('repos request done');
+                // loop thru the repos
+                reposData.forEach(function (repoData, i) {
+                    // grab only the data we need
+                    repos.push(copyBIfInA(repo, repoData));
+                });
+                
                 // if api data, store as cookie
-                if (!reposData.hasOwnProperty('is_cookie')) {
+                if (!repos[0].is_cookie) {
                     // add flag and package up together with time
-                    reposData.is_cookie = true;
+                    repos[0].is_cookie = true;
                     reposCookie = {
-                        'data' : reposData,
+                        'data' : repos,
                         'time' : new Date()
                     };
                     console.log(reposCookie);
                     // store
-                    cookieString = JSON.stringify(reposCookie);
-                    storeResponse = cookieJar.set(reposKey, cookieString);
+                    cookieString = JSON.stringify(repos);
+                    storeResponse = cookieJar.set(repos_url, cookieString);
                     if (storeResponse) {
-                        console.log('request done, storing cookie: {0}'.format(reposKey));
+                        console.log('request done, storing cookie: {0}'.format(repos_url));
                         console.log(cookieString.length);
                         console.log(cookieString);
                     } else {
-                        console.log('TROUBLE storing cookie: {0}'.format(reposKey));
+                        console.log('TROUBLE storing cookie: {0}'.format(repos_url));
                         console.log(cookieString.length);
                         console.log(cookieString);
                     }
@@ -809,21 +819,18 @@ $(document).ready(function () {
                 }
 
                 // loop thru the repos
-                reposData.forEach(function (repoData, i) {
+                repos.forEach(function (repoData, i) {
                     var key = '',
-                        tempRepo = {};
-
-                    // grab only the data we need
-                    tempRepo = copyBIfInA(repo, repoData);
+                        repo_url = [REPOS_API_URL, username, repoData.name].join('/');
 
                     // add the repo to the user
-                    user.repos[i] = $.extend(true, {}, tempRepo);
+                    user.repos[i] = repoData;
 
-                    //get the languages ans stats
-                    getJsonArray.push(getRepoLangs(repoData.languages_url, i));
+                    //get the languages and stats
+                    getJsonArray.push(getRepoLangs([repo_url, 'languages'].join('/'), i));
                     REPO_STATS_URLS.forEach(function (stat) {
                         statsHash[i] = {};
-                        getJsonArray.push(getRepoStats(repoData.url + '/stats/' + stat, i, stat));
+                        getJsonArray.push(getRepoStats([repo_url, 'stats', stat].join('/'), i, stat));
                     });
 
                 });
@@ -854,7 +861,18 @@ $(document).ready(function () {
 
                 }).always(function (response) {
                     console.log('all requests done!');
-                    console.log(cookieJar.cookies());
+                    console.log('caching results');
+                    cachedUser = $.extend(true, {}, user);
+                    cookieJar.cookies().forEach(function (name) {
+                        var time = '',
+                            cookie = cookieJar.get(name);
+                        try {
+                            time = new Date(JSON.parse(cookie).time);
+                        } catch (e) {
+                            time = cookie;
+                        }
+                        console.log('    {0}: {1}'.format(name, time));
+                    });
                     console.log('');
                     // ALL DONE!
                     return callback(user, '');
@@ -894,18 +912,25 @@ $(document).ready(function () {
                 username = username || 'aggregit_example';
                 // start rendering page
                 renderTemplate(page, 'user', 'aggregit: ' + username);
-                // decide what data to get
-                if (username === 'aggregit_example') {
-                    console.log('Requesting Example User Data (local)');
+                // check if cached user exists
+                if (cachedUser && cachedUser.login === username) {
+                    console.log('Using Cached User Data (already requested this)');
                     console.log('---------------------------------------------');
-                    $.getJSON('data/user.json', function (user) {
-                        renderUser(user, '');
-                    });
+                    renderUser(cachedUser, '');
                 } else {
-                    // aggregit it all
-                    console.log('Requesting GitHub User Data');
-                    console.log('---------------------------------------------');
-                    getGitHubUser(username, renderUser);
+                    // decide what data to get
+                    if (username === 'aggregit_example') {
+                        console.log('Requesting Example User Data (local)');
+                        console.log('---------------------------------------------');
+                        $.getJSON('data/user.json', function (user) {
+                            renderUser(user, '');
+                        });
+                    } else {
+                        // aggregit it all
+                        console.log('Requesting GitHub User Data');
+                        console.log('---------------------------------------------');
+                        getGitHubUser(username, renderUser);
+                    }
                 }
             },
             about : function () {
@@ -914,7 +939,13 @@ $(document).ready(function () {
             help : function () {
                 renderTemplate(page, 'help', 'aggregit: help');
                 $('.nav-search .input-group-addon, .nav-search .form-control').addClass('help-pulse');
-            }
+            },
+            contact : function () {
+                renderTemplate(page, 'contact', 'aggregit: contact');
+            },
+            unknown : function () {
+                renderTemplate(page, 'unknown', 'aggregit: unknown?');
+            },
         };
 
 	// route hashchanges to page
@@ -970,7 +1001,7 @@ $(document).ready(function () {
                     if (pages.hasOwnProperty(hash)) {
                         pages[hash](params);
                     } else {
-                        pages.home();
+                        pages.unknown();
                     }
 
                     // setup page
@@ -1038,7 +1069,16 @@ $(document).ready(function () {
         console.log('welcome back, your last visit was ' + lastvisit);
         console.log('');
         console.log('these are your stored cookie:');
-        console.log(cookieJar.cookies());
+        cookieJar.cookies().forEach(function (name) {
+            var time = '',
+                cookie = cookieJar.get(name);
+            try {
+                time = new Date(JSON.parse(cookie).time);
+            } catch (e) {
+                time = cookie;
+            }
+            console.log('    {0}: {1}'.format(name, time));
+        });
         console.log('');
         
     }

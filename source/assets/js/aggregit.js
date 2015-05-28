@@ -968,7 +968,7 @@ $(document).ready(function () {
 		page = page || $('#page');
 		hashparams = location.hash.slice(1).split('=');
         urlpath = location.pathname.split('/');
-        filename = urlpath.slice(-1)[0];
+        filename = urlpath.slice(-1)[0] || 'index.html';
         hash = hashparams[0];
         params = hashparams[1];
 
@@ -1006,6 +1006,8 @@ $(document).ready(function () {
                     hash = hash.slice(2);
                     if (pages.hasOwnProperty(hash)) {
                         pages[hash](params);
+                    } else if (location.pathname === '/aggregit/') {
+                        pages.home();
                     } else {
                         pages.unknown();
                     }

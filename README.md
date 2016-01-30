@@ -1,4 +1,4 @@
 aggregit
 ========
 
-aggregate GitHub user data
+Aggregate all of a GitHub user's data.

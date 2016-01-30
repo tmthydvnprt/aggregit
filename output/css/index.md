@@ -10,12 +10,12 @@
 <meta content="tmthydvnprt" name="author"/>
 <meta content="blank index page of css directory" name="description"/>
 <meta content="i,n,d,e,x" name="keywords"/>
-<link href="../../../../../../imgs/favicon.ico" rel="favicon"/>
-<link href="../../../../../../img/icon_60x60.png" rel="apple-touch-icon"/>
-<link href="../../../../../../img/icon_76x76.png" rel="apple-touch-icon" sizes="76x76"/>
-<link href="../../../../../../img/icon_120x120.png" rel="apple-touch-icon" sizes="120x120"/>
-<link href="../../../../../../img/icon_152x152.png" rel="apple-touch-icon" sizes="152x152"/>
-<link href="../../../../../../css/bootstrap_font-awesome.min_aggregit.css" rel="stylesheet" type="text/css"/></head>
+<link href="../imgs/favicon.ico" rel="favicon"/>
+<link href="../img/icon_60x60.png" rel="apple-touch-icon"/>
+<link href="../img/icon_76x76.png" rel="apple-touch-icon" sizes="76x76"/>
+<link href="../img/icon_120x120.png" rel="apple-touch-icon" sizes="120x120"/>
+<link href="../img/icon_152x152.png" rel="apple-touch-icon" sizes="152x152"/>
+<link href="../css/bootstrap_font-awesome.min_aggregit.css" rel="stylesheet" type="text/css"/></head>
 <body>
 <!--quilted nav patch-->
 <nav class="navbar navbar-inverse navbar-default navbar-fixed-top" id="nav">
@@ -60,7 +60,7 @@
                 &bull; <a alt="about" href="#!/about" title="about">about</a>
                 &bull; <a alt="help" href="#!/help" title="help">help</a>
 </p>
-<p class="pull-right">2015 &copy; <a alt="tmthydvnprt" href="https://github.com/tmthydvnprt" title="tmthydvnprt">tmthydvnprt</a></p>
+<p class="pull-right">2015&ndash;2016 &copy; <a alt="tmthydvnprt" href="https://github.com/tmthydvnprt" title="tmthydvnprt">tmthydvnprt</a></p>
 </div>
 </div>
 </footer>
@@ -234,7 +234,7 @@
 <div class="row">
 <div class="col-xs-12 text-center">
 <p class="lead">
-                        Please return <a alt="home" href="../../../../../../index.html" title="home">home</a>.
+                        Please return <a alt="home" href="../index.html" title="home">home</a>.
                     </p>
 </div>
 </div>
@@ -295,6 +295,6 @@
 </div>
 </template>
 <!--quilted scripts patch-->
-<script id="scripts" rel="javascript" src="../../../../../../js/jquery-1.11.2.min_d3.min_cookieJar_aggregit.js" type="text/javascript"></script>
+<script id="scripts" rel="javascript" src="../js/jquery-1.11.2.min_d3.min_cookieJar_aggregit.js" type="text/javascript"></script>
 </body>
 </html>

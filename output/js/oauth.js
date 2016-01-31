@@ -44,7 +44,7 @@ $(document).ready(function () {
 
         // Request authorization
         console.log(url);
-        window.open(url);
+        location.href = url;
     }
 
     function authenticate() {

@@ -8,7 +8,7 @@ $(document).ready(function () {
     'use strict';
 
     var cachedUser  = null;
-    
+
     // Utility functions
 	// -------------------------------------------------------------------------------------
     function isObject(a) {
@@ -562,7 +562,7 @@ $(document).ready(function () {
                 );
             }
             $('#cached-user').attr("href", "#!/user={0}".format(user.login));
-            
+
             // update user info
             $('title').text('aggregit: ' + user.login);
             $('#username').val('');
@@ -742,7 +742,7 @@ $(document).ready(function () {
 
             // grab only the data we need
             user = copyBIfInA(user, userData);
-            
+
             // if api data, store as cookie
             if (!user.is_cookie) {
                 // add flag and package up together with time
@@ -777,13 +777,13 @@ $(document).ready(function () {
                     // grab only the data we need
                     repos.push(copyBIfInA(repo, repoData));
                 });
-                
+
                 // if api data, store as cookie
                 if (!repos[0].is_cookie) {
                     // add flag and package up together with time
                     for (r = 0; r < repos.length; r += 1) {
                         repos[r].is_cookie = true;
-                    }                        
+                    }
                     reposCookie = {
                         'data' : repos,
                         'time' : new Date()
@@ -802,7 +802,7 @@ $(document).ready(function () {
                         console.log(cookieString);
                     }
                 }
-                
+
                 function getRepoLangs(languagesUrl, index) {
                     api_calls += 1;
                     console.log('({0}) making request: {1}'.format(api_calls, languagesUrl));
@@ -817,7 +817,7 @@ $(document).ready(function () {
                         statsHash[index][stat] = stats;
                     });
                 }
-                
+
                 user.repos = [];
                 // loop thru the repos
                 repos.forEach(function (repoData, i) {
@@ -1092,7 +1092,7 @@ $(document).ready(function () {
             console.log('    {0}: {1}'.format(name, time));
         });
         console.log('');
-        
+
     }
 
 	// listen for hash change or page load

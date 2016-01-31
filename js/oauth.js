@@ -11,7 +11,7 @@ $(document).ready(function () {
         github_id = '85bd6112f2a60a7edd66',
         github_callback = 'http://aggregit.com/a',
         github_scope = '',
-        oauth_proxy_url = 'http://aggregit-proxy-576273.appstop.com/?';
+        oauth_proxy_url = 'http://aggregit-proxy-576273.appspot.com/?';
 
     function deparam(string) {
         var params = {},

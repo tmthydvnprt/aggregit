@@ -694,7 +694,7 @@ $(document).ready(function () {
             } else {
                 api_calls += 1;
                 console.log('({0}) making request: {1}'.format(api_calls, username));
-                return $.getJSON([USERS_API_URL, username].join('/'));
+                return $.getJSON([USERS_API_URL, username].join('/') + TOKEN);
             }
         }
 
@@ -703,7 +703,7 @@ $(document).ready(function () {
                 reposData = null,
                 dfRepos =  null,
                 blank =  null,
-                repos_url = [USERS_API_URL, username, 'repos'].join('/');
+                repos_url = [USERS_API_URL, username, 'repos'].join('/') + TOKEN;
 
             // check if cookies exists for username
             if (cookieJar.has(repos_url)) {
@@ -769,7 +769,7 @@ $(document).ready(function () {
                     langHash = {},
                     statsHash = {},
                     storeResponse = false,
-                    repos_url = [USERS_API_URL, username, 'repos'].join('/'),
+                    repos_url = [USERS_API_URL, username, 'repos'].join('/') + TOKEN,
                     cookieString = '',
                     r = 0;
 
@@ -823,7 +823,7 @@ $(document).ready(function () {
                 // loop thru the repos
                 repos.forEach(function (repoData, i) {
                     var key = '',
-                        repo_url = [REPOS_API_URL, username, repoData.name].join('/');
+                        repo_url = [REPOS_API_URL, username, repoData.name].join('/') + TOKEN;
 
                     // add the repo to the user
                     user.repos[i] = repoData;

@@ -823,16 +823,16 @@ $(document).ready(function () {
                 // loop thru the repos
                 repos.forEach(function (repoData, i) {
                     var key = '',
-                        repo_url = [REPOS_API_URL, username, repoData.name].join('/') + TOKEN;
+                        repo_url = [REPOS_API_URL, username, repoData.name].join('/');
 
                     // add the repo to the user
                     user.repos[i] = repoData;
 
                     //get the languages and stats
-                    getJsonArray.push(getRepoLangs([repo_url, 'languages'].join('/'), i));
+                    getJsonArray.push(getRepoLangs([repo_url, 'languages'].join('/') + TOKEN, i));
                     REPO_STATS_URLS.forEach(function (stat) {
                         statsHash[i] = {};
-                        getJsonArray.push(getRepoStats([repo_url, 'stats', stat].join('/'), i, stat));
+                        getJsonArray.push(getRepoStats([repo_url, 'stats', stat].join('/') + TOKEN, i, stat));
                     });
 
                 });

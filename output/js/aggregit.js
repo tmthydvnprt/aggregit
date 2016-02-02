@@ -619,6 +619,7 @@ $(document).ready(function () {
     function getGitHubUser(username, callback) {
         var USERS_API_URL = 'https://api.github.com/users',
             REPOS_API_URL = 'https://api.github.com/repos',
+            TOKEN = cookieJar.has('access_token') ? '?=' + cookieJar.get('access_token') : '';
             REPO_STATS_URLS = ['contributors', 'commit_activity', 'code_frequency', 'participation', 'punch_card'],
             HOUR_IN_MS = 60 * 60 * 1000,
             api_calls = 0,

@@ -54,12 +54,15 @@ $(document).ready(function () {
         // Check that state is valid
         if (cookieJar.get('state') === auth['state'] ) {
             console.log('state is good');
-            // good to go, continue
+            // Turn authorization code into access token
             url = oauth_proxy_url + $.param(auth);
             $.getJSON(url, function(access) {
                 console.log(access);
-                console.log(access['access_token']);
-                cookieJar.set('access_token', access['access_token']);
+                if (access.hasOwnProperty('access_token')) {
+                    cookieJar.set('access_token', access['access_token']);
+                } else {
+                    console.log('no token: proxy error');
+                }
             });
         } else {
             console.log('state is bad');

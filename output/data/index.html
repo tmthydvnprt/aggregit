@@ -198,6 +198,30 @@
 </div>
 </section>
 </template>
+<template id="authorize-template">
+<section class="bringIn">
+<div class="jumbotron">
+<div class="row">
+<div class="col-sm-8 col-sm-offset-2">
+<div class="panel panel-primary center-block" id="auth-panel">
+<div class="panel-heading">
+<h2 class="panel-title">Authorize Aggregit</h2>
+</div>
+<div class="panel-body">
+<p>Would like to authorize Aggregit to access your public GitHub data?</p>
+<div class="text-center">
+<button class="btn btn-success" id="authorize-btn">Authorize</button>
+</div>
+<p class="smallprint">
+                                Authorization is required by the <a alt="GitHub API" href="https://developer.github.com/v3/" target="_blank" title="GitHub API">GitHub API</a> to make the number of API calls (&gt; 60/hour) required for building a complete picture of GitHub data.  If you do not authorize, you may <a alt="continue" href="" title="continue">continue</a>, but only a portion of your data may be accessed.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</template>
 <template id="user-template">
 <section class="bringIn">
 <div class="jumbotron">
@@ -245,7 +269,7 @@
 <div class="jumbotron">
 <div class="row">
 <div class="col-sm-8 col-sm-offset-2">
-<h1>About Aggregit <small>{x|x&isin;r&isin;u}</small></h1>
+<h1>About Aggregit <small>{<var>x</var>|<var>x</var>&isin;<var>Repo</var>&isin;<var>User</var>}</small></h1>
 <hr/>
 <h3>Multi-Repo Punch Card Anyone?</h3>
 <p class="lead">Ever wanted to see your punch card for <em>all</em> your repos? your non-<code>master</code> contributions in the heat map? <em>all</em> your language stats? Well, those are the reasons for building this.</p>

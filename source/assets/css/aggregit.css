@@ -17,25 +17,29 @@ body {
     overflow-x: hidden;
 }
 nav {
-	animation: introDn 512ms ease 0s 1 both;
+    animation: introDn 512ms ease 0s 1 both;
 }
 footer {
-	animation: introUp 1024ms ease 0s 1 both;
+    animation: introUp 1024ms ease 0s 1 both;
 }
 .bringIn {
-	animation: introOut 256ms ease 0s 1 both;
+    animation: introOut 256ms ease 0s 1 both;
 }
 @keyframes introDn {
-	0%   {opacity: 0; transform: scale(1.02) translateY(-64px);}
-	100% {opacity: 1; transform: scale(1) translateY(  0px);}
+    0%   {opacity: 0; transform: scale(1.02) translateY(-64px);}
+    100% {opacity: 1; transform: scale(1) translateY(  0px);}
+}
+@keyframes introDn2 {
+    0%   {opacity: 0; transform: scale(1.05) translateY(-48px);}
+    100% {opacity: 1; transform: scale(1) translateY(  0px);}
 }
 @keyframes introUp {
-	0%   {opacity: 0; transform: scale(0.98) translateY(32px);}
-	100% {opacity: 1; transform: scale(1) translateY( 0px);}
+    0%   {opacity: 0; transform: scale(0.98) translateY(32px);}
+    100% {opacity: 1; transform: scale(1) translateY( 0px);}
 }
 @keyframes introOut {
-	0%   {opacity: 0; transform: scale(0.95) translateY(10px);}
-	100% {opacity: 1; transform: scale(1) translateY( 0px);}
+    0%   {opacity: 0; transform: scale(0.95) translateY(10px);}
+    100% {opacity: 1; transform: scale(1) translateY( 0px);}
 }
 nav {
     margin-bottom: 0;
@@ -97,17 +101,17 @@ input[type="checkbox"]:checked::after,
 abbr[title]::before,
 a[href]:not(.no-hover)::before,
 time[datetime]:not(.no-hover)::before {
-	position: absolute;
-	margin-top:0px;
-	padding: 4px;
-	background-color: #30c2a4;
-	color:#fdfefd;
+    position: absolute;
+    margin-top:0px;
+    padding: 4px;
+    background-color: #30c2a4;
+    color:#fdfefd;
     text-align: center;
-	white-space: pre;
-	word-break: break-all!important;
-	opacity: 0;
-	transition: all 0.5s ease;
-	z-index: 20;
+    white-space: pre;
+    word-break: break-all!important;
+    opacity: 0;
+    transition: all 0.5s ease;
+    z-index: 20;
     pointer-events: none;
 }
 .pull-right .force-hover[title]::before,
@@ -130,43 +134,43 @@ time[datetime]:not(.no-hover)::before {
 }
 
 time[datetime]:not(.no-hover)::before {
-	background-color: #24af92;
+    background-color: #24af92;
 }
 abbr[title]::before {
-	background-color: #1a9d82;
+    background-color: #1a9d82;
 }
 .force-hover[title]::before,
 abbr[title]::before {
-	content: attr(title);
+    content: attr(title);
 }
 a[href]:not(.no-hover)::before {
-	content: attr(href) "\a(" attr(alt) ")";
+    content: attr(href) "\a(" attr(alt) ")";
 }
 time[datetime]:not(.no-hover)::before {
-	content: "ISO8601 : " attr(datetime);
+    content: "ISO8601 : " attr(datetime);
 }
 .force-hover[title]:hover::before,
 abbr[title]:hover::before,
 a[href]:not(.no-hover):hover::before,
 time[datetime]:not(.no-hover):hover::before {
-	opacity: 1;
-	margin-top:-48px;
+    opacity: 1;
+    margin-top:-48px;
 }
 nav .force-hover[title]:hover::before,
 nav abbr[title]:hover::before,
 nav a[href]:not(.no-hover):hover::before,
 nav time[datetime]:not(.no-hover):hover::before {
-	opacity: 1;
-	margin-top:48px;
+    opacity: 1;
+    margin-top:48px;
 }
 .tooltip {
-	position: absolute;
-	margin-top:-16px;
-	padding: 4px;
-	background-color: #30c2a4;
-	color:#fdfefd;
-	transition: all 0.5s ease;
-	z-index: 20;
+    position: absolute;
+    margin-top:-16px;
+    padding: 4px;
+    background-color: #30c2a4;
+    color:#fdfefd;
+    transition: all 0.5s ease;
+    z-index: 20;
     pointer-events: none;
 }
 #help-arrow {
@@ -174,25 +178,25 @@ nav time[datetime]:not(.no-hover):hover::before {
     top:-28px;
     left:200px;
     font-size: 500%;
-	animation: introUp 1024ms ease 0s 1 both;
+    animation: introUp 1024ms ease 0s 1 both;
 }
 #help-arrow i {
     color:#b2dbfb;
-	animation: pulsecolor 600ms ease 300ms infinite alternate;
+    animation: pulsecolor 600ms ease 300ms infinite alternate;
 }
 .input-group-addon.help-pulse {
-	animation: pulsecolor 600ms ease 0s infinite alternate;
+    animation: pulsecolor 600ms ease 0s infinite alternate;
 }
 .form-control.help-pulse {
-	animation: pulseborder 600ms ease 300ms infinite alternate;
+    animation: pulseborder 600ms ease 300ms infinite alternate;
 }
 @keyframes pulsecolor {
-	0%   {color:#b2dbfb;}
-	100% {color:#ff9800;}
+    0%   {color:#b2dbfb;}
+    100% {color:#ff9800;}
 }
 @keyframes pulseborder {
-	0%   {box-shadow: inset 0 -2px 0 #b2dbfb;}
-	100% {box-shadow: inset 0 -2px 0 #ff9800;}
+    0%   {box-shadow: inset 0 -2px 0 #b2dbfb;}
+    100% {box-shadow: inset 0 -2px 0 #ff9800;}
 }
 
 #home-jumbo {
@@ -200,6 +204,15 @@ nav time[datetime]:not(.no-hover):hover::before {
 }
 #home-logo {
     width: 33%!important;
+    animation: introDn2 1024ms ease 0s 1 both;
+}
+#auth-panel {
+    width: 50%;
+}
+.smallprint {
+    font-size: 14px !important;
+    line-height: 1.2;
+    margin-top: 16px;
 }
 
 /* Navbar
@@ -212,11 +225,11 @@ nav time[datetime]:not(.no-hover):hover::before {
     color:#b2dbfb;
 }
 #cached-user {
-	animation: fadein 1000ms ease 100ms 1 both;
+    animation: fadein 1000ms ease 100ms 1 both;
 }
 @keyframes fadein {
-	0%   {opacity: 0;}
-	100% {opacity: 1;}
+    0%   {opacity: 0;}
+    100% {opacity: 1;}
 }
 .navbar .input-group-addon a:hover {
     color:#fff;
@@ -226,10 +239,10 @@ nav time[datetime]:not(.no-hover):hover::before {
     top:0;
     left:0;
     transform-origin: 50% 50%;
-	animation: slidein 1000ms ease 200ms 1 both;
+    animation: slidein 1000ms ease 200ms 1 both;
 }
 @keyframes slidein {
-	0%   {opacity: 0; transform: rotate(23deg) scale(2) translate(8px, 0px);}
+    0%   {opacity: 0; transform: rotate(23deg) scale(2) translate(8px, 0px);}
     100% {opacity: 1; transform: rotate(-23deg) scale(1) translate(8px, 12px);}
 }
 
@@ -369,7 +382,7 @@ nav #nav-search-user.form-control {
     animation: slideup 1000ms ease 200ms 1 both;
 }
 @keyframes slideup {
-	0%   {opacity:0; margin-top:100px;}
+    0%   {opacity:0; margin-top:100px;}
     100% {opacity:1; margin-top: 0px;}
 }
 
@@ -403,9 +416,9 @@ nav #nav-search-user.form-control {
     top:50%;
     left:50%;
     text-align: center;
-	background-color: rgba(0,0,0,0)!important;
-	color:#30c2a4;
+    background-color: rgba(0,0,0,0)!important;
+    color:#30c2a4;
     font-size: 200%;
-	transition: all 0.5s ease;
+    transition: all 0.5s ease;
     transform: translate(-50%,-50%);
 }

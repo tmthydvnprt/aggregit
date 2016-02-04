@@ -9,13 +9,13 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="1024"
-   height="1024"
-   viewBox="0 0 1024 1024"
+   width="959.45673"
+   height="778.08331"
+   viewBox="0 0 959.45673 778.08331"
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="aggregit.svg">
+   sodipodi:docname="aggregit_logo.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -26,8 +26,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.90509668"
-     inkscape:cx="534.7588"
-     inkscape:cy="402.89924"
+     inkscape:cx="502.48332"
+     inkscape:cy="279.92892"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -53,37 +53,41 @@
      inkscape:snap-smooth-nodes="true"
      inkscape:snap-midpoints="true"
      inkscape:snap-object-midpoints="true"
-     inkscape:snap-center="true">
+     inkscape:snap-center="true"
+     fit-margin-top="5"
+     fit-margin-right="5"
+     fit-margin-bottom="5"
+     fit-margin-left="5">
     <sodipodi:guide
-       position="0,3377.9501"
+       position="-32.275482,3254.9798"
        orientation="1,0"
        id="guide4174" />
     <sodipodi:guide
-       position="1024.0011,1023.3036"
+       position="991.72562,900.33327"
        orientation="1,0"
        id="guide4176" />
     <sodipodi:guide
-       position="510.97266,1024"
+       position="478.69718,901.02967"
        orientation="0,1"
        id="guide4178" />
     <sodipodi:guide
-       position="0,0"
+       position="-32.275482,-122.97032"
        orientation="0,1"
        id="guide4180" />
     <sodipodi:guide
-       position="512.00391,1024.6211"
+       position="479.72843,901.65077"
        orientation="1,0"
        id="guide4186" />
     <sodipodi:guide
-       position="-6.3860581,511.9895"
+       position="-38.661541,389.01917"
        orientation="0,1"
        id="guide4188" />
     <sodipodi:guide
-       position="-4.3752232,255.99475"
+       position="-36.650706,133.02443"
        orientation="0,1"
        id="guide4281" />
     <sodipodi:guide
-       position="-367.17969,768"
+       position="-399.45517,645.02967"
        orientation="0,1"
        id="guide4283" />
   </sodipodi:namedview>
@@ -103,7 +107,8 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Layer 3"
-     style="display:inline;opacity:0.75">
+     style="display:inline;opacity:0.75"
+     transform="translate(-32.275482,-122.94635)">
     <path
        style="opacity:0.75;fill:#2add79;fill-opacity:1;fill-rule:evenodd;stroke:#5bd390;stroke-width:1.33528996;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 232.35375,511.29495 69.68208,-268.31323 69.68118,268.31323 z"
@@ -169,7 +174,8 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Layer 2"
-     style="display:inline;opacity:0.75">
+     style="display:inline;opacity:0.75"
+     transform="translate(-32.275482,-122.94635)">
     <circle
        cy="512.0105"
        cx="-512.00391"
@@ -224,7 +230,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-28.362114)"
+     transform="translate(-32.275482,-151.30847)"
      style="display:inline">
     <text
        xml:space="preserve"
@@ -243,9 +249,9 @@
        id="text4185"
        y="597.51819"
        x="624.07385"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:225px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#1d694f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:225px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#1d694f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:225px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#1d694f;fill-opacity:1;"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:225px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#1d694f;fill-opacity:1"
          y="597.51819"
          x="624.07385"
          id="tspan4187"

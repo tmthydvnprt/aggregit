@@ -25,11 +25,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.45254834"
-     inkscape:cx="663.55636"
-     inkscape:cy="389.35102"
+     inkscape:zoom="0.90509668"
+     inkscape:cx="534.7588"
+     inkscape:cy="402.89924"
      inkscape:document-units="px"
-     inkscape:current-layer="layer3"
+     inkscape:current-layer="layer1"
      showgrid="false"
      borderlayer="false"
      showborder="true"
@@ -39,7 +39,7 @@
      inkscape:window-x="915"
      inkscape:window-y="7"
      inkscape:window-maximized="0"
-     showguides="true"
+     showguides="false"
      inkscape:guide-bbox="true"
      units="px"
      inkscape:snap-bbox="true"
@@ -237,6 +237,18 @@
          id="tspan4184"
          x="61.103909"
          y="596.8476"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:225px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#1d4369;fill-opacity:1">aggregit</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:225px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#1d4369;fill-opacity:1">aggre</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text4185"
+       y="597.51819"
+       x="624.07385"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:225px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#1d694f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:225px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#1d694f;fill-opacity:1;"
+         y="597.51819"
+         x="624.07385"
+         id="tspan4187"
+         sodipodi:role="line">git</tspan></text>
   </g>
 </svg>

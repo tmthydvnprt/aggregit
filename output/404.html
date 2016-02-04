@@ -22,8 +22,7 @@
 <div class="container">
 <div class="navbar-header">
 <a alt="home" class="navbar-brand" href="#!/home" title="home">
-<i class="fa fa-home"></i>
-<span>aggre</span><span>git</span>
+<img alt="aggregit" class="img-responsive" id="nav-logo" src="imgs/aggregit_logo.svg" title="imgs/aggregit_logo.svg"/>
 </a>
 <span class="label label-warning" id="beta">beta</span>
 </div>
@@ -65,7 +64,7 @@
 <hr/>
 <div class="clearfix">
 <p class="pull-left">
-<a alt="aggregit" href="index.html" title="aggregit">aggregit</a>
+<a alt="aggregit" href="http://aggregit.com" title="aggregit">aggregit</a>
                 | <a alt="contact" href="#!/contact" title="contact">contact</a>
                 &bull; <a alt="about" href="#!/about" title="about">about</a>
                 &bull; <a alt="help" href="#!/help" title="help">help</a>
@@ -226,7 +225,7 @@
 <div class="col-sm-8 col-sm-offset-2">
 <h1>Contact</h1>
 <hr/>
-<h1><a alt="tmthydvnprt" href="https://github.com/tmthydvnprt" title="tmthydvnprt">tmthydvnprt</a></h1>
+<p class="lead">If you need to get in touch, you may send emails to <a alt="info@aggregit.com" href="mailto:info@aggregit.com" title="info@aggregit.com">info@aggregit.com</a>, begin a conversation at the <a alt="aggregit" href="https://github.com/tmthydvnprt/aggregit" title="aggregit">aggregit</a> GitHub repo, or reach me directly on GitHub as <a alt="tmthydvnprt" href="https://github.com/tmthydvnprt" title="tmthydvnprt">tmthydvnprt</a>.</p>
 <hr/>
 </div>
 </div>
@@ -261,7 +260,7 @@
 <h3>Multi-Repo Punch Card Anyone?</h3>
 <p class="lead">Ever wanted to see your punch card for <em>all</em> your repos? your non-<code>master</code> contributions in the heat map? <em>all</em> your language stats? Well, those are the reasons for building this.</p>
 <h4>Data, Data, Data!</h4>
-<p class="lead">The page makes a bunch of unauthenticated calls to the <a alt="GitHub API" href="https://developer.github.com/v3/" target="_blank" title="GitHub API">GitHub API</a> to get a whole mess of <code>json</code> that can be plotted or presented in a beautiful way.</p>
+<p class="lead">The site makes a bunch of calls to the <a alt="GitHub API" href="https://developer.github.com/v3/" target="_blank" title="GitHub API">GitHub API</a> to get a whole mess of <code>json</code> that can be plotted or presented in a beautiful way.</p>
 <h4>Link / Share</h4>
 <p>Share your data by linking to this site with your username passed as an parameter.</p>
 <pre>http://aggregit.com#/!user=tmthydvnprt</pre>
@@ -273,13 +272,16 @@
 </template>
 <template id="home-template">
 <section class="bringIn">
-<div class="jumbotron text-center">
-<h1><span class="agg">aggre</span><span class="git">git</span></h1>
-<p class="lead">See <em>all</em> your data across <em>all</em> your <a alt="GitHub" href="https://github.com" target="_blank" title="GitHub">GitHub</a> repositories.</p>
+<div class="jumbotron text-center" id="home-jumbo">
+<img alt="aggregit logo" class="img-responsive center-block" id="home-logo" src="imgs/aggregit_logo.svg" title="imgs/aggregit_logo.svg"/>
+<p class="lead">
+                Get <em>all</em> your data across <em>all</em> your <a alt="GitHub" href="https://github.com" target="_blank" title="GitHub">GitHub</a> repositories.<br/>
+<small>Visualize your data here or export to process / analyze on your own.</small>
+</p>
 </div>
 <div class="row">
 <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-<h3 class="text-center">Search for a username</h3>
+<h3 class="text-center">Search for a username:</h3>
 <div class="well well-sm">
 <form id="home-search">
 <div class="input-group">

@@ -59,11 +59,12 @@ $(document).ready(function () {
             // Turn authorization code into access token
             url = oauth_proxy_url + $.param(auth);
             $.getJSON(url, function(access) {
-                console.log(access);
                 if (access.hasOwnProperty('access_token')) {
+                    console.log('token is good');
+                    console.log('authenticated');
                     cookieJar.set('access_token', access['access_token']);
                 } else {
-                    console.log('no token: proxy error');
+                    console.log('error: no token');
                 }
             });
         } else {
@@ -973,7 +974,10 @@ $(document).ready(function () {
         pages = {
             home : function () {
                 renderTemplate(page, 'home', 'aggregit');
-                github_authenticate();
+                // Check if this is a redirect from GitHub
+                if (window.location.indexOf('code') > -1) {
+                    github_authenticate();
+                }
             },
             user : function (username) {
                 // username fallback

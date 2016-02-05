@@ -1,0 +1,6 @@
+# Sitemap location
+Sitemap: http://aggregit.com/sitemap.xml
+
+# Allow crawling of all content
+User-agent: *
+Disallow:

@@ -72,7 +72,6 @@ $(document).ready(function () {
             console.log('did not authenticate');
             // should abort
         }
-
     }
 
     // Utility functions
@@ -973,12 +972,12 @@ $(document).ready(function () {
         // store pages
         pages = {
             home : function () {
-                renderTemplate(page, 'home', 'aggregit');
                 // Check if this is a redirect from GitHub
                 if (location.search.indexOf('code') > -1) {
                     github_authenticate();
                     location.href = location.href.replace(location.search, '');
                 }
+                renderTemplate(page, 'home', 'aggregit');
             },
             user : function (username) {
                 // username fallback

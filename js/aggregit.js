@@ -1094,6 +1094,21 @@ $(document).ready(function () {
                         pages.unknown();
                     }
 
+                    // change authentication status
+                    if (cookieJar.has('access_token')) {
+                        $('#auth-icon i').removeClass('fa-times-circle');
+                        $('#auth-icon i').addClass('fa-check-circle');
+                        $('#auth-icon').attr('href', '#');
+                        $('#auth-icon').attr('alt', 'GitHub access is authorized!');
+                        $('#auth-icon').attr('title', 'GitHub access is authorized!');
+                    } else {
+                        $('#auth-icon i').removeClass('fa-check-circle');
+                        $('#auth-icon i').addClass('fa-times-circle');
+                        $('#auth-icon').attr('href', '#!/authenticate');
+                        $('#auth-icon').attr('alt', 'GitHub access is locked! You should authorize Aggregit for full experience.');
+                        $('#auth-icon').attr('title', 'GitHub access is locked! You should authorize Aggregit for full experience.');
+                    }
+
                     // setup page
                     page.addClass('rendered');
                     // on-page scroll links

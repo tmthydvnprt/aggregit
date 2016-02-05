@@ -50,6 +50,11 @@ $(document).ready(function () {
     }
 
     function github_authenticate() {
+        // JSON request as function for promise
+        function getToken(url) {
+            return $.getJSON(url);
+        }
+
         // Get GitHub authentication from redirected url
         var auth = deparam(window.location.search),
             url = '';
@@ -59,10 +64,6 @@ $(document).ready(function () {
             console.log('state is good');
             // Turn authorization code into access token
             url = oauth_proxy_url + $.param(auth);
-
-            function getToken(url) {
-                return $.getJSON(url);
-            }
 
             $.when(getToken(url)).done(function (access) {
 

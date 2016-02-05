@@ -11,7 +11,7 @@ $(document).ready(function () {
 
     var github_oauth_url = 'https://github.com/login/oauth/authorize?',
         github_id = '85bd6112f2a60a7edd66',
-        github_callback = 'http://aggregit.com',
+        github_callback = 'http://aggregit.com/#!/authenticate',
         github_scope = '',
         oauth_proxy_url = 'http://aggregit-proxy-576273.appspot.com/?';
 
@@ -50,10 +50,6 @@ $(document).ready(function () {
     }
 
     function github_authenticate() {
-        // JSON request as function for promise
-        function getToken(url) {
-            return $.getJSON(url);
-        }
 
         // Get GitHub authentication from redirected url
         var auth = deparam(window.location.search),
@@ -65,8 +61,7 @@ $(document).ready(function () {
             // Turn authorization code into access token
             url = oauth_proxy_url + $.param(auth);
 
-            $.when(getToken(url)).done(function (access) {
-
+            $.getJSON(url, function(access) {
                 if (access.hasOwnProperty('access_token')) {
                     console.log('token is good');
                     console.log('authenticated');
@@ -74,16 +69,13 @@ $(document).ready(function () {
                 } else {
                     console.log('error: no token');
                 }
-
-            }).fail(function (response) {
-                console.log('authentication request failed');
-                callback(url, response);
             });
 
         } else {
             console.log('state is bad');
             console.log('did not authenticate');
         }
+        location.href = '#!/home';
     }
 
     // Utility functions
@@ -984,11 +976,6 @@ $(document).ready(function () {
         // store pages
         pages = {
             home : function () {
-                // Check if this is a redirect from GitHub
-                if (location.search.indexOf('code') > -1) {
-                    github_authenticate();
-                    location.href = location.href.replace(location.search, '');
-                }
                 renderTemplate(page, 'home', 'aggregit');
             },
             user : function (username) {
@@ -1026,6 +1013,13 @@ $(document).ready(function () {
                 $('#authorize-btn').click(function (e) {
                     github_authorize();
                 });
+            },
+            authenticate : function () {
+                renderTemplate(page, 'authenticate', 'aggregit: authenticate');
+                // Check if this is am authentication redirect from GitHub
+                if (location.search.indexOf('code') > -1) {
+                    github_authenticate();
+                }
             },
             about : function () {
                 renderTemplate(page, 'about', 'aggregit: about');

@@ -1,0 +1,25 @@
+<template id="authenticate-template">
+    <section class="bringIn">
+        <div class="jumbotron">
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <div class="panel panel-primary center-block" id="auth-panel">
+                        <div class="panel-heading">
+                            <h2 class="panel-title text-center">Authenticating Aggregit</h2>
+                        </div>
+                        <div class="panel-body">
+                            <p class="text-center">Awesome! You authorized Aggregit to access your public GitHub data!</p>
+                            <img id="auth-logo" src="{{relativepath}}imgs/aggregit_logo.svg" class="img-responsive center-block img-thumbnail" alt="aggregit logo">
+                            <div class="text-center">
+                                <button class="btn btn-success" id="authorize-btn">Authenticating</button>
+                            </div>
+                            <p class="smallprint">
+                                Aggregit is authenticating your account and then will get your data. Enjoy.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

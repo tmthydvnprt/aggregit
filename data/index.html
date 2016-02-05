@@ -324,7 +324,7 @@
 <p class="text-center">Awesome! You authorized Aggregit to access your public GitHub data!</p>
 <img alt="aggregit logo" class="img-responsive center-block img-thumbnail" id="auth-logo" src="../imgs/aggregit_logo.svg" title="../imgs/aggregit_logo.svg"/>
 <div class="text-center">
-<button class="btn btn-success" id="authorize-btn">Authenticating</button>
+<button class="btn btn-success disabled" id="authorize-btn">Authenticating</button>
 </div>
 <p class="smallprint">
                                 Aggregit is authenticating your account and then will get your data. Enjoy.

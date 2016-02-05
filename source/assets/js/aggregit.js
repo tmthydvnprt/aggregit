@@ -977,6 +977,7 @@ $(document).ready(function () {
                 // Check if this is a redirect from GitHub
                 if (window.location.indexOf('code') > -1) {
                     github_authenticate();
+                    location.href = location.href.replace(location.search, '');
                 }
             },
             user : function (username) {

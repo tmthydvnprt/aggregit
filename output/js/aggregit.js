@@ -68,6 +68,7 @@ $(document).ready(function () {
             });
         } else {
             console.log('state is bad');
+            console.log('did not authenticate');
             // should abort
         }
 
@@ -972,6 +973,7 @@ $(document).ready(function () {
         pages = {
             home : function () {
                 renderTemplate(page, 'home', 'aggregit');
+                github_authenticate();
             },
             user : function (username) {
                 // username fallback
@@ -1023,10 +1025,6 @@ $(document).ready(function () {
                 renderTemplate(page, 'unknown', 'aggregit: unknown?');
             }
         };
-
-    // $('#authenticate').click(function (e) {
-    //     github_authenticate();
-    // });
 
     // route hashchanges to page
     function router(e) {

@@ -206,6 +206,10 @@ nav time[datetime]:not(.no-hover):hover::before {
     width: 33%!important;
     animation: introDn2 1024ms ease 0s 1 both;
 }
+#auth-logo {
+    width: 50%!important;
+    margin-bottom: 8px;
+}
 #auth-panel {
     width: 50%;
 }

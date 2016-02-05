@@ -310,6 +310,31 @@
 </div>
 </section>
 </template>
+<template id="authenticate-template">
+<section class="bringIn">
+<div class="jumbotron">
+<div class="row">
+<div class="col-sm-8 col-sm-offset-2">
+<div class="panel panel-primary center-block" id="auth-panel">
+<div class="panel-heading">
+<h2 class="panel-title text-center">Authenticating Aggregit</h2>
+</div>
+<div class="panel-body">
+<p class="text-center">Awesome! You authorized Aggregit to access your public GitHub data!</p>
+<img alt="aggregit logo" class="img-responsive center-block img-thumbnail" id="auth-logo" src="../imgs/aggregit_logo.svg" title="../imgs/aggregit_logo.svg"/>
+<div class="text-center">
+<button class="btn btn-success" id="authorize-btn">Authenticating</button>
+</div>
+<p class="smallprint">
+                                Aggregit is authenticating your account and then will get your data. Enjoy.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</template>
 <template id="error-template">
 <div class="col-xs-6 col-xs-offset-3">
 <div class="alert alert-danger" id="rate-limit" role="alert">

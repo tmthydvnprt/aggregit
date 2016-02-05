@@ -255,8 +255,8 @@ nav #nav-search-user.form-control {
 }
 #nav-logo {
     width: 48px;
-    background-color: #fff;
-    border-radius: 5px;
+    /*background-color: #fff;*/
+    /*border-radius: 5px;*/
     padding: 2px;
 }
 

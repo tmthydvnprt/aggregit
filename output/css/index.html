@@ -22,7 +22,7 @@
 <div class="container">
 <div class="navbar-header">
 <a alt="home" class="navbar-brand" href="#!/home" title="home">
-<img alt="aggregit" class="img-responsive" id="nav-logo" src="../imgs/aggregit_logo.svg" title="../imgs/aggregit_logo.svg"/>
+<img alt="aggregit" class="img-responsive" id="nav-logo" src="../imgs/aggregit_logo_brand.svg" title="../imgs/aggregit_logo_brand.svg"/>
 </a>
 <span class="label label-warning" id="beta">beta</span>
 </div>
@@ -37,6 +37,7 @@
 <li><a alt="about this!" href="#!/about" title="about this!"><i class="fa fa-info-circle fa-2x"></i></a></li>
 <li><a alt="need help?" href="#!/help" title="need help?"><i class="fa fa-question-circle fa-2x"></i></a></li>
 <li><a alt="go to GitHub" href="https://github.com" id="nav-user" target="_blank" title="go to GitHub"><i class="fa fa-github fa-2x"></i></a></li>
+<li><a alt="GitHub access is locked! You should authorize Aggregit for full experience." href="#!/authorize" id="auth-icon" title=""><i class="fa fa-times-circle fa-2x"></i></a></li>
 </ul>
 </div>
 </div>

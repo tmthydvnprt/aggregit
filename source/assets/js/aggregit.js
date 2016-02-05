@@ -66,17 +66,20 @@ $(document).ready(function () {
                     console.log('token is good');
                     console.log('authenticated');
                     cookieJar.set('access_token', access['access_token']);
+                    location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';
                 } else {
                     console.log('error: no token');
+                    location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';
                 }
             });
 
         } else {
             console.log('state is bad');
             console.log('did not authenticate');
+            location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';
         }
 
-        //location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';
+
     }
 
     // Utility functions

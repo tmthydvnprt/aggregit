@@ -75,7 +75,8 @@ $(document).ready(function () {
             console.log('state is bad');
             console.log('did not authenticate');
         }
-        location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';
+
+        //location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';
     }
 
     // Utility functions
@@ -1018,7 +1019,10 @@ $(document).ready(function () {
                 renderTemplate(page, 'authenticate', 'aggregit: authenticate');
                 // Check if this is am authentication redirect from GitHub
                 if (location.search.indexOf('code') > -1) {
+                    console.log('github redirect, create access token.');
                     github_authenticate();
+                } else {
+                    console.log('missing authorization code.');
                 }
             },
             about : function () {

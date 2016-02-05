@@ -53,12 +53,19 @@ $(document).ready(function () {
         // Get GitHub authentication from redirected url
         var auth = deparam(window.location.search),
             url = '';
+
         // Check that state is valid
         if (cookieJar.get('state') === auth['state'] ) {
             console.log('state is good');
             // Turn authorization code into access token
             url = oauth_proxy_url + $.param(auth);
-            $.getJSON(url, function(access) {
+
+            function getToken(url) {
+                return $.getJSON(url);
+            }
+
+            $.when(getToken(url)).done(function (access) {
+
                 if (access.hasOwnProperty('access_token')) {
                     console.log('token is good');
                     console.log('authenticated');
@@ -66,11 +73,15 @@ $(document).ready(function () {
                 } else {
                     console.log('error: no token');
                 }
+
+            }).fail(function (response) {
+                console.log('authentication request failed');
+                callback(url, response);
             });
+
         } else {
             console.log('state is bad');
             console.log('did not authenticate');
-            // should abort
         }
     }
 
@@ -1168,7 +1179,6 @@ $(document).ready(function () {
             console.log('    {0}: {1}'.format(name, time));
         });
         console.log('');
-
     }
 
     // listen for hash change or page load

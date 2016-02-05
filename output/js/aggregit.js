@@ -75,7 +75,7 @@ $(document).ready(function () {
             console.log('state is bad');
             console.log('did not authenticate');
         }
-        location.href = location.href.replace(location.search, '') + '#!/home';
+        location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';
     }
 
     // Utility functions

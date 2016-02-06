@@ -100,6 +100,7 @@ function check_authentication(callback) {
             } else {
                 console.log('Token is still valid');
                 cookieJar.set('valid_auth', true);
+                cookieJar.set('auth_time', (new Date()).toISOString());
                 callback(true);
             }
         }).fail(function (response) {

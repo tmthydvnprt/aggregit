@@ -66,6 +66,8 @@ function github_authenticate() {
                 console.log('token is good');
                 console.log('authenticated');
                 cookieJar.set('access_token', access['access_token']);
+                cookieJar.set('valid_auth', true);
+                cookieJar.set('auth_time', (new Date()).toISOString());
                 location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';
             } else {
                 console.log('error: no token');

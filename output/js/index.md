@@ -233,7 +233,12 @@
 <section class="bringIn">
 <div class="jumbotron">
 <div id="user-info">
-<div id="aggregiting"><i class="fa fa-spinner fa-pulse"></i></div>
+<div class="text-center">
+<div id="aggregiting">
+<i class="fa fa-spinner fa-pulse"></i>
+</div>
+<h1>Aggre<strong>git</strong>ing</h1>
+</div>
 </div>
 </div>
 <div id="user-data"></div>

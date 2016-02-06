@@ -219,6 +219,12 @@ nav time[datetime]:not(.no-hover):hover::before {
     margin-top: 16px;
 }
 
+/* Cursors patterns */
+.authed {
+   pointer-events: none;
+   cursor: not-allowed;
+}
+
 /* Navbar
  ---------------------- */
 .navbar {

@@ -4,7 +4,7 @@
  *
  * Copyright 2016 Timothy Davenport; Licensed MIT
  */
- 
+
 // GitHub App Config
 var github_oauth_url = 'https://github.com/login/oauth/authorize?',
     github_id = '85bd6112f2a60a7edd66',

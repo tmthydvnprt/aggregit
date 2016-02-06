@@ -42,12 +42,82 @@ GitHub API Reference: https://api.github.com
 }
 */
 
+var API_URL = 'https://api.github.com',
+    REPO_STATS_URLS = ['contributors', 'commit_activity', 'code_frequency', 'participation', 'punch_card'],
+    HOUR_IN_MS = 60 * 60 * 1000,
+
+function getRateLimit(access_token) {
+    /*
+    Check rate limits for user
+    If access_token is valid API returns:
+    {
+        "resources": {
+            "core": {
+                "limit": 5000,
+                "remaining": 4983,
+                "reset": 1454771069
+            },
+            "search": {
+                "limit": 30,
+                "remaining": 30,
+                "reset": 1454767529
+            }
+        },
+        "rate": {
+            "limit": 5000,
+            "remaining": 4983,
+            "reset": 1454771069
+        }
+    }
+    If the access_token is invalid the API returns:
+    {
+        "message": "Bad credentials",
+        "documentation_url": "https://developer.github.com/v3"
+    }
+    */
+    // Build url
+    var rate_limit_url  = [API_URL, 'rate_limit'].join('/') + access_token;
+    return $.getJSON(rate_limit_url);
+}
+
+function check_authentication(callback) {
+    /* Uses the rate_limit API to check if user authorization is still valid */
+    console.log('Checking GitHub Authorization');
+    // Check for token
+    var token = cookieJar.has('access_token') ? '?access_token=' + cookieJar.get('access_token') : '';
+
+    // If token exists, user authenticated at one point... check if still valid
+    if (token) {
+        console.log('Has Access Token, check if still valid');
+
+        // Check rate
+        $.when(getRateLimit(token)).done(function (rate_limit) {
+            console.log('Rate Limit request done');
+            if (rate_limit["message"] === "Bad credentials") {
+                console.log('Token is not valid');
+                cookieJar.set('valid_auth', false);
+                callback(false);
+            } else {
+                console.log('Token is still valid');
+                cookieJar.set('valid_auth', true);
+                callback(true);
+            }
+        }).fail(function (response) {
+            console.log('Rate Limit request failed');
+            console.log('Assume Token is not valid');
+            cookieJar.set('valid_auth', false);
+            callback(false);
+        });
+
+    } else {
+        console.log('No Access Token');
+        cookieJar.set('valid_auth', false);
+        callback(false);
+    }
+}
+
 function getGitHubUser(username, callback) {
-    var USERS_API_URL = 'https://api.github.com/users',
-        REPOS_API_URL = 'https://api.github.com/repos',
-        TOKEN = cookieJar.has('access_token') ? '?access_token=' + cookieJar.get('access_token') : '',
-        REPO_STATS_URLS = ['contributors', 'commit_activity', 'code_frequency', 'participation', 'punch_card'],
-        HOUR_IN_MS = 60 * 60 * 1000,
+    var TOKEN = cookieJar.has('access_token') ? '?access_token=' + cookieJar.get('access_token') : '',
         api_calls = 0,
         user = {
             "login": "",
@@ -120,7 +190,7 @@ function getGitHubUser(username, callback) {
         } else {
             api_calls += 1;
             console.log('({0}) making request: {1}'.format(api_calls, username));
-            return $.getJSON([USERS_API_URL, username].join('/') + TOKEN);
+            return $.getJSON([API_URL, 'users', username].join('/') + TOKEN);
         }
     }
 
@@ -129,7 +199,7 @@ function getGitHubUser(username, callback) {
             reposData = null,
             dfRepos =  null,
             blank =  null,
-            repos_url = [USERS_API_URL, username, 'repos'].join('/') + TOKEN;
+            repos_url = [API_URL, 'users', username, 'repos'].join('/') + TOKEN;
 
         // check if cookies exists for username
         if (cookieJar.has(repos_url)) {
@@ -195,7 +265,7 @@ function getGitHubUser(username, callback) {
                 langHash = {},
                 statsHash = {},
                 storeResponse = false,
-                repos_url = [USERS_API_URL, username, 'repos'].join('/') + TOKEN,
+                repos_url = [API_URL, 'users', username, 'repos'].join('/') + TOKEN,
                 cookieString = '',
                 r = 0;
 
@@ -249,7 +319,7 @@ function getGitHubUser(username, callback) {
             // loop thru the repos
             repos.forEach(function (repoData, i) {
                 var key = '',
-                    repo_url = [REPOS_API_URL, username, repoData.name].join('/');
+                    repo_url = [API_URL, 'repos', username, repoData.name].join('/');
 
                 // add the repo to the user
                 user.repos[i] = repoData;

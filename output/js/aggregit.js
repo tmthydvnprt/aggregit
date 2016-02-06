@@ -567,6 +567,23 @@ $(document).ready(function () {
         }
     }
 
+    function authOn(valid_auth) {
+        // change authentication status
+        if (valid_auth) {
+            $('#auth-icon i').removeClass('fa-times-circle');
+            $('#auth-icon i').addClass('fa-check-circle');
+            $('#auth-icon').attr('href', '#');
+            $('#auth-icon').attr('alt', 'GitHub access is authorized!');
+            $('#auth-icon').attr('title', 'GitHub access is authorized!');
+        } else {
+            $('#auth-icon i').removeClass('fa-check-circle');
+            $('#auth-icon i').addClass('fa-times-circle');
+            $('#auth-icon').attr('href', '#!/authorize');
+            $('#auth-icon').attr('alt', 'GitHub access is locked! You should authorize Aggregit for full experience.');
+            $('#auth-icon').attr('title', 'GitHub access is locked! You should authorize Aggregit for full experience.');
+        }
+    }
+
     // page js
     // -------------------------------------------------------------------------------------
     var page        = $('#page'),
@@ -706,21 +723,6 @@ $(document).ready(function () {
                         pages.unknown();
                     }
 
-                    // change authentication status
-                    if (cookieJar.has('access_token')) {
-                        $('#auth-icon i').removeClass('fa-times-circle');
-                        $('#auth-icon i').addClass('fa-check-circle');
-                        $('#auth-icon').attr('href', '#');
-                        $('#auth-icon').attr('alt', 'GitHub access is authorized!');
-                        $('#auth-icon').attr('title', 'GitHub access is authorized!');
-                    } else {
-                        $('#auth-icon i').removeClass('fa-check-circle');
-                        $('#auth-icon i').addClass('fa-times-circle');
-                        $('#auth-icon').attr('href', '#!/authorize');
-                        $('#auth-icon').attr('alt', 'GitHub access is locked! You should authorize Aggregit for full experience.');
-                        $('#auth-icon').attr('title', 'GitHub access is locked! You should authorize Aggregit for full experience.');
-                    }
-
                     // setup page
                     page.addClass('rendered');
                     // on-page scroll links
@@ -770,6 +772,11 @@ $(document).ready(function () {
             } else {
                 console.log('routed nowhere?');
             }
+        }
+
+        // Check Authentication on any page except the authorize and authenticate
+        if (hash !== '!/authorize' && hash !== '!/authenticate' ) {
+            check_authentication(authOn);
         }
 
         return false;

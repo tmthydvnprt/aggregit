@@ -4,6 +4,7 @@
  *
  * Copyright 2015 Timothy Davenport; Licensed MIT
  */
+var FIVE_MIN_IN_MS = 5 * 60 * 1000;
 
 $(document).ready(function () {
     'use strict';
@@ -795,8 +796,16 @@ $(document).ready(function () {
         console.log('Welcome back, your last visit was ' + lastvisit);
         console.log('');
 
-        // Check Authentication
-        check_authentication(authOn);
+        // Check Authentication if last auth was more that five minutes ago
+        if (cookieJar.has('auth_time')) {
+            now = new Date();
+            lastauth = new Date(cookieJar.get('auth_time'));
+            if ((now - lastauth) > FIVE_MIN_IN_MS) {
+                check_authentication(authOn);
+            }
+        } else {
+            check_authentication(authOn);
+        }
 
         // Identify Cookies
         console.log('These are your stored cookie:');

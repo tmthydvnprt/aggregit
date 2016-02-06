@@ -34,7 +34,7 @@ $(document).ready(function () {
         d3.select("#punchcard-svg").remove();
 
         // setup parameters and variables
-        var w = parseInt($(elem).style('width'), 10),
+        var w = parseInt($(elem).width(), 10),
             h = parseInt(w / 3, 10),
             pad = 20,
             left_pad = 100,
@@ -140,7 +140,7 @@ $(document).ready(function () {
         d3.select("#participation-svg").remove();
 
         // setup parameters and variables
-        var w = parseInt($(elem).style('width'), 10),
+        var w = parseInt($(elem).width(), 10),
             h = parseInt(w / 3, 10),
             pad = 20,
             bottom_pad = 40,
@@ -261,7 +261,7 @@ $(document).ready(function () {
         d3.select("#languages-tooltip").remove();
 
         // setup parameters and variables
-        var w = parseInt($(elem).style('width'), 10),
+        var w = parseInt($(elem).width(), 10),
             h = parseInt(w / 3, 10),
             radius = Math.min(w, h) / 2,
             pad = 20,

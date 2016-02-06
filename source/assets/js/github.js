@@ -44,7 +44,7 @@ GitHub API Reference: https://api.github.com
 
 var API_URL = 'https://api.github.com',
     REPO_STATS_URLS = ['contributors', 'commit_activity', 'code_frequency', 'participation', 'punch_card'],
-    HOUR_IN_MS = 60 * 60 * 1000,
+    HOUR_IN_MS = 60 * 60 * 1000;
 
 function getRateLimit(access_token) {
     /*

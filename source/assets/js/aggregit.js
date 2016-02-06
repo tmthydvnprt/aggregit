@@ -596,8 +596,10 @@ $(document).ready(function () {
         newlocation = '',
         initHoldOff = 0,
         bringOut    = 0,
+        now         = null,
         // cookies
         lastvisit   = null,
+        auth_time   = null,
         //this will store the scroll position
         keepScroll  = false,
         // store pages

@@ -18,6 +18,7 @@
     "buildblog"   : false,
     "buildatom"   : false,
     "buildrss"    : false,
+    "buildicon"   : true,
     "copydate"    : 2015,
     "copyrighter" : "tmthydvnprt"
 }

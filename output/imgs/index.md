@@ -6,15 +6,15 @@
 <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <!---->
-<title>img directory index</title>
+<title>imgs directory index</title>
 <meta content="tmthydvnprt" name="author"/>
-<meta content="blank index page of img directory" name="description"/>
+<meta content="blank index page of imgs directory" name="description"/>
 <meta content="i,n,d,e,x" name="keywords"/>
 <link href="../imgs/favicon.ico" rel="favicon"/>
-<link href="../img/icon_60x60.png" rel="apple-touch-icon"/>
-<link href="../img/icon_76x76.png" rel="apple-touch-icon" sizes="76x76"/>
-<link href="../img/icon_120x120.png" rel="apple-touch-icon" sizes="120x120"/>
-<link href="../img/icon_152x152.png" rel="apple-touch-icon" sizes="152x152"/>
+<link href="../imgs/icon_60x60.png" rel="apple-touch-icon"/>
+<link href="../imgs/icon_76x76.png" rel="apple-touch-icon" sizes="76x76"/>
+<link href="../imgs/icon_120x120.png" rel="apple-touch-icon" sizes="120x120"/>
+<link href="../imgs/icon_152x152.png" rel="apple-touch-icon" sizes="152x152"/>
 <link href="../css/bootstrap_font-awesome.min_aggregit.css" rel="stylesheet" type="text/css"/></head>
 <body>
 <!--quilted nav patch-->
@@ -22,7 +22,7 @@
 <div class="container">
 <div class="navbar-header">
 <a alt="home" class="navbar-brand" href="#!/home" title="home">
-<img alt="aggregit" class="img-responsive" id="nav-logo" src="../img/aggregit_logo_brand.svg" title="../img/aggregit_logo_brand.svg"/>
+<img alt="aggregit" class="img-responsive" id="nav-logo" src="../imgs/aggregit_logo_brand.svg" title="../imgs/aggregit_logo_brand.svg"/>
 </a>
 <span class="label label-warning" id="beta">beta</span>
 </div>
@@ -45,7 +45,7 @@
 <!--quilted page patch-->
 <div class="container text-center" id="page">
 <h2><br/></h2>
-<h2>Index page of the <code>img/</code> directory.</h2>
+<h2>Index page of the <code>imgs/</code> directory.</h2>
 <h3>This page was intentionally left blank.</h3>
 <h3><small>Nothing to see here, move along.</small></h3>
 </div>
@@ -215,7 +215,7 @@
 </div>
 <div class="panel-body">
 <p class="text-center">Would you like to authorize Aggregit to access your public GitHub data?</p>
-<img alt="aggregit logo" class="img-responsive center-block img-thumbnail" id="auth-logo" src="../img/aggregit_logo.svg" title="../img/aggregit_logo.svg"/>
+<img alt="aggregit logo" class="img-responsive center-block img-thumbnail" id="auth-logo" src="../imgs/aggregit_logo.svg" title="../imgs/aggregit_logo.svg"/>
 <div class="text-center">
 <button class="btn btn-success" id="authorize-btn">Authorize</button>
 </div>
@@ -295,7 +295,7 @@
 <template id="home-template">
 <section class="bringIn">
 <div class="jumbotron text-center" id="home-jumbo">
-<img alt="aggregit logo" class="img-responsive center-block" id="home-logo" src="../img/aggregit_logo.svg" title="../img/aggregit_logo.svg"/>
+<img alt="aggregit logo" class="img-responsive center-block" id="home-logo" src="../imgs/aggregit_logo.svg" title="../imgs/aggregit_logo.svg"/>
 <p class="lead">
                 Get <em>all</em> your data across <em>all</em> your <a alt="GitHub" href="https://github.com" target="_blank" title="GitHub">GitHub</a> repositories.<br/>
 <small>Visualize your data here or export to process / analyze on your own.</small>
@@ -328,7 +328,7 @@
 </div>
 <div class="panel-body">
 <p class="text-center">Awesome! You authorized Aggregit to access your public GitHub data!</p>
-<img alt="aggregit logo" class="img-responsive center-block img-thumbnail" id="auth-logo" src="../img/aggregit_logo.svg" title="../img/aggregit_logo.svg"/>
+<img alt="aggregit logo" class="img-responsive center-block img-thumbnail" id="auth-logo" src="../imgs/aggregit_logo.svg" title="../imgs/aggregit_logo.svg"/>
 <div class="text-center">
 <button class="btn btn-success disabled" id="authorize-btn">Authenticating</button>
 </div>

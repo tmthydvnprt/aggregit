@@ -361,17 +361,9 @@ function getGitHubUser(username, callback) {
 
             }).always(function (response) {
                 console.log('all requests done!');
-                console.log('caching results');
-                cachedUser = $.extend(true, {}, user);
                 cookieJar.cookies().forEach(function (name) {
-                    var time = '',
-                        cookie = cookieJar.get(name);
-                    try {
-                        time = new Date(JSON.parse(cookie).time);
-                    } catch (e) {
-                        time = cookie;
-                    }
-                    console.log('    {0}: {1}'.format(name, time));
+                    var cookie = cookieJar.get(name);
+                    console.log('    {0}: {1}'.format(name, cookie));
                 });
                 console.log('');
                 // ALL DONE!

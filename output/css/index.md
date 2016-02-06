@@ -342,6 +342,30 @@
 </div>
 </section>
 </template>
+<template id="export-template">
+<section class="bringIn">
+<div class="jumbotron">
+<div class="row">
+<div class="col-sm-8 col-sm-offset-2">
+<div class="panel panel-primary center-block" id="export-panel">
+<div class="panel-heading">
+<h2 class="panel-title text-center">Export</h2>
+</div>
+<div class="panel-body">
+<p class="text-center">Would you like to export this user's data as a <code>json</code> file?</p>
+<div class="text-center text-primary" id="json-file">
+<i class="fa fa-file-text fa-5x"></i>
+</div>
+<div class="text-center">
+<button class="btn btn-success" id="export-btn">Export</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</template>
 <template id="error-template">
 <div class="col-xs-6 col-xs-offset-3">
 <div class="alert alert-danger" id="rate-limit" role="alert">

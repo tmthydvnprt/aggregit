@@ -210,11 +210,17 @@ nav time[datetime]:not(.no-hover):hover::before {
     width: 50%!important;
     margin-bottom: 8px;
 }
-#auth-panel {
+#json-file {
+    margin-bottom: 16px;
+    text-shadow: 3px 3px #bbbbbb;
+}
+#auth-panel,
+#export-panel {
     width: 80%;
 }
 @media (min-width: 600px) {
-    #auth-panel {
+    #auth-panel,
+    #export-panel {
         width: 50%;
     }
 }
@@ -243,13 +249,13 @@ nav time[datetime]:not(.no-hover):hover::before {
     color:#b2dbfb;
 }
 #cached-user,
-#download-user {
+#export-user {
     position: relative;
 }
 #cached-user {
     animation: fadeInDn 1000ms ease 100ms 1 both;
 }
-#download-user {
+#export-user {
     animation: fadeInDn 1000ms ease 200ms 1 both;
 }
 @keyframes fadeInDn {

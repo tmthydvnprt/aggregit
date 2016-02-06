@@ -9,7 +9,13 @@ var FIVE_MIN_IN_MS = 5 * 60 * 1000;
 $(document).ready(function () {
     'use strict';
 
-    var cachedUser  = null;
+    var cachedUser  = {"message" : "There is no user data. Return to http://aggregit.com to access a GitHub user first."};
+
+    function exportUser() {
+        // Download/export user data as json
+        var data = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(cachedUser));
+        window.open('data:' + data, '_blank');
+    }
 
     // Unique Render functions
     // -------------------------------------------------------------------------------------
@@ -487,7 +493,9 @@ $(document).ready(function () {
     }
 
     function renderUser(user, errors) {
+        console.log('Caching User');
 
+        cachedUser = $.extend(true, {}, user);
         console.log('Render the User');
         console.log('---------------------------------------------');
         // update the DOM
@@ -511,7 +519,7 @@ $(document).ready(function () {
             // add cached data button
             if ($('#cached-user').length === 0) {
                 $('#nav-search .input-group').append(
-                    '<span id="cached-user" class="input-group-addon"><a href="#!/user={0}" alt="{0}\'s data"><i class="fa fa-area-chart fa-2x"></i></a></span><span id="download-user" class="input-group-addon"><a href="#!/download" alt="Download {0}\'s data"><i class="fa fa-cloud-download fa-2x"></i></a></span>'.format(user.login)
+                    '<span id="cached-user" class="input-group-addon"><a href="#!/user={0}" alt="{0}\'s data"><i class="fa fa-area-chart fa-2x"></i></a></span><span id="export-user" class="input-group-addon"><a href="#!/export" alt="Export {0}\'s data"><i class="fa fa-cloud-download fa-2x"></i></a></span>'.format(user.login)
                 );
             }
             $('#cached-user').attr("href", "#!/user={0}".format(user.login));
@@ -632,6 +640,7 @@ $(document).ready(function () {
                     } else {
                         // aggregit it all
                         $('#cached-user').remove();
+                        $('#export-user').remove();
                         console.log('Requesting GitHub User Data');
                         console.log('---------------------------------------------');
                         console.log('');
@@ -657,6 +666,10 @@ $(document).ready(function () {
             },
             about : function () {
                 renderTemplate(page, 'about', 'aggregit: about');
+            },
+            export : function () {
+                renderTemplate(page, 'export', 'aggregit: export');
+                $('#export-btn').click(exportUser);
             },
             help : function () {
                 renderTemplate(page, 'help', 'aggregit: help');
@@ -816,9 +829,6 @@ $(document).ready(function () {
         console.log('These are your stored cookie:');
         cookieJar.cookies().forEach(function (name) {
             var cookie = cookieJar.get(name);
-            if (name === 'lastvisit') {
-                cookie = new Date(cookie);
-            }
             console.log('    {0}: {1}'.format(name, cookie));
         });
         console.log('');

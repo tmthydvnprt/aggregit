@@ -259,7 +259,7 @@ nav time[datetime]:not(.no-hover):hover::before {
 }
 
 nav #nav-search-user.form-control {
-    width:170px!important;
+    width:160px!important;
 }
 #nav-logo {
     width: 48px;

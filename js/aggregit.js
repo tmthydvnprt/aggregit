@@ -804,6 +804,8 @@ $(document).ready(function () {
             lastauth = new Date(cookieJar.get('auth_time'));
             if ((now - lastauth) > FIVE_MIN_IN_MS) {
                 check_authentication(authOn);
+            } else {
+                authOn(true);
             }
         } else {
             check_authentication(authOn);

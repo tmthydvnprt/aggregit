@@ -573,12 +573,14 @@ $(document).ready(function () {
         if (valid_auth) {
             $('#auth-icon i').removeClass('fa-times-circle');
             $('#auth-icon i').addClass('fa-check-circle');
+            $('#auth-icon').addClass('disabled');
             $('#auth-icon').attr('href', '#');
             $('#auth-icon').attr('alt', 'GitHub access is authorized!');
             $('#auth-icon').attr('title', 'GitHub access is authorized!');
         } else {
             $('#auth-icon i').removeClass('fa-check-circle');
             $('#auth-icon i').addClass('fa-times-circle');
+            $('#auth-icon').removeClass('disabled');
             $('#auth-icon').attr('href', '#!/authorize');
             $('#auth-icon').attr('alt', 'GitHub access is locked! You should authorize Aggregit for full experience.');
             $('#auth-icon').attr('title', 'GitHub access is locked! You should authorize Aggregit for full experience.');

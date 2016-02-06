@@ -6,9 +6,9 @@
 <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <!---->
-<title>imgs directory index</title>
+<title>img directory index</title>
 <meta content="tmthydvnprt" name="author"/>
-<meta content="blank index page of imgs directory" name="description"/>
+<meta content="blank index page of img directory" name="description"/>
 <meta content="i,n,d,e,x" name="keywords"/>
 <link href="../imgs/favicon.ico" rel="favicon"/>
 <link href="../img/icon_60x60.png" rel="apple-touch-icon"/>
@@ -45,7 +45,7 @@
 <!--quilted page patch-->
 <div class="container text-center" id="page">
 <h2><br/></h2>
-<h2>Index page of the <code>imgs/</code> directory.</h2>
+<h2>Index page of the <code>img/</code> directory.</h2>
 <h3>This page was intentionally left blank.</h3>
 <h3><small>Nothing to see here, move along.</small></h3>
 </div>

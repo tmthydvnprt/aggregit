@@ -1,9 +1,11 @@
 /*globals $,console,d3,cookieJar */
+
 /*!
  * github.js
  *
  * Copyright 2016 Timothy Davenport; Licensed MIT
  */
+
  /*
 GitHub API Reference: https://api.github.com
 {

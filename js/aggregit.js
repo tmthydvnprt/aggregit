@@ -793,7 +793,7 @@ $(document).ready(function () {
         console.log('welcome');
         console.log('');
     } else {
-        lastvisit = cookieJar.get('visit');
+        lastvisit = cookieJar.get('lastvisit');
         console.log('welcome back, your last visit was ' + lastvisit);
         console.log('');
         console.log('these are your stored cookie:');

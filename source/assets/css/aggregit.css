@@ -239,6 +239,11 @@ nav time[datetime]:not(.no-hover):hover::before {
     pointer-events: none;
 }
 
+/* aggregiting spinner */
+#aggregiting {
+    font-size: 500%;
+}
+
 /* Navbar
  ---------------------- */
 .navbar {

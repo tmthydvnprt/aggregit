@@ -10,57 +10,8 @@ $(document).ready(function () {
 
     var cachedUser  = null;
 
-    // Utility functions
+    // Unique Render functions
     // -------------------------------------------------------------------------------------
-    function isObject(a) {
-        return (!!a) && (a.constructor === Object);
-    }
-    function copyBIfInA(a, b) {
-        var key;
-        a = $.extend(true, {}, a);
-        for (key in a) {
-            if (a.hasOwnProperty(key) && b.hasOwnProperty(key)) {
-                if (isObject(a[key]) && isObject(b[key])) {
-                    a[key] = copyBIfInA(a[key], b[key]);
-                } else {
-                    a[key] = b[key];
-                }
-            }
-        }
-        return a;
-    }
-    // clena url to use a key
-    function unurl(url) {
-        return url.replace(/\//ig, '_');
-    }
-
-    // add string formatting
-    if (!String.prototype.format) {
-        String.prototype.format = function () {
-            var str = this.toString(),
-                args,
-                arg;
-            if (!arguments.length) {
-                return str;
-            }
-            args = typeof arguments[0];
-            args = ("string" === args || "number" === args) ? arguments : arguments[0];
-            for (arg in args) {
-                if (args.hasOwnProperty(arg)) {
-                    str = str.replace(new RegExp("\\{" + arg + "\\}", "gi"), args[arg]);
-                }
-            }
-            return str;
-        };
-    }
-
-    // Unique functions
-    // -------------------------------------------------------------------------------------
-    function formatDate(d) {
-        var MONTHS = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ');
-        return MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
-    }
-
     function renderTemplate(elem, name, titleText) {
         if (titleText) {
             $('title').html(titleText);

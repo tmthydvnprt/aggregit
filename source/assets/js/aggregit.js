@@ -511,7 +511,7 @@ $(document).ready(function () {
             // add cached data button
             if ($('#cached-user').length === 0) {
                 $('#nav-search .input-group').append(
-                    '<span id="cached-user" class="input-group-addon"><a href="#!/user={0}" alt="User Data" title="User Data"><i class="fa fa-area-chart fa-2x"></i></a></span>'.format(user.login)
+                    '<span id="cached-user" class="input-group-addon"><a href="#!/user={0}" alt="{0}\'s data"><i class="fa fa-area-chart fa-2x"></i></a></span><span id="download-user" class="input-group-addon"><a href="#!/download" alt="Download {0}\'s data"><i class="fa fa-cloud-download fa-2x"></i></a></span>'.format(user.login)
                 );
             }
             $('#cached-user').attr("href", "#!/user={0}".format(user.login));

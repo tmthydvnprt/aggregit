@@ -242,12 +242,19 @@ nav time[datetime]:not(.no-hover):hover::before {
 .navbar .input-group-addon {
     color:#b2dbfb;
 }
-#cached-user {
-    animation: fadein 1000ms ease 100ms 1 both;
+#cached-user,
+#download-user {
+    position: relative;
 }
-@keyframes fadein {
-    0%   {opacity: 0;}
-    100% {opacity: 1;}
+#cached-user {
+    animation: fadeInDn 1000ms ease 100ms 1 both;
+}
+#download-user {
+    animation: fadeInDn 1000ms ease 200ms 1 both;
+}
+@keyframes fadeInDn {
+    0%   {opacity: 0; transform: translateY(-32px);}
+    100% {opacity: 1; transform: translateY(0px);}
 }
 .navbar .input-group-addon a:hover {
     color:#fff;

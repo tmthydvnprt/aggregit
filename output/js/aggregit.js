@@ -774,11 +774,6 @@ $(document).ready(function () {
             }
         }
 
-        // Check Authentication on any page except the authorize and authenticate
-        if (hash !== '!/authorize' && hash !== '!/authenticate' ) {
-            check_authentication(authOn);
-        }
-
         return false;
     }
 
@@ -790,22 +785,27 @@ $(document).ready(function () {
     if (!cookieJar.has('lastvisit')) {
         lastvisit = (new Date()).toISOString();
         cookieJar.set('lastvisit', lastvisit);
-        console.log('welcome');
+        console.log('Welcome');
         console.log('');
+        // Check Authentication
+        check_authentication(authOn);
+
     } else {
         lastvisit = cookieJar.get('lastvisit');
-        console.log('welcome back, your last visit was ' + lastvisit);
+        console.log('Welcome back, your last visit was ' + lastvisit);
         console.log('');
-        console.log('these are your stored cookie:');
+
+        // Check Authentication
+        check_authentication(authOn);
+
+        // Identify Cookies
+        console.log('These are your stored cookie:');
         cookieJar.cookies().forEach(function (name) {
-            var time = '',
-                cookie = cookieJar.get(name);
-            try {
-                time = new Date(JSON.parse(cookie).time);
-            } catch (e) {
-                time = cookie;
+            var cookie = cookieJar.get(name);
+            if (name === 'lastvisit') {
+                cookie = new Date(JSON.parse(cookie).time);
             }
-            console.log('    {0}: {1}'.format(name, time));
+            console.log('    {0}: {1}'.format(name, cookie));
         });
         console.log('');
     }

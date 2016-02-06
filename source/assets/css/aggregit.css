@@ -211,8 +211,14 @@ nav time[datetime]:not(.no-hover):hover::before {
     margin-bottom: 8px;
 }
 #auth-panel {
-    width: 50%;
+    width: 80%;
 }
+@media (min-width: 600px) {
+    #auth-panel {
+        width: 50%;
+    }
+}
+
 .smallprint {
     font-size: 14px !important;
     line-height: 1.2;

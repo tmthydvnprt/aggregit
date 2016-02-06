@@ -805,6 +805,7 @@ $(document).ready(function () {
             if ((now - lastauth) > FIVE_MIN_IN_MS) {
                 check_authentication(authOn);
             } else {
+                console.log('Authenticated within the last 5 minutes.');
                 authOn(true);
             }
         } else {

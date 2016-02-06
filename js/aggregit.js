@@ -574,7 +574,7 @@ $(document).ready(function () {
             $('#auth-icon i').removeClass('fa-times-circle');
             $('#auth-icon i').addClass('fa-check-circle');
             $('#auth-icon').addClass('authed');
-            $('#auth-icon').attr('href', '#');
+            $('#auth-icon').attr('href', 'Nice!');
             $('#auth-icon').attr('alt', 'GitHub access is authorized!');
             $('#auth-icon').attr('title', 'GitHub access is authorized!');
         } else {

@@ -60,7 +60,7 @@
                 &bull; <a alt="about" href="#!/about" title="about">about</a>
                 &bull; <a alt="help" href="#!/help" title="help">help</a>
 </p>
-<p class="pull-right">2015&ndash;2016 &copy; <a alt="tmthydvnprt" href="https://github.com/tmthydvnprt" title="tmthydvnprt">tmthydvnprt</a></p>
+<p class="pull-right">2015&ndash;2016 &copy; <a alt="tmthydvnprt" href="https://github.com/tmthydvnprt" target="_blank" title="tmthydvnprt">tmthydvnprt</a></p>
 </div>
 </div>
 </footer>
@@ -185,13 +185,18 @@
 <div class="col-sm-8 col-sm-offset-2">
 <h1>Help? <small>&mdash; it's easy!</small></h1>
 <hr/>
-<h3>
+<h4>
 <ol>
-<li>type in a GitHub username</li>
-<li>press <kbd>enter</kbd></li>
-<li>enjoy the data!</li>
+<li>Type in a GitHub username.</li>
+<li>Press <kbd>enter</kbd>.</li>
+<li>Aggregit will aggregate thats user's data.
+                                <ul>
+<li><small>If it is your first time, you will be asked to authorize GitHub access.</small></li>
+</ul>
+</li>
+<li>View or download the results and enjoy the data!</li>
 </ol>
-</h3>
+</h4>
 <hr/>
 <h2><small>Or check out this <a alt="example of user data" href="#!/user=tmthydvnprt_example" title="example of user data">example of user data</a>.</small></h2>
 </div>
@@ -274,13 +279,14 @@
 <h1>About Aggregit <small>{<var>x</var>|<var>x</var>&isin;<var>Repo</var>&isin;<var>User</var>}</small></h1>
 <hr/>
 <h3>Multi-Repo Punch Card Anyone?</h3>
-<p class="lead">Ever wanted to see your punch card for <em>all</em> your repos? your non-<code>master</code> contributions in the heat map? <em>all</em> your language stats? Well, those are the reasons for building this.</p>
+<p class="lead">Ever wanted to see your punch card for <em>all</em> your repos? Or your non-<code>master</code> contributions in the heat map? Maybe <em>all</em> your language stats? Well, those were the reasons for building this.</p>
 <h4>Data, Data, Data!</h4>
-<p class="lead">The site makes a bunch of calls to the <a alt="GitHub API" href="https://developer.github.com/v3/" target="_blank" title="GitHub API">GitHub API</a> to get a whole mess of <code>json</code> that can be plotted or presented in a beautiful way.</p>
+<p class="lead">The site makes a bunch of calls to the <a alt="GitHub API" href="https://developer.github.com/v3/" target="_blank" title="GitHub API">GitHub API</a> to get a whole mess of <code>json</code> that can be plotted or presented in a beautiful way.  You may also download the raw data for your own analysis or reporting.</p>
 <h4>Link / Share</h4>
 <p>Share your data by linking to this site with your username passed as an parameter.</p>
-<pre>http://aggregit.com#/!user=tmthydvnprt</pre>
-<p>Check out <em>all</em> my <a alt="GitHub data" href="http://aggregit.com#/!user=tmthydvnprt" title="GitHub data">GitHub data</a>.</p>
+<pre>http://aggregit.com#!/user=tmthydvnprt</pre>
+<h4>Who made this?</h4>
+<p>Timothy Davenport, or <a alt="tmthydvnprt" href="https://github.com/tmthydvnprt" target="_blank" title="tmthydvnprt"><code>tmthydvnprt</code></a> on GitHub. Check out <em>all</em> my <a alt="GitHub data" href="http://aggregit.com#!/user=tmthydvnprt" title="GitHub data">GitHub data</a>.</p>
 </div>
 </div>
 </div>

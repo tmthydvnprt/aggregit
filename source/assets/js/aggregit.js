@@ -670,6 +670,14 @@ $(document).ready(function () {
             }
         };
 
+    function searchUser() {
+        // get the form's first input
+        var username = $(this[0]).val();
+        // route to user page
+        location.hash = '#!/user=' + username;
+        return false;
+    }
+
     // route hashchanges to page
     function router(e) {
 
@@ -736,18 +744,8 @@ $(document).ready(function () {
                         keepScroll = document.body.scrollTop;
                     });
                     // bind enter clicks on input
-                    $("#nav-search").submit(function () {
-                        var username = $('#nav-search-user').val();
-                        location.hash = '#!/user=' + username;
-
-                        return false;
-                    });
-                    $("#home-search").submit(function () {
-                        var username = $('#home-search-user').val();
-                        location.hash = '#!/user=' + username;
-
-                        return false;
-                    });
+                    $("#nav-search").submit(searchUser);
+                    $("#home-search").submit(searchUser);
 
                     clearInterval(bringOut);
                 }, 500);

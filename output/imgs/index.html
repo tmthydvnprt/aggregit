@@ -30,7 +30,7 @@
 <form class="navbar-form navbar-left" id="nav-search">
 <div class="input-group">
 <span class="input-group-addon"><i class="fa fa-search fa-2x"></i></span>
-<input class="form-control" id="nav-search-user" placeholder="Search for username" type="text"/>
+<input class="form-control" id="nav-search-user" placeholder="Search username" type="text"/>
 </div>
 </form>
 <ul class="nav navbar-nav navbar-right">

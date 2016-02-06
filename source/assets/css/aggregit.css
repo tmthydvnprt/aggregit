@@ -220,9 +220,11 @@ nav time[datetime]:not(.no-hover):hover::before {
 }
 
 /* Cursors patterns */
-.authed {
-   pointer-events: none;
+.authed:hover {
    cursor: not-allowed;
+}
+.authed:active {
+    pointer-events: none;
 }
 
 /* Navbar

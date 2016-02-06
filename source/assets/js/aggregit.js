@@ -803,7 +803,7 @@ $(document).ready(function () {
         cookieJar.cookies().forEach(function (name) {
             var cookie = cookieJar.get(name);
             if (name === 'lastvisit') {
-                cookie = new Date(JSON.parse(cookie).time);
+                cookie = new Date(cookie);
             }
             console.log('    {0}: {1}'.format(name, cookie));
         });

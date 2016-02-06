@@ -599,7 +599,7 @@ $(document).ready(function () {
         now         = null,
         // cookies
         lastvisit   = null,
-        auth_time   = null,
+        lastauth    = null,
         //this will store the scroll position
         keepScroll  = false,
         // store pages

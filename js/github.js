@@ -105,7 +105,7 @@ function check_authentication(callback) {
             }
         }).fail(function (response) {
             console.log('Rate Limit request failed');
-            console.log('Assume Token is not valid');
+            console.log('Token is not valid');
             cookieJar.set('valid_auth', false);
             callback(false);
         });

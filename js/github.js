@@ -250,8 +250,7 @@ function getGitHubUser(username, callback) {
                 'time' : new Date()
             };
             // store
-            cookieString = JSON.stringify(userCookie);
-            storeResponse = cookieJar.set(user.login, cookieString);
+            storeResponse = cookieJar.set(user.login, userCookie);
             if (storeResponse) {
                 console.log('request done, storing cookie: {0}'.format(user.login));
             } else {

@@ -118,7 +118,7 @@ function check_authentication(callback) {
 }
 
 function getGitHubUser(username, callback) {
-    var TOKEN = cookieJar.has('access_token') ? '?access_token=' + cookieJar.get('access_token') : '',
+    var token = cookieJar.has('access_token') && cookieJar.get('valid_auth') ? '?access_token=' + cookieJar.get('access_token') : '',
         api_calls = 0,
         user = {
             "login": "",
@@ -191,7 +191,7 @@ function getGitHubUser(username, callback) {
         } else {
             api_calls += 1;
             console.log('({0}) making request: {1}'.format(api_calls, username));
-            return $.getJSON([API_URL, 'users', username].join('/') + TOKEN);
+            return $.getJSON([API_URL, 'users', username].join('/') + token);
         }
     }
 
@@ -200,7 +200,7 @@ function getGitHubUser(username, callback) {
             reposData = null,
             dfRepos =  null,
             blank =  null,
-            repos_url = [API_URL, 'users', username, 'repos'].join('/') + TOKEN;
+            repos_url = [API_URL, 'users', username, 'repos'].join('/') + token;
 
         // check if cookies exists for username
         if (cookieJar.has(repos_url)) {
@@ -266,7 +266,7 @@ function getGitHubUser(username, callback) {
                 langHash = {},
                 statsHash = {},
                 storeResponse = false,
-                repos_url = [API_URL, 'users', username, 'repos'].join('/') + TOKEN,
+                repos_url = [API_URL, 'users', username, 'repos'].join('/') + token,
                 cookieString = '',
                 r = 0;
 
@@ -326,10 +326,10 @@ function getGitHubUser(username, callback) {
                 user.repos[i] = repoData;
 
                 //get the languages and stats
-                getJsonArray.push(getRepoLangs([repo_url, 'languages'].join('/') + TOKEN, i));
+                getJsonArray.push(getRepoLangs([repo_url, 'languages'].join('/') + token, i));
                 REPO_STATS_URLS.forEach(function (stat) {
                     statsHash[i] = {};
-                    getJsonArray.push(getRepoStats([repo_url, 'stats', stat].join('/') + TOKEN, i, stat));
+                    getJsonArray.push(getRepoStats([repo_url, 'stats', stat].join('/') + token, i, stat));
                 });
 
             });

@@ -675,34 +675,44 @@ $(document).ready(function () {
                 renderTemplate(page, 'home', 'aggregit');
             },
             user : function (username) {
-                // username fallback
-                username = username || 'tmthydvnprt_example';
-                // start rendering page
-                renderTemplate(page, 'user', 'aggregit: ' + username);
-                // check if cached user exists
-                if (cachedUser && cachedUser.login === username) {
-                    console.log('Using Cached User Data (already requested this)');
-                    console.log('---------------------------------------------');
-                    console.log('');
-                    renderUser(cachedUser, '');
-                } else {
-                    // decide what data to get
-                    if (username === 'tmthydvnprt_example') {
-                        console.log('Requesting Example User Data (local)');
+                // Check if auth is valid
+                var = auth = cookieJar.get('valid_auth');
+                // procede as usual if authorized
+                if (auth) {
+                    // username fallback
+                    username = username || 'tmthydvnprt_example';
+                    // start rendering page
+                    renderTemplate(page, 'user', 'aggregit: ' + username);
+                    // check if cached user exists
+                    if (cachedUser && cachedUser.login === username) {
+                        console.log('Using Cached User Data (already requested this)');
                         console.log('---------------------------------------------');
                         console.log('');
-                        $.getJSON('data/tmthydvnprt_example.json', function (user) {
-                            renderUser(user, '');
-                        });
+                        renderUser(cachedUser, '');
                     } else {
-                        // aggregit it all
-                        $('#cached-user').remove();
-                        $('#export-user').remove();
-                        console.log('Requesting GitHub User Data');
-                        console.log('---------------------------------------------');
-                        console.log('');
-                        getGitHubUser(username, renderUser);
+                        // decide what data to get
+                        if (username === 'tmthydvnprt_example') {
+                            console.log('Requesting Example User Data (local)');
+                            console.log('---------------------------------------------');
+                            console.log('');
+                            $.getJSON('data/tmthydvnprt_example.json', function (user) {
+                                renderUser(user, '');
+                            });
+                        } else {
+                            // aggregit it all
+                            $('#cached-user').remove();
+                            $('#export-user').remove();
+                            console.log('Requesting GitHub User Data');
+                            console.log('---------------------------------------------');
+                            console.log('');
+                            getGitHubUser(username, renderUser);
+                        }
                     }
+                // Store searched username and go get authorization if auth is not valid
+                } else {
+                    cookieJar.set('searchUser', username);
+                    location.hash = '#!/authorize';
+                    return false;
                 }
             },
             authorize : function () {
@@ -742,9 +752,16 @@ $(document).ready(function () {
 
     function searchUser() {
         // get the form's first input
-        var username = $(this[0]).val();
-        // route to user page
-        location.hash = '#!/user=' + username;
+        var username = $(this[0]).val(),
+            auth = cookieJar.get('valid_auth');
+        cookieJar.set('searchUser', username);
+        if (auth) {
+            // route to user page
+            location.hash = '#!/user=' + username;
+        } else {
+            // route to authorize page
+            location.hash = '#!/authorize';
+        }
         return false;
     }
 

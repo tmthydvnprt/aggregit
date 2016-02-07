@@ -53,7 +53,8 @@ function github_authenticate() {
 
     // Get GitHub authentication from redirected url
     var auth = deparam(window.location.search),
-        url = '';
+        url = '',
+        username = '';
 
     // Check that state is valid
     if (cookieJar.get('state') === auth['state'] ) {
@@ -68,7 +69,8 @@ function github_authenticate() {
                 cookieJar.set('access_token', access['access_token']);
                 cookieJar.set('valid_auth', true);
                 cookieJar.set('auth_time', (new Date()).toISOString());
-                location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';
+                username = cookieJar.has('searchUser') ? cookieJar.get('searchUser') : '';
+                location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/user=' + username;
             } else {
                 console.log('error: no token');
                 location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';

@@ -12,7 +12,7 @@ html {
     overflow-x: hidden;
 }
 body {
-    margin-top: 64px;
+    margin-top: 48px;
     margin-bottom: 48px;
     overflow-x: hidden;
 }
@@ -297,15 +297,11 @@ nav #nav-search-user.form-control {
 }
 #nav-logo {
     width: 48px;
-    /*background-color: #fff;*/
-    /*border-radius: 5px;*/
-    padding: 2px;
 }
 
 /* No Collapse Navbar
  ---------------------- */
  .navbar .container {
-    margin-top: -10px;
     padding-left: 8px;
     padding-right: 8px;
  }
@@ -316,8 +312,7 @@ nav #nav-search-user.form-control {
 }
 .navbar-brand {
     margin-left:0px!important;
-    padding-left: 4px;
-    padding-right: 4px;
+    padding: 4px 3px;
 }
 .navbar-nav.navbar-left {
     float: left!important;
@@ -331,8 +326,8 @@ nav #nav-search-user.form-control {
     float:left!important;
 }
 .navbar-nav>li>a {
-    padding: 21px 4px;
-    height: 64px;
+    padding: 10px 3px;
+    height: 48px;
 }
 .navbar-form.navbar-left {
     float:left!important
@@ -342,9 +337,9 @@ nav #nav-search-user.form-control {
 }
 .navbar-form {
     width: auto!important;
+    height: 48px!important;
     border: 0!important;
-    margin-left: 0!important;
-    margin-right: 0!important;
+    margin: 0px!important;
     padding: 0!important;
     box-shadow: none!important;
 }
@@ -363,8 +358,8 @@ nav #nav-search-user.form-control {
     vertical-align: middle!important;
 }
 .navbar-form .input-group-addon {
-    padding-left: 4px!important;
-    padding-right: 4px!important;
+    padding-left: 3px!important;
+    padding-right: 3px!important;
 }
 
 /* User Info

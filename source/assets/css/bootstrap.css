@@ -4047,7 +4047,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .navbar {
   position: relative;
-  min-height: 64px;
+  min-height: 48px;
   margin-bottom: 23px;
   border: 1px solid transparent;
 }
@@ -4159,7 +4159,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   padding: 20.5px 15px;
   font-size: 17px;
   line-height: 23px;
-  height: 64px;
+  height: 48px;
 }
 .navbar-brand:hover,
 .navbar-brand:focus {

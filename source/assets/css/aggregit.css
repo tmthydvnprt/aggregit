@@ -71,7 +71,7 @@ footer a::before {
     margin-top:-24px!important;
 }
 footer a:hover::before {
-    margin-top:-48px!important;
+    margin-top:-64px!important;
 }
 .container-fluid {
     padding: 0;
@@ -155,6 +155,9 @@ a[href]:not(.no-hover):hover::before,
 time[datetime]:not(.no-hover):hover::before {
     opacity: 1;
     margin-top:-48px;
+}
+a[href]:not(.no-hover):hover::before {
+    margin-top:-64px;
 }
 nav .force-hover[title]:hover::before,
 nav abbr[title]:hover::before,

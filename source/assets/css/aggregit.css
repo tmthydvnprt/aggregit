@@ -344,6 +344,7 @@ nav #nav-search-user.form-control {
     box-shadow: none!important;
 }
 .navbar-form .input-group {
+    padding: 4px 3px;
     display: inline-table!important;
     vertical-align: middle!important;
 }

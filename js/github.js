@@ -168,7 +168,7 @@ function getGitHubUser(username, callback) {
 
         // check if cookies exists for username
         if (cookieJar.has(userKey)) {
-            userCookie = JSON.parse(cookieJar.get(userKey));
+            userCookie = cookieJar.get(userKey);
             // check if it is over an hour old
             if ((new Date() - new Date(userCookie.time)) < HOUR_IN_MS) {
                 userData = userCookie.data;
@@ -204,7 +204,7 @@ function getGitHubUser(username, callback) {
 
         // check if cookies exists for username
         if (cookieJar.has(repos_url)) {
-            reposCookie = JSON.parse(cookieJar.get(repos_url));
+            reposCookie = cookieJar.get(repos_url);
             // check if it is over an hour old
             if ((new Date() - new Date(reposCookie.time)) < HOUR_IN_MS) {
                 reposData = reposCookie.data;
@@ -287,8 +287,7 @@ function getGitHubUser(username, callback) {
                 };
                 console.log(reposCookie);
                 // store
-                cookieString = JSON.stringify(reposCookie);
-                storeResponse = cookieJar.set(repos_url, cookieString);
+                storeResponse = cookieJar.set(repos_url, reposCookie);
                 if (storeResponse) {
                     console.log('request done, storing cookie: {0}'.format(repos_url));
                     console.log(cookieString.length);

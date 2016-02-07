@@ -20,6 +20,13 @@ var cookieJar = {
             return localStorage.removeItem(key);
         }
     },
+    removeAll: function () {
+        var key;
+        for (key in localStorage) {
+            localStorage.removeItem(key)l
+        }
+        return null;
+    },
     has: function (key) {
         if (!key) {
             return false;

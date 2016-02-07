@@ -3,14 +3,14 @@ var cookieJar = {
         if (!key) {
             return null;
         } else {
-            return localStorage.getItem(key);
+            return JSON.parse(localStorage.getItem(key));
         }
     },
     set: function (key, value) {
         if (!key) {
             return false;
         } else {
-            return localStorage.setItem(key, value);
+            return localStorage.setItem(key, JSON.stringify(value));
         }
     },
     remove: function (key) {

@@ -364,7 +364,7 @@
 <i class="fa fa-file-text fa-5x"></i>
 </div>
 <div class="text-center">
-<a alt="Export Data" class="btn btn-success no-hover disabled" download="" href="#" id="export-btn" target="_blank" title="Export Data"><i class="fa fa-gear fa-spin"></i>Export Data</a>
+<a alt="Export Data" class="btn btn-success no-hover disabled" download="nothing.json" href="#" id="export-btn" target="_blank" title="Export Data"><i class="fa fa-gear fa-spin"></i>Export Data</a>
 </div>
 <p class="smallprint">If you are on Safari, the file will be downloaded as <code>Unknown</code>. This file should be renamed to something with the extension <code>.json</code>.</p>
 </div>

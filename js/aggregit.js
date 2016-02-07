@@ -9,15 +9,22 @@ var FIVE_MIN_IN_MS = 5 * 60 * 1000;
 $(document).ready(function () {
     'use strict';
 
-    var cachedUser  = {"message" : "There is no user data. Return to http://aggregit.com to access a GitHub user first."};
+    var cachedUser  = {
+        "message" : "There is no user data. Return to http://aggregit.com to access a GitHub user first."
+    };
 
     function exportUser() {
         // Download/export user data as json
         var data = 'data:application/text;charset=utf-8,' + encodeURIComponent(JSON.stringify(cachedUser));
         $('#export-btn').attr('href', data);
-        $('#export-btn').attr('download', cachedUser['login'] + '.json');
+        if (cachedUser.hasOwnProperty('login')) {
+            $('#export-btn').attr('download', cachedUser['login'] + '.json');
+        } else {
+            $('#export-btn').attr('download', 'warning_no_user_data.json');
+        }
         $('#export-btn').removeClass('disabled');
         $('#export-btn').html('Export Data');
+        $('#export-btn').attr('alt', 'Export Data');
     }
 
     // Unique Render functions

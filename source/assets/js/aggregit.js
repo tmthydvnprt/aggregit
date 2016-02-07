@@ -4,12 +4,75 @@
  *
  * Copyright 2015 Timothy Davenport; Licensed MIT
  */
-var FIVE_MIN_IN_MS = 5 * 60 * 1000;
+var FIVE_MIN_IN_MS = 5 * 60 * 1000,
+// Opera 8.0+
+isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0,
+// Firefox 1.0+
+isFirefox = typeof InstallTrigger !== 'undefined',
+// At least Safari 3+: "[object HTMLElementConstructor]"
+isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0,
+// Internet Explorer 6-11
+isIE = /*@cc_on!@*/false || !!document.documentMode,
+// Edge 20+
+isEdge = !isIE && !!window.StyleMedia,
+// Chrome 1+
+isChrome = !!window.chrome && !!window.chrome.webstore,
+// Blink engine detection
+isBlink = (isChrome || isOpera) && !!window.CSS;
+
+console.log('Is Opera: ' + isOpera);
+console.log('Is FireFox: ' + isFirefox);
+console.log('Is Safari: ' + isSafari);
+console.log('Is IE: ' + isIE);
+console.log('Is Edge: ' + isEdge);
+console.log('Is Chrome: ' + isChrome);
+console.log('Is Blink: ' + isBlink);
 
 $(document).ready(function () {
     'use strict';
 
-    var cachedUser  = null;
+    var cachedUser  = {
+            "message" : "There is no user data. Return to http://aggregit.com to access a GitHub user first."
+        },
+        textFile = null;
+
+    function makeJsonFile(obj) {
+		var data = null,
+            text = JSON.stringify(obj);
+        if (isSafari) {
+            textFile = 'data:application/text;charset=utf-8,' + encodeURIComponent(text);
+        } else {
+            data = new Blob([text], {type: 'text/json'});
+    		if (textFile !== null) {
+    			window.URL.revokeObjectURL(textFile);
+    		}
+    		textFile = window.URL.createObjectURL(data);
+        }
+		return textFile;
+	}
+
+    function exportUser() {
+
+        // Display safari warning
+        if (isSafari) {
+            $('.panel-body').append('<div id="safari-warning" class="alert alert-warning"><p class="smallprint"><strong><i class="fa fa-warning"></i> It looks like you are using Safari.</strong><br>The file will be downloaded from a blank page and named <code>Unknown</code>. You may close the blank page once the file appears in your <code>~/Downloads</code> Folder. You should rename this file to <code class="filename">____.json</code>.</p></div>');
+        } else {
+            $('#safari-warning').remove();
+        }
+
+        // Download/export user data as json
+        $('#export-btn').attr('href', makeJsonFile(cachedUser));
+        if (cachedUser.hasOwnProperty('login')) {
+            $('#export-btn').attr('download', cachedUser['login'] + '.json');
+            $('.filename').html(cachedUser['login'] + '.json');
+        } else {
+            $('#export-btn').attr('download', 'warning_no_user_data.json');
+            $('.filename').html('warning_no_user_data.json');
+        }
+        $('#export-btn').removeClass('disabled');
+        $('#export-btn').html('Export Data');
+        $('#export-btn').attr('alt', 'Export Data');
+    }
 
     // Unique Render functions
     // -------------------------------------------------------------------------------------
@@ -487,7 +550,9 @@ $(document).ready(function () {
     }
 
     function renderUser(user, errors) {
+        console.log('Caching User');
 
+        cachedUser = $.extend(true, {}, user);
         console.log('Render the User');
         console.log('---------------------------------------------');
         // update the DOM
@@ -511,7 +576,7 @@ $(document).ready(function () {
             // add cached data button
             if ($('#cached-user').length === 0) {
                 $('#nav-search .input-group').append(
-                    '<span id="cached-user" class="input-group-addon"><a href="#!/user={0}" alt="User Data" title="User Data"><i class="fa fa-area-chart fa-2x"></i></a></span>'.format(user.login)
+                    '<span id="cached-user" class="input-group-addon"><a href="#!/user={0}" alt="{0}\'s data"><i class="fa fa-area-chart fa-2x"></i></a></span><span id="export-user" class="input-group-addon"><a href="#!/export" alt="Export {0}\'s data"><i class="fa fa-cloud-download fa-2x"></i></a></span>'.format(user.login)
                 );
             }
             $('#cached-user').attr("href", "#!/user={0}".format(user.login));
@@ -632,6 +697,7 @@ $(document).ready(function () {
                     } else {
                         // aggregit it all
                         $('#cached-user').remove();
+                        $('#export-user').remove();
                         console.log('Requesting GitHub User Data');
                         console.log('---------------------------------------------');
                         console.log('');
@@ -657,6 +723,10 @@ $(document).ready(function () {
             },
             about : function () {
                 renderTemplate(page, 'about', 'aggregit: about');
+            },
+            export : function () {
+                renderTemplate(page, 'export', 'aggregit: export');
+                exportUser();
             },
             help : function () {
                 renderTemplate(page, 'help', 'aggregit: help');
@@ -816,9 +886,6 @@ $(document).ready(function () {
         console.log('These are your stored cookie:');
         cookieJar.cookies().forEach(function (name) {
             var cookie = cookieJar.get(name);
-            if (name === 'lastvisit') {
-                cookie = new Date(cookie);
-            }
             console.log('    {0}: {1}'.format(name, cookie));
         });
         console.log('');

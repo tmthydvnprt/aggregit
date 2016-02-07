@@ -210,19 +210,32 @@ nav time[datetime]:not(.no-hover):hover::before {
     width: 50%!important;
     margin-bottom: 8px;
 }
-#auth-panel {
+#json-file {
+    margin-bottom: 16px;
+    text-shadow: 3px 3px #bbbbbb;
+}
+#auth-panel,
+#export-panel {
     width: 80%;
 }
 @media (min-width: 600px) {
-    #auth-panel {
-        width: 50%;
+    #auth-panel,
+    #export-panel {
+        width: 55%;
     }
 }
-
+#auth-panel .smallprint {
+    margin-top: 16px;
+}
 .smallprint {
     font-size: 14px !important;
-    line-height: 1.2;
+    line-height: 1.5;
+}
+#safari-warning {
     margin-top: 16px;
+    background-color: #ffe0b2!important;
+    border-color: #ffc599!important;
+    color:#333!important;
 }
 
 /* Cursors patterns */
@@ -231,6 +244,11 @@ nav time[datetime]:not(.no-hover):hover::before {
 }
 .authed:active {
     pointer-events: none;
+}
+
+/* aggregiting spinner */
+#aggregiting {
+    font-size: 500%;
 }
 
 /* Navbar
@@ -242,12 +260,19 @@ nav time[datetime]:not(.no-hover):hover::before {
 .navbar .input-group-addon {
     color:#b2dbfb;
 }
-#cached-user {
-    animation: fadein 1000ms ease 100ms 1 both;
+#cached-user,
+#export-user {
+    position: relative;
 }
-@keyframes fadein {
-    0%   {opacity: 0;}
-    100% {opacity: 1;}
+#cached-user {
+    animation: fadeInDn 1000ms ease 100ms 1 both;
+}
+#export-user {
+    animation: fadeInDn 1000ms ease 200ms 1 both;
+}
+@keyframes fadeInDn {
+    0%   {opacity: 0; transform: translateY(-32px);}
+    100% {opacity: 1; transform: translateY(0px);}
 }
 .navbar .input-group-addon a:hover {
     color:#fff;

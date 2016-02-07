@@ -675,13 +675,14 @@ $(document).ready(function () {
             home : function () {
                 renderTemplate(page, 'home', 'aggregit');
             },
-            user : function (username) {
+            user : function (params) {
                 // Check if auth is valid
-                var auth = cookieJar.get('valid_auth');
+                var auth = cookieJar.get('valid_auth'),
                 // username fallback
-                username = username || EXAMPLE_USERNAME;
+                    username = params[0] || EXAMPLE_USERNAME,
+                    unauth = (params.length > 0 || params[1] === 'unauth') ? true : false;
                 // proceed as usual if authorized
-                if (auth || username === EXAMPLE_USERNAME) {
+                if (auth || unauth || username === EXAMPLE_USERNAME) {
                     console.log('Authorized! Aggregit User\n');
                     // start rendering page
                     renderTemplate(page, 'user', 'aggregit: ' + username);
@@ -720,6 +721,7 @@ $(document).ready(function () {
             },
             authorize : function () {
                 renderTemplate(page, 'authorize', 'aggregit: authorize');
+                $('#unauthorized').attr('href', '#!/user=' + cookieJar.get('searchUser') + '&unauth');
                 $('#authorize-btn').click(function (e) {
                     github_authorize();
                 });
@@ -787,6 +789,10 @@ $(document).ready(function () {
         filename = urlpath.slice(-1)[0] || 'index.html';
         hash = hashparams[0];
         params = hashparams[1];
+        // split params if multiple
+        if (params) {
+            params = params.split('&');
+        }
 
         console.log('Routing');
         console.log('-----------------------------------------');

@@ -364,8 +364,18 @@
 <i class="fa fa-file-text fa-5x"></i>
 </div>
 <div class="text-center">
-<button class="btn btn-success" id="export-btn">Export</button>
+<a alt="
+
+                                    Export Data
+                            " class="btn btn-success no-hover disabled" download="" href="#" id="export-btn" target="_blank" title="
+
+                                    Export Data
+                            ">
+<i class="fa fa-gear fa-spin"></i>
+                                    Export Data
+                            </a>
 </div>
+<p class="smallprint">If you are on Safari, the file will be downloaded as <code>Unknown</code>. This file should be renamed to something with the extension <code>.json</code>.</p>
 </div>
 </div>
 </div>
@@ -385,6 +395,12 @@
 </div>
 </template>
 <!--quilted scripts patch-->
-<script id="scripts" rel="javascript" src="../js/jquery-1.11.2.min_d3.min_cookieJar_common_oauth_github_aggregit.js" type="text/javascript"></script>
+<script id="scripts" rel="javascript" src="../js/jquery-1.11.2.min.js" type="text/javascript"></script>
+<script rel="javascript" src="../js/d3.min.js" type="text/javascript"></script>
+<script rel="javascript" src="../js/cookieJar.js" type="text/javascript"></script>
+<script rel="javascript" src="../js/common.js" type="text/javascript"></script>
+<script rel="javascript" src="../js/oauth.js" type="text/javascript"></script>
+<script rel="javascript" src="../js/github.js" type="text/javascript"></script>
+<script rel="javascript" src="../js/aggregit.js" type="text/javascript"></script>
 </body>
 </html>

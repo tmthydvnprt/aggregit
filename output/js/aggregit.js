@@ -4,19 +4,56 @@
  *
  * Copyright 2015 Timothy Davenport; Licensed MIT
  */
-var FIVE_MIN_IN_MS = 5 * 60 * 1000;
+var FIVE_MIN_IN_MS = 5 * 60 * 1000,
+// Opera 8.0+
+isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0,
+// Firefox 1.0+
+isFirefox = typeof InstallTrigger !== 'undefined',
+// At least Safari 3+: "[object HTMLElementConstructor]"
+isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0,
+// Internet Explorer 6-11
+isIE = /*@cc_on!@*/false || !!document.documentMode,
+// Edge 20+
+isEdge = !isIE && !!window.StyleMedia,
+// Chrome 1+
+isChrome = !!window.chrome && !!window.chrome.webstore,
+// Blink engine detection
+isBlink = (isChrome || isOpera) && !!window.CSS;
+
+console.log('Is Opera: ' + isOpera);
+console.log('Is FireFox: ' + isFirefox);
+console.log('Is Safari: ' + isSafari);
+console.log('Is IE: ' + isIE);
+console.log('Is Edge: ' + isEdge);
+console.log('Is Chrome: ' + isChrome);
+console.log('Is Blink: ' + isBlink);
 
 $(document).ready(function () {
     'use strict';
 
     var cachedUser  = {
-        "message" : "There is no user data. Return to http://aggregit.com to access a GitHub user first."
-    };
+            "message" : "There is no user data. Return to http://aggregit.com to access a GitHub user first."
+        },
+        textFile = null;
+
+    function makeJsonFile(obj) {
+		var data = null,
+            text = JSON.stringify(obj);
+        if (isSafari) {
+            textFile = 'data:application/text;charset=utf-8,' + encodeURIComponent(text);
+        } else {
+            data = new Blob([text], {type: 'text/json'});
+    		if (textFile !== null) {
+    			window.URL.revokeObjectURL(textFile);
+    		}
+    		textFile = window.URL.createObjectURL(data);
+        }
+		return textFile;
+	}
 
     function exportUser() {
         // Download/export user data as json
-        var data = 'data:application/text;charset=utf-8,' + encodeURIComponent(JSON.stringify(cachedUser));
-        $('#export-btn').attr('href', data);
+        $('#export-btn').attr('href', makeJsonFile(cachedUser));
         if (cachedUser.hasOwnProperty('login')) {
             $('#export-btn').attr('download', cachedUser['login'] + '.json');
         } else {

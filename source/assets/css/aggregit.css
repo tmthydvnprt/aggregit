@@ -214,7 +214,6 @@ nav time[datetime]:not(.no-hover):hover::before {
 }
 #home-logo {
     width: 50%!important;
-    animation: introDn2 1024ms ease 0s 1 both;
 }
 @media (min-width: 600px) {
     #home-logo {

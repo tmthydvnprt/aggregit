@@ -214,11 +214,18 @@ nav time[datetime]:not(.no-hover):hover::before {
 }
 #home-logo {
     width: 50%!important;
-    animation: introDn2 1024ms ease 0s 1 both;
 }
 @media (min-width: 600px) {
     #home-logo {
         width: 20%!important;
+    }
+}
+#home h3 small {
+    font-size: 50%;
+}
+@media (min-width: 600px) {
+    #home h3 small {
+        font-size: 65%;
     }
 }
 #home h3,

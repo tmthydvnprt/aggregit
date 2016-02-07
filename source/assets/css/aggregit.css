@@ -312,7 +312,7 @@ nav #nav-search-user.form-control {
 }
 .navbar-brand {
     margin-left:0px!important;
-    padding: 4px 3px;
+    padding: 4px 2px;
 }
 .navbar-nav.navbar-left {
     float: left!important;
@@ -326,7 +326,7 @@ nav #nav-search-user.form-control {
     float:left!important;
 }
 .navbar-nav>li>a {
-    padding: 10px 3px;
+    padding: 10px 2px;
     height: 48px;
 }
 .navbar-form.navbar-left {
@@ -344,7 +344,7 @@ nav #nav-search-user.form-control {
     box-shadow: none!important;
 }
 .navbar-form .input-group {
-    padding: 4px 3px;
+    padding: 4px 1px;
     display: inline-table!important;
     vertical-align: middle!important;
 }
@@ -359,8 +359,8 @@ nav #nav-search-user.form-control {
     vertical-align: middle!important;
 }
 .navbar-form .input-group-addon {
-    padding-left: 3px!important;
-    padding-right: 3px!important;
+    padding-left: 2px!important;
+    padding-right: 2px!important;
 }
 
 /* User Info

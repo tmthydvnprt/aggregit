@@ -5,20 +5,21 @@
  * Copyright 2015 Timothy Davenport; Licensed MIT
  */
 var FIVE_MIN_IN_MS = 5 * 60 * 1000,
-// Opera 8.0+
-isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0,
-// Firefox 1.0+
-isFirefox = typeof InstallTrigger !== 'undefined',
-// At least Safari 3+: "[object HTMLElementConstructor]"
-isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0,
-// Internet Explorer 6-11
-isIE = /*@cc_on!@*/false || !!document.documentMode,
-// Edge 20+
-isEdge = !isIE && !!window.StyleMedia,
-// Chrome 1+
-isChrome = !!window.chrome && !!window.chrome.webstore,
-// Blink engine detection
-isBlink = (isChrome || isOpera) && !!window.CSS;
+    EXAMPLE_USERNAME = 'tmthydvnprt_example',
+    // Opera 8.0+
+    isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0,
+    // Firefox 1.0+
+    isFirefox = typeof InstallTrigger !== 'undefined',
+    // At least Safari 3+: "[object HTMLElementConstructor]"
+    isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0,
+    // Internet Explorer 6-11
+    isIE = /*@cc_on!@*/false || !!document.documentMode,
+    // Edge 20+
+    isEdge = !isIE && !!window.StyleMedia,
+    // Chrome 1+
+    isChrome = !!window.chrome && !!window.chrome.webstore,
+    // Blink engine detection
+    isBlink = (isChrome || isOpera) && !!window.CSS;
 
 console.log('Is Opera: ' + isOpera);
 console.log('Is FireFox: ' + isFirefox);
@@ -677,11 +678,11 @@ $(document).ready(function () {
             user : function (username) {
                 // Check if auth is valid
                 var auth = cookieJar.get('valid_auth');
+                // username fallback
+                username = username || EXAMPLE_USERNAME;
                 // proceed as usual if authorized
-                if (auth) {
+                if (auth || username === EXAMPLE_USERNAME) {
                     console.log('Authorized! Aggregit User\n');
-                    // username fallback
-                    username = username || 'tmthydvnprt_example';
                     // start rendering page
                     renderTemplate(page, 'user', 'aggregit: ' + username);
                     // check if cached user exists
@@ -757,7 +758,7 @@ $(document).ready(function () {
         var username = $(this[0]).val(),
             auth = cookieJar.get('valid_auth');
         cookieJar.set('searchUser', username);
-        if (auth) {
+        if (auth || username === EXAMPLE_USERNAME) {
             // route to user page
             console.log('Authorized Route to User\n');
             location.hash = '#!/user=' + username;

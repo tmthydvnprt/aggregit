@@ -676,8 +676,8 @@ $(document).ready(function () {
             },
             user : function (username) {
                 // Check if auth is valid
-                var = auth = cookieJar.get('valid_auth');
-                // procede as usual if authorized
+                var auth = cookieJar.get('valid_auth');
+                // proceed as usual if authorized
                 if (auth) {
                     // username fallback
                     username = username || 'tmthydvnprt_example';

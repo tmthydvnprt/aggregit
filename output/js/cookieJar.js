@@ -23,7 +23,7 @@ var cookieJar = {
     removeAll: function () {
         var key;
         for (key in localStorage) {
-            localStorage.removeItem(key)l
+            localStorage.removeItem(key);
         }
         return null;
     },

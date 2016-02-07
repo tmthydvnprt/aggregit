@@ -35,7 +35,7 @@
 </form>
 <ul class="nav navbar-nav navbar-right">
 <li><a alt="Find out more about aggregit." href="#!/about" title="Find out more about aggregit."><i class="fa fa-info-circle fa-2x"></i></a></li>
-<li><a alt="Need help on using aggregit?" href="#!/help" title="Need help on using aggregit?"><i class="fa fa-question-circle fa-2x"></i></a></li>
+<li><a alt="Need help using aggregit?" href="#!/help" title="Need help using aggregit?"><i class="fa fa-question-circle fa-2x"></i></a></li>
 <li><a alt="go to GitHub" href="https://github.com" id="nav-user" target="_blank" title="Go to GitHub"><i class="fa fa-github fa-2x"></i></a></li>
 <li><a alt="GitHub access is locked! You should authorize Aggregit for full experience." href="#!/authorize" id="auth-icon" title=""><i class="fa fa-times-circle fa-2x"></i></a></li>
 </ul>
@@ -58,7 +58,7 @@
 <a alt="aggregit" href="http://aggregit.com" title="aggregit">aggregit</a>
                 | <a alt="Get in Touch with aggregit." href="#!/contact" title="contact">contact</a>
                 &bull; <a alt="Find out more about aggregit." href="#!/about" title="about">about</a>
-                &bull; <a alt="Need help on using aggregit?" href="#!/help" title="help">help</a>
+                &bull; <a alt="Need help using aggregit?" href="#!/help" title="help">help</a>
 </p>
 <p class="pull-right">2015&ndash;2016 &copy; <a alt="Visit tmthydvnprt on GitHub." href="https://github.com/tmthydvnprt" target="_blank" title="tmthydvnprt">tmthydvnprt</a></p>
 </div>

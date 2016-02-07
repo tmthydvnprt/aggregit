@@ -15,7 +15,7 @@ $(document).ready(function () {
 
     function exportUser() {
         // Download/export user data as json
-        var data = 'data:application/text;charset=utf-8,' + encodeURIComponent(JSON.stringify(cachedUser));
+        var data = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(cachedUser));
         $('#export-btn').attr('href', data);
         if (cachedUser.hasOwnProperty('login')) {
             $('#export-btn').attr('download', cachedUser['login'] + '.json');

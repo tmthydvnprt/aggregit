@@ -179,7 +179,7 @@ nav time[datetime]:not(.no-hover):hover::before {
 #help-arrow {
     position: absolute;
     top:-28px;
-    left:200px;
+    left:80px;
     font-size: 500%;
     animation: introUp 1024ms ease 0s 1 both;
 }
@@ -204,7 +204,8 @@ nav time[datetime]:not(.no-hover):hover::before {
 
 /* Home Page Styles
  ---------------------- */
-#home-jumbo {
+#home-jumbo,
+.jumbotron {
     padding: 16px!important;
     margin-bottom: 16px!important;
 }
@@ -220,6 +221,23 @@ nav time[datetime]:not(.no-hover):hover::before {
     margin: 4px 0px;
 }
 
+/* About Page Styles
+ ---------------------- */
+#about h1,
+#about h2,
+#about h3,
+#about h4,
+#about h5,
+#about h6 {
+    margin: 8px 0px;
+}
+#about hr {
+    margin: 16px 0px;
+}
+#about .lead {
+    margin-bottom: 16px;
+}
+
 /* Panel Page Styles
  ---------------------- */
 #json-file {
@@ -227,12 +245,13 @@ nav time[datetime]:not(.no-hover):hover::before {
     text-shadow: 3px 3px #bbbbbb;
 }
 #auth-logo {
-    width: 50%!important;
+    width: 40%!important;
     margin-bottom: 8px;
 }
 #auth-panel,
 #export-panel {
     width: 80%;
+    margin-bottom: 0px;
 }
 @media (min-width: 600px) {
     #auth-panel,
@@ -244,7 +263,7 @@ nav time[datetime]:not(.no-hover):hover::before {
     margin-top: 16px;
 }
 .smallprint {
-    font-size: 14px !important;
+    font-size: 13px !important;
     line-height: 1.5;
 }
 #safari-warning {

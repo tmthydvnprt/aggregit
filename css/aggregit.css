@@ -221,14 +221,21 @@ nav time[datetime]:not(.no-hover):hover::before {
 @media (min-width: 600px) {
     #auth-panel,
     #export-panel {
-        width: 50%;
+        width: 55%;
     }
 }
-
+#auth-panel .smallprint {
+    margin-top: 16px;
+}
 .smallprint {
     font-size: 14px !important;
-    line-height: 1.2;
+    line-height: 1.5;
+}
+#safari-warning {
     margin-top: 16px;
+    background-color: #ffe0b2!important;
+    border-color: #ffc599!important;
+    color:#333!important;
 }
 
 /* Cursors patterns */

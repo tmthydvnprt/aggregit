@@ -52,12 +52,22 @@ $(document).ready(function () {
 	}
 
     function exportUser() {
+
+        // Display safari warning
+        if (isSafari) {
+            $('.panel-body').append('<div id="safari-warning" class="alert alert-warning"><p class="smallprint"><strong><i class="fa fa-warning"></i> It looks like you are using Safari.</strong><br>The file will be downloaded from a blank page and named <code>Unknown</code>. You may close the blank page once the file appears in your <code>~/Downloads</code> Folder. You should rename this file to <code class="filename">____.json</code>.</p></div>');
+        } else {
+            $('#safari-warning').remove();
+        }
+
         // Download/export user data as json
         $('#export-btn').attr('href', makeJsonFile(cachedUser));
         if (cachedUser.hasOwnProperty('login')) {
             $('#export-btn').attr('download', cachedUser['login'] + '.json');
+            $('.filename').html(cachedUser['login'] + '.json');
         } else {
             $('#export-btn').attr('download', 'warning_no_user_data.json');
+            $('.filename').html('warning_no_user_data.json');
         }
         $('#export-btn').removeClass('disabled');
         $('#export-btn').html('Export Data');

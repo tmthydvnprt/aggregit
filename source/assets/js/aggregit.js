@@ -13,8 +13,11 @@ $(document).ready(function () {
 
     function exportUser() {
         // Download/export user data as json
-        var data = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(cachedUser));
-        window.open('data:' + data, '_blank');
+        var data = 'data:application/text;charset=utf-8,' + encodeURIComponent(JSON.stringify(cachedUser));
+        $('#export-btn').attr('href', data);
+        $('#export-btn').attr('download', cachedUser['login'] + '.json');
+        $('#export-btn').removeClass('disabled');
+        $('#export-btn').html('Export Data');
     }
 
     // Unique Render functions
@@ -669,7 +672,7 @@ $(document).ready(function () {
             },
             export : function () {
                 renderTemplate(page, 'export', 'aggregit: export');
-                $('#export-btn').click(exportUser);
+                exportUser();
             },
             help : function () {
                 renderTemplate(page, 'help', 'aggregit: help');

@@ -679,6 +679,7 @@ $(document).ready(function () {
                 var auth = cookieJar.get('valid_auth');
                 // proceed as usual if authorized
                 if (auth) {
+                    console.log('Authorized! Aggregit User\n');
                     // username fallback
                     username = username || 'tmthydvnprt_example';
                     // start rendering page
@@ -710,6 +711,7 @@ $(document).ready(function () {
                     }
                 // Store searched username and go get authorization if auth is not valid
                 } else {
+                    console.log('NOT Authorized! Route to Authorize first\n');
                     cookieJar.set('searchUser', username);
                     location.hash = '#!/authorize';
                     return false;
@@ -757,9 +759,11 @@ $(document).ready(function () {
         cookieJar.set('searchUser', username);
         if (auth) {
             // route to user page
+            console.log('Authorized Route to User\n');
             location.hash = '#!/user=' + username;
         } else {
             // route to authorize page
+            console.log('NOT Authorized! Route to Authorize\n');
             location.hash = '#!/authorize';
         }
         return false;

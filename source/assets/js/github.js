@@ -58,6 +58,45 @@ Github API to use:
     * on all append: '?=access_token{access_token}'
 */
 
+github = {
+    current_user_url : function () {
+        // https://api.github.com/user"
+    }
+    current_user_repositories_url : function () {
+        // https://api.github.com/user/repos{?type,page,per_page,sort}"
+    }
+    user_url : function (user, type, page, per_page, sort) {
+        // https://api.github.com/users/{user}"
+    }
+    user_repositories_url : function () {
+        // https://api.github.com/users/{user}/repos{?type,page,per_page,sort}"
+    }
+    emojis_url : function () {
+        // https://api.github.com/emojis"
+    }
+    followers_url : function (user) {
+        // https://api.github.com/users/{user}/followers"
+    }
+    following_url : function (user) {
+        // https://api.github.com/users/{user}/following"
+    }
+    gists_url : function (user) {
+        // https://api.github.com/users/{user}/gists"
+    }
+    rate_limit_url : function () {
+        // https://api.github.com/rate_limit"
+    }
+    repository_url : function (owner, repo) {
+        // https://api.github.com/repos/{owner}/{repo}"
+    }
+    starred_url : function () {
+        // https://api.github.com/user/starred"
+    }
+    starred_gists_url : function () {
+        // https://api.github.com/gists/starred"
+    }
+}
+
 var API_URL = 'https://api.github.com',
     REPO_STATS_URLS = ['contributors', 'commit_activity', 'code_frequency', 'participation', 'punch_card'],
     HOUR_IN_MS = 60 * 60 * 1000;

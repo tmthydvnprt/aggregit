@@ -68,7 +68,7 @@ github = {
     user_url : function (user, type, page, per_page, sort) {
         // https://api.github.com/users/{user}"
     }
-    user_repositories_url : function () {
+    user_repositories_url : function (user, type, page, per_page, sort) {
         // https://api.github.com/users/{user}/repos{?type,page,per_page,sort}"
     }
     emojis_url : function () {

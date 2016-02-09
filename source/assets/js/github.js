@@ -58,6 +58,57 @@ Github API to use:
     * on all append: '?=access_token{access_token}'
 */
 
+
+function parseHeaders(header_string) {
+    /* Parses a header string as returned by xhr.getAllResponseHeaders()
+    Example Header:
+        X-OAuth-Scopes:
+        X-RateLimit-Remaining: 4878
+        X-Accepted-OAuth-Scopes:
+        Last-Modified: Sat, 24 Oct 2015 21:02:27 GMT
+        ETag: W/"bc440d9ad7a60bc67bbf7f3513528724"
+        Content-Type: application/json; charset=utf-8
+        Cache-Control: private, max-age=60, s-maxage=60
+        X-RateLimit-Reset: 1455024495
+        X-RateLimit-Limit: 5000
+    */
+    var lines = header_string.trim().split('\n');
+        headers = {},
+        line = '',
+        key = '',
+        val = '',
+        number = null;
+
+    for (line in lines) {
+        // split line on first `:` for key:val par
+        keyval = lines[line].split(/:(.*)/);
+        key = keyval[0].trim();
+        val = keyval[1].trim();
+        // try to parse value as null
+        if (val === "") {
+            val = null;
+        } else {
+            // try to parse as number
+            number = parseInt(val);
+            if (!isNaN(number)) {
+                val = number;
+            } else {
+                // try to parse as number
+                date = new Date(val);
+                if (!isNaN(date.getTime())) {
+                    val = date;
+                }
+                // leave as string
+            }
+        }
+        // Place in object
+        headers[key] = val;
+    }
+
+    return headers;
+}
+
+
 github = {
     current_user_url : function () {
         // https://api.github.com/user"

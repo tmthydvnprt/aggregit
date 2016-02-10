@@ -58,7 +58,6 @@ Github API to use:
     * on all append: '?=access_token{access_token}'
 */
 
-
 function parseHeaders(header_string) {
     /* Parses a header string as returned by xhr.getAllResponseHeaders()
     Example Header:
@@ -78,7 +77,7 @@ function parseHeaders(header_string) {
         key = '',
         val = '',
         number = null;
-
+    // loop thru header lines
     for (line in lines) {
         // split line on first `:` for key:val par
         keyval = lines[line].split(/:(.*)/);
@@ -104,47 +103,102 @@ function parseHeaders(header_string) {
         // Place in object
         headers[key] = val;
     }
-
     return headers;
 }
 
-
 github = {
+    // API Defaults and Constants
+    api_url : 'https://api.github.com',
+    client_id : '85bd6112f2a60a7edd66',
+    oauth_url : 'https://github.com/login/oauth/authorize?',
+    client_redirect : 'http://aggregit.com/#!/authenticate',
+    oauth_proxy_url : 'http://aggregit-proxy-576273.appspot.com/?',
+    auth_scope : '',
+    // Authorize and Authenticate
+    authorize : function() {
+        console.log('Getting GitHub Authorization');
+        var url = '',
+            state = Math.random().toString(36).substr(2, 8) + Math.random().toString(36).substr(2, 8);
+        // store state in cookie for later
+        cookieJar.set('state', state);
+        // Create url to access GitHub authentication
+        url = github_oauth_url + $.param({
+            'client_id' : github_id,
+            'redirect_url' : github_callback,
+            'scope' : github_scope,
+            'state' : state
+        });
+        // Request authorization
+        console.log(url);
+        location.href = url;
+    },
+    authenticate : function() {
+        console.log('Getting GitHub Authentication');
+        // Get GitHub authentication from redirected url
+        var auth = deparam(window.location.search),
+            url = '',
+            username = '';
+        // Check that state is valid
+        if (cookieJar.get('state') === auth['state'] ) {
+            console.log('state is good');
+            // Turn authorization code into access token
+            url = oauth_proxy_url + $.param(auth);
+            $.getJSON(url, function(access) {
+                if (access.hasOwnProperty('access_token')) {
+                    console.log('token is good');
+                    console.log('authenticated');
+                    cookieJar.set('access_token', access['access_token']);
+                    cookieJar.set('valid_auth', true);
+                    cookieJar.set('auth_time', (new Date()).toISOString());
+                    username = cookieJar.has('searchUser') ? cookieJar.get('searchUser') : '';
+                    location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/user=' + username;
+                } else {
+                    console.log('error: no token');
+                    location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';
+                }
+            });
+        } else {
+            console.log('state is bad');
+            console.log('did not authenticate');
+            location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';
+        }
+    },
+    // API requests
     current_user_url : function () {
-        // https://api.github.com/user"
+        // https://api.github.com/user
     }
     current_user_repositories_url : function () {
-        // https://api.github.com/user/repos{?type,page,per_page,sort}"
+        // https://api.github.com/user/repos{?type,page,per_page,sort}
     }
     user_url : function (user, type, page, per_page, sort) {
-        // https://api.github.com/users/{user}"
+        // https://api.github.com/users/{user}
     }
     user_repositories_url : function (user, type, page, per_page, sort) {
-        // https://api.github.com/users/{user}/repos{?type,page,per_page,sort}"
+        // https://api.github.com/users/{user}/repos{?type,page,per_page,sort}
     }
     emojis_url : function () {
-        // https://api.github.com/emojis"
+        // https://api.github.com/emojis
     }
     followers_url : function (user) {
-        // https://api.github.com/users/{user}/followers"
+        // https://api.github.com/users/{user}/followers
     }
     following_url : function (user) {
-        // https://api.github.com/users/{user}/following"
+        // https://api.github.com/users/{user}/following
     }
     gists_url : function (user) {
-        // https://api.github.com/users/{user}/gists"
+        // https://api.github.com/users/{user}/gists
     }
     rate_limit_url : function () {
-        // https://api.github.com/rate_limit"
+        // https://api.github.com/rate_limit
     }
     repository_url : function (owner, repo) {
-        // https://api.github.com/repos/{owner}/{repo}"
+        // https://api.github.com/repos/{owner}/{repo}
     }
     starred_url : function () {
-        // https://api.github.com/user/starred"
+        // https://api.github.com/user/starred
     }
     starred_gists_url : function () {
-        // https://api.github.com/gists/starred"
+        // https://api.github.com/gists/starred
     }
 }
 

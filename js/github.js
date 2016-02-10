@@ -240,7 +240,7 @@ var github = {
         params = $.param(params);
         // prepend param identifier if paramas exist
         if (params) {
-            params = '?=' + params;
+            params = '?' + params;
         }
         return params;
     },

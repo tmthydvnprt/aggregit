@@ -123,19 +123,19 @@ var github = {
     rate_limit_reset : 0,
     // Authorize and Authenticate
     authorize : function() {
-        console.log('Getting GitHub Authorization');
-        var url = '',
-            state = Math.random().toString(36).substr(2, 8) + Math.random().toString(36).substr(2, 8);
+        var url = '';
+        this.state = Math.random().toString(36).substr(2, 8) + Math.random().toString(36).substr(2, 8)
         // store state in cookie for later
-        cookieJar.set('state', state);
+        cookieJar.set('state', this.state);
         // Create url to access GitHub authentication
-        url = github_oauth_url + $.param({
-            'client_id' : github_id,
-            'redirect_url' : github_callback,
-            'scope' : github_scope,
-            'state' : state
+        url = this.oauth_url + $.param({
+            'client_id' : this.client_id,
+            'redirect_url' : this.client_redirect,
+            'scope' : this.auth_scope,
+            'state' : this.state
         });
         // Request authorization
+        console.log('Getting GitHub Authorization');
         console.log(url);
         location.href = url;
     },
@@ -149,7 +149,7 @@ var github = {
         if (cookieJar.get('state') === auth['state'] ) {
             console.log('state is good');
             // Turn authorization code into access token
-            url = oauth_proxy_url + $.param(auth);
+            url = this.oauth_proxy_url + $.param(auth);
             $.getJSON(url, function(access) {
                 if (access.hasOwnProperty('access_token')) {
                     console.log('token is good');

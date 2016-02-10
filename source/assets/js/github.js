@@ -118,6 +118,8 @@ github = {
     code : '',
     state : '',
     access_token : '',
+    remaining_calls : 5000,
+    rate_limit_reset : 0,
     // Authorize and Authenticate
     authorize : function() {
         console.log('Getting GitHub Authorization');
@@ -169,11 +171,37 @@ github = {
     },
     // Request Handler
     request : function(data, status, xhr) {
-        // handle returned request
         // parse out header info
         headers = parse_headers(xhr.getAllResponseHeaders());
-        // check for esponse errors
+        // store rate limits
+        this.remaining_calls = headers['X-RateLimit-Remaining'];
+        this.rate_limit_reset = headers['X-RateLimit-Reset'];
 
+        // check Response Status
+        console.log(xhr.status);
+        // response was successful, continue processing
+        if (xhr.status === 200) {
+            console.log('response was successful');
+
+        // response has a redirect
+        } else if (xhr.status === 301 || xhr.status === 302 || xhr.status === 307) {
+            console.log('response has a redirect');
+
+        // response has a client error
+        } else if (xhr.status === 400 || xhr.status === 422) {
+            console.log('response has a client error');
+
+        // response is unauthorized
+        } else if (xhr.status === 401) {
+            console.log('response is unauthorized');
+
+        // response is forbidden or not found
+        } else if (xhr.status === 404 || xhr.status === 403) {
+            console.log('response is forbidden or no found');
+
+        } else {
+            console.log('reponse has unknown status');
+        }
     },
     // build params, starts with access_token if it exists then extends with other_params if neccesary
     build_params : functions(other_params) {

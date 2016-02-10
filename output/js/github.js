@@ -115,9 +115,8 @@ var github = {
     oauth_proxy_url : 'http://aggregit-proxy-576273.appspot.com/?',
     auth_scope : '',
     // API Access
-    code : '',
-    state : '',
-    access_token : '',
+    state : cookieJar.has('state') ? cookieJar.get('state') : '',
+    access_token : cookieJar.has('access_token') && cookieJar.get('valid_auth') ? cookieJar.get('access_token') : '',
     rate_limit : 60,
     remaining_calls : 60,
     rate_limit_reset : 0,
@@ -154,6 +153,7 @@ var github = {
                 if (access.hasOwnProperty('access_token')) {
                     console.log('token is good');
                     console.log('authenticated');
+                    github.access_token = access['access_token'];
                     cookieJar.set('access_token', access['access_token']);
                     cookieJar.set('valid_auth', true);
                     cookieJar.set('auth_time', (new Date()).toISOString());

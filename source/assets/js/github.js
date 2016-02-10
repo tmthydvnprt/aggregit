@@ -106,7 +106,7 @@ function parse_headers(header_string) {
     return headers;
 }
 
-github = {
+var github = {
     // API Defaults and Constants
     api_url : 'https://api.github.com',
     client_id : '85bd6112f2a60a7edd66',
@@ -242,7 +242,7 @@ github = {
         if (params) {
             params = '?=' + params;
         }
-        return params
+        return params;
     },
     current_user_url : function () {
         // https://api.github.com/user
@@ -316,7 +316,7 @@ github = {
         var url = [this.api_url, 'gists', 'starred'].join('/') + this.build_params();
         return url;
     }
-}
+};
 
 var API_URL = 'https://api.github.com',
     REPO_STATS_URLS = ['contributors', 'commit_activity', 'code_frequency', 'participation', 'punch_card'],

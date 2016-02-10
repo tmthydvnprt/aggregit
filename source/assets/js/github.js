@@ -189,9 +189,9 @@ github = {
             request_url = this.url;
 
         // store rate limits
-        this.rate_limit = headers['X-RateLimit-Limit'];
-        this.remaining_calls = headers['X-RateLimit-Remaining'];
-        this.rate_limit_reset = headers['X-RateLimit-Reset']; // new Date(this.rate_limit_reset * 1000)
+        github.rate_limit = headers['X-RateLimit-Limit'];
+        github.remaining_calls = headers['X-RateLimit-Remaining'];
+        github.rate_limit_reset = headers['X-RateLimit-Reset']; // new Date(this.rate_limit_reset * 1000)
 
         // check Response Status
         console.log(xhr.status);

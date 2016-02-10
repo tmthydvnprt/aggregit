@@ -1,4 +1,4 @@
-/*globals $,console,d3,cookieJar,github */
+/*globals $,console,d3,cookieJar */
 /*!
  * aggregit.js
  *
@@ -53,6 +53,7 @@ $(document).ready(function () {
 	}
 
     function exportUser() {
+
         // Display safari warning
         if (isSafari) {
             $('.panel-body').append('<div id="safari-warning" class="alert alert-warning"><p class="smallprint"><strong><i class="fa fa-warning"></i> It looks like you are using Safari.</strong><br>The file will be downloaded from a blank page and named <code>Unknown</code>. You may close the blank page once the file appears in your <code>~/Downloads</code> Folder. You should rename this file to <code class="filename">____.json</code>.</p></div>');
@@ -722,7 +723,7 @@ $(document).ready(function () {
                 renderTemplate(page, 'authorize', 'aggregit: authorize');
                 $('#unauthorized').attr('href', '#!/user=' + cookieJar.get('searchUser') + '&unauth');
                 $('#authorize-btn').click(function (e) {
-                    github.authorize();
+                    github_authorize();
                 });
             },
             authenticate : function () {
@@ -730,7 +731,7 @@ $(document).ready(function () {
                 // Check if this is am authentication redirect from GitHub
                 if (location.search.indexOf('code') > -1) {
                     console.log('github redirect, create access token.');
-                    github.authenticate();
+                    github_authenticate();
                 } else {
                     console.log('missing authorization code.');
                 }

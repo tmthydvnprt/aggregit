@@ -8,315 +8,39 @@
 
  /*
 GitHub API Reference: https://api.github.com
-    [ ] "current_user_url": "https://api.github.com/user",
-    [-] "current_user_authorizations_html_url": "https://github.com/settings/connections/applications{/client_id}",
-    [-] "authorizations_url": "https://api.github.com/authorizations",
-    [-] "code_search_url": "https://api.github.com/search/code?q={query}{&page,per_page,sort,order}",
-    [-] "emails_url": "https://api.github.com/user/emails",
-    [ ] "emojis_url": "https://api.github.com/emojis",
-    [-] "events_url": "https://api.github.com/events",
-    [-] "feeds_url": "https://api.github.com/feeds",
-    [ ] "followers_url": "https://api.github.com/user/followers",
-    [ ] "following_url": "https://api.github.com/user/following{/target}",
-    [ ] "gists_url": "https://api.github.com/gists{/gist_id}",
-    [-] "hub_url": "https://api.github.com/hub",
-    [-] "issue_search_url": "https://api.github.com/search/issues?q={query}{&page,per_page,sort,order}",
-    [?] "issues_url": "https://api.github.com/issues",
-    [-] "keys_url": "https://api.github.com/user/keys",
-    [-] "notifications_url": "https://api.github.com/notifications",
-    [?] "organization_repositories_url": "https://api.github.com/orgs/{org}/repos{?type,page,per_page,sort}",
-    [?] "organization_url": "https://api.github.com/orgs/{org}",
-    [-] "public_gists_url": "https://api.github.com/gists/public",
-    [x] "rate_limit_url": "https://api.github.com/rate_limit",
-    [x] "repository_url": "https://api.github.com/repos/{owner}/{repo}",
-    [-] "repository_search_url": "https://api.github.com/search/repositories?q={query}{&page,per_page,sort,order}",
-    [ ] "current_user_repositories_url": "https://api.github.com/user/repos{?type,page,per_page,sort}",
-    [ ] "starred_url": "https://api.github.com/user/starred{/owner}{/repo}",
-    [ ] "starred_gists_url": "https://api.github.com/gists/starred",
-    [?] "team_url": "https://api.github.com/teams",
-    [x] "user_url": "https://api.github.com/users/{user}",
-    [-] "user_organizations_url": "https://api.github.com/user/orgs",
-    [ ] "user_repositories_url": "https://api.github.com/users/{user}/repos{?type,page,per_page,sort}",
-    [-] "user_search_url": "https://api.github.com/search/users?q={query}{&page,per_page,sort,order}"
-*/
-
-/*
-Github API to use:
-    - [ ] "current_user_url": "https://api.github.com/user"
-    - [ ] "current_user_repositories_url": "https://api.github.com/user/repos{?type,page,per_page,sort}"
-    - [x] "user_url": "https://api.github.com/users/{user}"
-    - [ ] "user_repositories_url": "https://api.github.com/users/{user}/repos{?type,page,per_page,sort}"
-    - [ ] "emojis_url": "https://api.github.com/emojis"
-    - [ ] "followers_url": "https://api.github.com/users/{user}/followers"
-    - [ ] "following_url": "https://api.github.com/users/{user}/following"
-    - [ ] "gists_url": "https://api.github.com/users/{user}/gists"
-    - [x] "rate_limit_url": "https://api.github.com/rate_limit"
-    - [x] "repository_url": "https://api.github.com/repos/{owner}/{repo}"
-    - [ ] "starred_url": "https://api.github.com/user/starred"
-    - [ ] "starred_gists_url": "https://api.github.com/gists/starred"
-
-    * on all append: '?=access_token{access_token}'
-*/
-
-function parse_headers(header_string) {
-    /* Parses a header string as returned by xhr.getAllResponseHeaders()
-    Example Header:
-        X-OAuth-Scopes:
-        X-RateLimit-Remaining: 4878
-        X-Accepted-OAuth-Scopes:
-        Last-Modified: Sat, 24 Oct 2015 21:02:27 GMT
-        ETag: W/"bc440d9ad7a60bc67bbf7f3513528724"
-        Content-Type: application/json; charset=utf-8
-        Cache-Control: private, max-age=60, s-maxage=60
-        X-RateLimit-Reset: 1455024495
-        X-RateLimit-Limit: 5000
-    */
-    var lines = header_string.trim().split('\n');
-        headers = {},
-        line = '',
-        key = '',
-        val = '',
-        number = null;
-    // loop thru header lines
-    for (line in lines) {
-        // split line on first `:` for key:val par
-        keyval = lines[line].split(/:(.*)/);
-        key = keyval[0].trim();
-        val = keyval[1].trim();
-        // try to parse value as null
-        if (val === "") {
-            val = null;
-        } else {
-            // try to parse as number
-            number = parseInt(val);
-            if (!isNaN(number)) {
-                val = number;
-            } else {
-                // try to parse as number
-                date = new Date(val);
-                if (!isNaN(date.getTime())) {
-                    val = date;
-                }
-                // leave as string
-            }
-        }
-        // Place in object
-        headers[key] = val;
-    }
-    return headers;
+{
+  "current_user_url": "https://api.github.com/user",
+  "current_user_authorizations_html_url": "https://github.com/settings/connections/applications{/client_id}",
+  "authorizations_url": "https://api.github.com/authorizations",
+  "code_search_url": "https://api.github.com/search/code?q={query}{&page,per_page,sort,order}",
+  "emails_url": "https://api.github.com/user/emails",
+  "emojis_url": "https://api.github.com/emojis",
+  "events_url": "https://api.github.com/events",
+  "feeds_url": "https://api.github.com/feeds",
+  "followers_url": "https://api.github.com/user/followers",
+  "following_url": "https://api.github.com/user/following{/target}",
+  "gists_url": "https://api.github.com/gists{/gist_id}",
+  "hub_url": "https://api.github.com/hub",
+  "issue_search_url": "https://api.github.com/search/issues?q={query}{&page,per_page,sort,order}",
+  "issues_url": "https://api.github.com/issues",
+  "keys_url": "https://api.github.com/user/keys",
+  "notifications_url": "https://api.github.com/notifications",
+  "organization_repositories_url": "https://api.github.com/orgs/{org}/repos{?type,page,per_page,sort}",
+  "organization_url": "https://api.github.com/orgs/{org}",
+  "public_gists_url": "https://api.github.com/gists/public",
+  "rate_limit_url": "https://api.github.com/rate_limit",
+  "repository_url": "https://api.github.com/repos/{owner}/{repo}",
+  "repository_search_url": "https://api.github.com/search/repositories?q={query}{&page,per_page,sort,order}",
+  "current_user_repositories_url": "https://api.github.com/user/repos{?type,page,per_page,sort}",
+  "starred_url": "https://api.github.com/user/starred{/owner}{/repo}",
+  "starred_gists_url": "https://api.github.com/gists/starred",
+  "team_url": "https://api.github.com/teams",
+  "user_url": "https://api.github.com/users/{user}",
+  "user_organizations_url": "https://api.github.com/user/orgs",
+  "user_repositories_url": "https://api.github.com/users/{user}/repos{?type,page,per_page,sort}",
+  "user_search_url": "https://api.github.com/search/users?q={query}{&page,per_page,sort,order}"
 }
-
-var github = {
-    // API Defaults and Constants
-    api_url : 'https://api.github.com',
-    client_id : '85bd6112f2a60a7edd66',
-    oauth_url : 'https://github.com/login/oauth/authorize?',
-    client_redirect : 'http://aggregit.com/#!/authenticate',
-    oauth_proxy_url : 'http://aggregit-proxy-576273.appspot.com/?',
-    auth_scope : '',
-    // API Access
-    state : cookieJar.has('state') ? cookieJar.get('state') : '',
-    access_token : cookieJar.has('access_token') && cookieJar.get('valid_auth') ? cookieJar.get('access_token') : '',
-    rate_limit : 60,
-    remaining_calls : 60,
-    rate_limit_reset : 0,
-    // Authorize and Authenticate
-    authorize : function() {
-        var url = '';
-        this.state = Math.random().toString(36).substr(2, 8) + Math.random().toString(36).substr(2, 8)
-        // store state in cookie for later
-        cookieJar.set('state', this.state);
-        // Create url to access GitHub authentication
-        url = this.oauth_url + $.param({
-            'client_id' : this.client_id,
-            'redirect_url' : this.client_redirect,
-            'scope' : this.auth_scope,
-            'state' : this.state
-        });
-        // Request authorization
-        console.log('Getting GitHub Authorization');
-        console.log(url);
-        location.href = url;
-    },
-    authenticate : function() {
-        console.log('Getting GitHub Authentication');
-        // Get GitHub authentication from redirected url
-        var auth = deparam(window.location.search),
-            url = '',
-            username = '';
-        // Check that state is valid
-        if (cookieJar.get('state') === auth['state'] ) {
-            console.log('state is good');
-            // Turn authorization code into access token
-            url = this.oauth_proxy_url + $.param(auth);
-            $.getJSON(url, function(access) {
-                if (access.hasOwnProperty('access_token')) {
-                    console.log('token is good');
-                    console.log('authenticated');
-                    github.access_token = access['access_token'];
-                    cookieJar.set('access_token', access['access_token']);
-                    cookieJar.set('valid_auth', true);
-                    cookieJar.set('auth_time', (new Date()).toISOString());
-                    username = cookieJar.has('searchUser') ? cookieJar.get('searchUser') : '';
-                    location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/user=' + username;
-                } else {
-                    console.log('error: no token');
-                    location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';
-                }
-            });
-        } else {
-            console.log('state is bad');
-            console.log('did not authenticate');
-            location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';
-        }
-    },
-    // Request Handler
-    request_handler : function(request) {
-        var url = this[request + '_url']();
-        // Make sure there are enough API call available
-        if (this.remaining_calls > 0) {
-            console.log('Making API call');
-            return $.getJSON(url, this.response_handler);
-        } else {
-            console.log('Not enough API calls left');
-            return false;
-        }
-    },
-    // Response Handler
-    response_handler : function(data, status, xhr) {
-        // parse out header info and original url
-        var headers = parse_headers(xhr.getAllResponseHeaders()),
-            request_url = this.url;
-
-        // store rate limits
-        github.rate_limit = headers['X-RateLimit-Limit'];
-        github.remaining_calls = headers['X-RateLimit-Remaining'];
-        github.rate_limit_reset = headers['X-RateLimit-Reset']; // new Date(this.rate_limit_reset * 1000)
-
-        // check Response Status
-        console.log(xhr.status);
-        // response was successful, continue processing
-        if (xhr.status === 200) {
-            console.log('response was successful');
-            console.log(data);
-
-        // response has a redirect
-        } else if (xhr.status === 301 || xhr.status === 302 || xhr.status === 307) {
-            console.log('response has a redirect');
-            console.log(data);
-
-        // response has a client error
-        } else if (xhr.status === 400 || xhr.status === 422) {
-            console.log('response has a client error');
-            console.log(data);
-
-        // response is unauthorized
-        } else if (xhr.status === 401) {
-            console.log('response is unauthorized');
-            console.log(data);
-
-        // response is forbidden or not found
-        } else if (xhr.status === 404 || xhr.status === 403) {
-            console.log('response is forbidden or no found');
-            console.log(data);
-
-        } else {
-            console.log('reponse has unknown status');
-            console.log(data);
-        }
-
-    },
-    // API request urls
-    // build params, starts with access_token if it exists then extends with other_params if neccesary
-    build_params : function(other_params) {
-        var params = {};
-        // add access_token to params if it exists
-        if (this.access_token !== '') {
-            params['access_token'] = this.access_token;
-        }
-        // extend params
-        $.extend(params, other_params);
-        // stringify as url params
-        params = $.param(params);
-        // prepend param identifier if paramas exist
-        if (params) {
-            params = '?' + params;
-        }
-        return params;
-    },
-    current_user_url : function () {
-        // https://api.github.com/user
-        var url = [this.api_url, 'user'].join('/') + this.build_params();
-        return url;
-    },
-    current_user_repositories_url : function (type, page, per_page, sort) {
-        // https://api.github.com/user/repos{?type,page,per_page,sort}
-        var url = '',
-            params = {};
-        if (type) { params['type'] = type; }
-        if (page) { params['page'] = page; }
-        if (per_page) { params['per_page'] = per_page; }
-        if (sort) { params['sort'] = sort; }
-        url = [this.api_url, 'user', 'repos'].join('/') + this.build_params();
-        return url;
-    },
-    user_url : function (user) {
-        // https://api.github.com/users/{user}
-        var url = [this.api_url, 'users', user].join('/') + this.build_params();
-        return url;
-    },
-    user_repositories_url : function (user, type, page, per_page, sort) {
-        // https://api.github.com/users/{user}/repos{?type,page,per_page,sort}
-        var url = '',
-            params = {};
-        if (type) { params['type'] = type; }
-        if (page) { params['page'] = page; }
-        if (per_page) { params['per_page'] = per_page; }
-        if (sort) { params['sort'] = sort; }
-        url = [this.api_url, 'users', user, 'repos'].join('/') + this.build_params();
-        return url;
-    },
-    emojis_url : function () {
-        // https://api.github.com/emojis
-        var url = [this.api_url, 'emojis'].join('/') + this.build_params();
-        return url;
-    },
-    followers_url : function (user) {
-        // https://api.github.com/users/{user}/followers
-        var url = [this.api_url, 'users', user, 'followers'].join('/') + this.build_params();
-        return url;
-    },
-    following_url : function (user) {
-        // https://api.github.com/users/{user}/following
-        var url = [this.api_url, 'users', user, 'following'].join('/') + this.build_params();
-        return url;
-    },
-    gists_url : function (user) {
-        // https://api.github.com/users/{user}/gists
-        var url = [this.api_url, 'users', user, 'gists'].join('/') + this.build_params();
-        return url;
-    },
-    rate_limit_url : function () {
-        // https://api.github.com/rate_limit
-        var url = [this.api_url, 'rate_limit'].join('/') + this.build_params();
-        return url;
-    },
-    repository_url : function (owner, repo) {
-        // https://api.github.com/repos/{owner}/{repo}
-        var url = [this.api_url, 'repos', owner, repo].join('/') + this.build_params();
-        return url;
-    },
-    starred_url : function () {
-        // https://api.github.com/user/starred
-        var url = [this.api_url, 'user', 'starred'].join('/') + this.build_params();
-        return url;
-    },
-    starred_gists_url : function () {
-        // https://api.github.com/gists/starred
-        var url = [this.api_url, 'gists', 'starred'].join('/') + this.build_params();
-        return url;
-    }
-};
+*/
 
 var API_URL = 'https://api.github.com',
     REPO_STATS_URLS = ['contributors', 'commit_activity', 'code_frequency', 'participation', 'punch_card'],

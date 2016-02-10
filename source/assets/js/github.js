@@ -58,7 +58,7 @@ Github API to use:
     * on all append: '?=access_token{access_token}'
 */
 
-function parseHeaders(header_string) {
+function parse_headers(header_string) {
     /* Parses a header string as returned by xhr.getAllResponseHeaders()
     Example Header:
         X-OAuth-Scopes:
@@ -114,6 +114,10 @@ github = {
     client_redirect : 'http://aggregit.com/#!/authenticate',
     oauth_proxy_url : 'http://aggregit-proxy-576273.appspot.com/?',
     auth_scope : '',
+    // API Access
+    code : '',
+    state : '',
+    access_token : '',
     // Authorize and Authenticate
     authorize : function() {
         console.log('Getting GitHub Authorization');
@@ -163,42 +167,88 @@ github = {
             location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';
         }
     },
+    // Request Handler
+    request : function(rqst) {
+        // send request and error check the response
+
+    },
+    // build params, starts with access_token if it exists then extends with other_params if neccesary
+    build_params : functions(other_params) {
+        var params = {};
+        // add access_token to params if it exists
+        if (this.access_token !== '') {
+            params['access_token'] = this.access_token;
+        }
+        // extend params
+        $.extend(params, other_params);
+        // stringify as url params
+        params = $.param(params);
+        // prepend param identifier if paramas exist
+        if (params) {
+            params = '?=' + params;
+        }
+        return params
+    },
     // API requests
     current_user_url : function () {
         // https://api.github.com/user
-    }
-    current_user_repositories_url : function () {
+        var url = [this.api_url, 'user'].join('/') + this.build_params();
+    },
+    current_user_repositories_url : function (type, page, per_page, sort) {
         // https://api.github.com/user/repos{?type,page,per_page,sort}
-    }
-    user_url : function (user, type, page, per_page, sort) {
+        var url = '',
+            params = {};
+        if (type) { params['type'] = type; }
+        if (page) { params['page'] = page; }
+        if (per_page) { params['per_page'] = per_page; }
+        if (sort) { params['sort'] = sort; }
+        url = [this.api_url, 'user', 'repos'].join('/') + this.build_params();
+    },
+    user_url : function (user) {
         // https://api.github.com/users/{user}
-    }
+        var url = [this.api_url, 'users', user].join('/') + this.build_params();
+    },
     user_repositories_url : function (user, type, page, per_page, sort) {
         // https://api.github.com/users/{user}/repos{?type,page,per_page,sort}
-    }
+        var url = '',
+            params = {};
+        if (type) { params['type'] = type; }
+        if (page) { params['page'] = page; }
+        if (per_page) { params['per_page'] = per_page; }
+        if (sort) { params['sort'] = sort; }
+        url = [this.api_url, 'users', user, 'repos'].join('/') + this.build_params();
+    },
     emojis_url : function () {
         // https://api.github.com/emojis
-    }
+        var url = [this.api_url, 'emojis'].join('/') + this.build_params();
+    },
     followers_url : function (user) {
         // https://api.github.com/users/{user}/followers
-    }
+        var url = [this.api_url, 'users', user, 'followers'].join('/') + this.build_params();
+    },
     following_url : function (user) {
         // https://api.github.com/users/{user}/following
-    }
+        var url = [this.api_url, 'users', user, 'following'].join('/') + this.build_params();
+    },
     gists_url : function (user) {
         // https://api.github.com/users/{user}/gists
-    }
+        var url = [this.api_url, 'users', user, 'gists'].join('/') + this.build_params();
+    },
     rate_limit_url : function () {
         // https://api.github.com/rate_limit
-    }
+        var url = [this.api_url, 'rate_limit'].join('/') + this.build_params();
+    },
     repository_url : function (owner, repo) {
         // https://api.github.com/repos/{owner}/{repo}
-    }
+        var url = [this.api_url, 'repos', owner, repo].join('/') + this.build_params();
+    },
     starred_url : function () {
         // https://api.github.com/user/starred
-    }
+        var url = [this.api_url, 'user', 'starred'].join('/') + this.build_params();
+    },
     starred_gists_url : function () {
         // https://api.github.com/gists/starred
+        var url = [this.api_url, 'gists', 'starred'].join('/') + this.build_params();
     }
 }
 

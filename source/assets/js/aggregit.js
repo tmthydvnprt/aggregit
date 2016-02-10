@@ -1,4 +1,4 @@
-/*globals $,console,d3,cookieJar */
+/*globals $,console,d3,cookieJar,github */
 /*!
  * aggregit.js
  *
@@ -722,7 +722,7 @@ $(document).ready(function () {
                 renderTemplate(page, 'authorize', 'aggregit: authorize');
                 $('#unauthorized').attr('href', '#!/user=' + cookieJar.get('searchUser') + '&unauth');
                 $('#authorize-btn').click(function (e) {
-                    github_authorize();
+                    github.authorize();
                 });
             },
             authenticate : function () {
@@ -730,7 +730,7 @@ $(document).ready(function () {
                 // Check if this is am authentication redirect from GitHub
                 if (location.search.indexOf('code') > -1) {
                     console.log('github redirect, create access token.');
-                    github_authenticate();
+                    github.authenticate();
                 } else {
                     console.log('missing authorization code.');
                 }

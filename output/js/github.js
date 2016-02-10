@@ -172,7 +172,7 @@ var github = {
     },
     // Request Handler
     request_handler : function(request) {
-        var url = this[request + '_url'];
+        var url = this[request + '_url']();
         // Make sure there are enough API call available
         if (this.remaining_calls > 0) {
             console.log('Making API call');

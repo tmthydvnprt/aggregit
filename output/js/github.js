@@ -58,6 +58,266 @@ Github API to use:
     * on all append: '?=access_token{access_token}'
 */
 
+function parse_headers(header_string) {
+    /* Parses a header string as returned by xhr.getAllResponseHeaders()
+    Example Header:
+        X-OAuth-Scopes:
+        X-RateLimit-Remaining: 4878
+        X-Accepted-OAuth-Scopes:
+        Last-Modified: Sat, 24 Oct 2015 21:02:27 GMT
+        ETag: W/"bc440d9ad7a60bc67bbf7f3513528724"
+        Content-Type: application/json; charset=utf-8
+        Cache-Control: private, max-age=60, s-maxage=60
+        X-RateLimit-Reset: 1455024495
+        X-RateLimit-Limit: 5000
+    */
+    var lines = header_string.trim().split('\n');
+        headers = {},
+        line = '',
+        key = '',
+        val = '',
+        number = null;
+    // loop thru header lines
+    for (line in lines) {
+        // split line on first `:` for key:val par
+        keyval = lines[line].split(/:(.*)/);
+        key = keyval[0].trim();
+        val = keyval[1].trim();
+        // try to parse value as null
+        if (val === "") {
+            val = null;
+        } else {
+            // try to parse as number
+            number = parseInt(val);
+            if (!isNaN(number)) {
+                val = number;
+            } else {
+                // try to parse as number
+                date = new Date(val);
+                if (!isNaN(date.getTime())) {
+                    val = date;
+                }
+                // leave as string
+            }
+        }
+        // Place in object
+        headers[key] = val;
+    }
+    return headers;
+}
+
+github = {
+    // API Defaults and Constants
+    api_url : 'https://api.github.com',
+    client_id : '85bd6112f2a60a7edd66',
+    oauth_url : 'https://github.com/login/oauth/authorize?',
+    client_redirect : 'http://aggregit.com/#!/authenticate',
+    oauth_proxy_url : 'http://aggregit-proxy-576273.appspot.com/?',
+    auth_scope : '',
+    // API Access
+    code : '',
+    state : '',
+    access_token : '',
+    rate_limit : 60,
+    remaining_calls : 60,
+    rate_limit_reset : 0,
+    // Authorize and Authenticate
+    authorize : function() {
+        console.log('Getting GitHub Authorization');
+        var url = '',
+            state = Math.random().toString(36).substr(2, 8) + Math.random().toString(36).substr(2, 8);
+        // store state in cookie for later
+        cookieJar.set('state', state);
+        // Create url to access GitHub authentication
+        url = github_oauth_url + $.param({
+            'client_id' : github_id,
+            'redirect_url' : github_callback,
+            'scope' : github_scope,
+            'state' : state
+        });
+        // Request authorization
+        console.log(url);
+        location.href = url;
+    },
+    authenticate : function() {
+        console.log('Getting GitHub Authentication');
+        // Get GitHub authentication from redirected url
+        var auth = deparam(window.location.search),
+            url = '',
+            username = '';
+        // Check that state is valid
+        if (cookieJar.get('state') === auth['state'] ) {
+            console.log('state is good');
+            // Turn authorization code into access token
+            url = oauth_proxy_url + $.param(auth);
+            $.getJSON(url, function(access) {
+                if (access.hasOwnProperty('access_token')) {
+                    console.log('token is good');
+                    console.log('authenticated');
+                    cookieJar.set('access_token', access['access_token']);
+                    cookieJar.set('valid_auth', true);
+                    cookieJar.set('auth_time', (new Date()).toISOString());
+                    username = cookieJar.has('searchUser') ? cookieJar.get('searchUser') : '';
+                    location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/user=' + username;
+                } else {
+                    console.log('error: no token');
+                    location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';
+                }
+            });
+        } else {
+            console.log('state is bad');
+            console.log('did not authenticate');
+            location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';
+        }
+    },
+    // Request Handler
+    request_handler : function(request) {
+        var url = this[request + '_url'];
+        // Make sure there are enough API call available
+        if (this.remaining_calls > 0) {
+            console.log('Making API call');
+            return $.getJSON(url, this.response_handler);
+        } else {
+            console.log('Not enough API calls left');
+            return false;
+        }
+    },
+    // Response Handler
+    response_handler : function(data, status, xhr) {
+        // parse out header info and original url
+        var headers = parse_headers(xhr.getAllResponseHeaders()),
+            request_url = this.url;
+
+        // store rate limits
+        github.rate_limit = headers['X-RateLimit-Limit'];
+        github.remaining_calls = headers['X-RateLimit-Remaining'];
+        github.rate_limit_reset = headers['X-RateLimit-Reset']; // new Date(this.rate_limit_reset * 1000)
+
+        // check Response Status
+        console.log(xhr.status);
+        // response was successful, continue processing
+        if (xhr.status === 200) {
+            console.log('response was successful');
+            console.log(data);
+
+        // response has a redirect
+        } else if (xhr.status === 301 || xhr.status === 302 || xhr.status === 307) {
+            console.log('response has a redirect');
+            console.log(data);
+
+        // response has a client error
+        } else if (xhr.status === 400 || xhr.status === 422) {
+            console.log('response has a client error');
+            console.log(data);
+
+        // response is unauthorized
+        } else if (xhr.status === 401) {
+            console.log('response is unauthorized');
+            console.log(data);
+
+        // response is forbidden or not found
+        } else if (xhr.status === 404 || xhr.status === 403) {
+            console.log('response is forbidden or no found');
+            console.log(data);
+
+        } else {
+            console.log('reponse has unknown status');
+            console.log(data);
+        }
+
+    },
+    // API request urls
+    // build params, starts with access_token if it exists then extends with other_params if neccesary
+    build_params : functions(other_params) {
+        var params = {};
+        // add access_token to params if it exists
+        if (this.access_token !== '') {
+            params['access_token'] = this.access_token;
+        }
+        // extend params
+        $.extend(params, other_params);
+        // stringify as url params
+        params = $.param(params);
+        // prepend param identifier if paramas exist
+        if (params) {
+            params = '?=' + params;
+        }
+        return params
+    },
+    current_user_url : function () {
+        // https://api.github.com/user
+        var url = [this.api_url, 'user'].join('/') + this.build_params();
+        return url;
+    },
+    current_user_repositories_url : function (type, page, per_page, sort) {
+        // https://api.github.com/user/repos{?type,page,per_page,sort}
+        var url = '',
+            params = {};
+        if (type) { params['type'] = type; }
+        if (page) { params['page'] = page; }
+        if (per_page) { params['per_page'] = per_page; }
+        if (sort) { params['sort'] = sort; }
+        url = [this.api_url, 'user', 'repos'].join('/') + this.build_params();
+        return url;
+    },
+    user_url : function (user) {
+        // https://api.github.com/users/{user}
+        var url = [this.api_url, 'users', user].join('/') + this.build_params();
+        return url;
+    },
+    user_repositories_url : function (user, type, page, per_page, sort) {
+        // https://api.github.com/users/{user}/repos{?type,page,per_page,sort}
+        var url = '',
+            params = {};
+        if (type) { params['type'] = type; }
+        if (page) { params['page'] = page; }
+        if (per_page) { params['per_page'] = per_page; }
+        if (sort) { params['sort'] = sort; }
+        url = [this.api_url, 'users', user, 'repos'].join('/') + this.build_params();
+        return url;
+    },
+    emojis_url : function () {
+        // https://api.github.com/emojis
+        var url = [this.api_url, 'emojis'].join('/') + this.build_params();
+        return url;
+    },
+    followers_url : function (user) {
+        // https://api.github.com/users/{user}/followers
+        var url = [this.api_url, 'users', user, 'followers'].join('/') + this.build_params();
+        return url;
+    },
+    following_url : function (user) {
+        // https://api.github.com/users/{user}/following
+        var url = [this.api_url, 'users', user, 'following'].join('/') + this.build_params();
+        return url;
+    },
+    gists_url : function (user) {
+        // https://api.github.com/users/{user}/gists
+        var url = [this.api_url, 'users', user, 'gists'].join('/') + this.build_params();
+        return url;
+    },
+    rate_limit_url : function () {
+        // https://api.github.com/rate_limit
+        var url = [this.api_url, 'rate_limit'].join('/') + this.build_params();
+        return url;
+    },
+    repository_url : function (owner, repo) {
+        // https://api.github.com/repos/{owner}/{repo}
+        var url = [this.api_url, 'repos', owner, repo].join('/') + this.build_params();
+        return url;
+    },
+    starred_url : function () {
+        // https://api.github.com/user/starred
+        var url = [this.api_url, 'user', 'starred'].join('/') + this.build_params();
+        return url;
+    },
+    starred_gists_url : function () {
+        // https://api.github.com/gists/starred
+        var url = [this.api_url, 'gists', 'starred'].join('/') + this.build_params();
+        return url;
+    }
+}
+
 var API_URL = 'https://api.github.com',
     REPO_STATS_URLS = ['contributors', 'commit_activity', 'code_frequency', 'participation', 'punch_card'],
     HOUR_IN_MS = 60 * 60 * 1000;

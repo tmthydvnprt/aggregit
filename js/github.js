@@ -228,7 +228,7 @@ var github = {
     },
     // API request urls
     // build params, starts with access_token if it exists then extends with other_params if neccesary
-    build_params : functions(other_params) {
+    build_params : function(other_params) {
         var params = {};
         // add access_token to params if it exists
         if (this.access_token !== '') {

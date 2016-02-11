@@ -119,8 +119,8 @@ var github = {
 
     // API Access
     //--------------------------------------------------------------------------------------------------------------------------
-    state : cookieJar.has('state') ? cookieJar.get('state') : '',
-    access_token : cookieJar.has('access_token') && cookieJar.get('valid_auth') ? cookieJar.get('access_token') : '',
+    state : cookieJar.has('state') ? cookieJar.get('state') : null,
+    access_token : cookieJar.has('access_token') && cookieJar.get('valid_auth') ? cookieJar.get('access_token') : null,
     rate_limit : 60,
     remaining_calls : 60,
     rate_limit_reset : 0,
@@ -174,6 +174,40 @@ var github = {
             console.log('state is bad');
             console.log('did not authenticate');
             location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';
+        }
+    },
+    function check_authentication(callback) {
+        // Uses the rate_limit API to check if user authorization is still valid
+        console.log('Checking GitHub Authorization');
+
+        // If token exists, user authenticated at one point... check if still valid
+        if (this.access_token) {
+            console.log('Has Access Token, check if still valid');
+
+            // Check rate
+            $.when(this.request_handler('rate_limit')).done(function (rate_limit) {
+                console.log('Rate Limit request done');
+                if (rate_limit["message"] === "Bad credentials") {
+                    console.log('Token is not valid');
+                    cookieJar.set('valid_auth', false);
+                    callback(false);
+                } else {
+                    console.log('Token is still valid');
+                    cookieJar.set('valid_auth', true);
+                    cookieJar.set('auth_time', (new Date()).toISOString());
+                    callback(true);
+                }
+            }).fail(function (response) {
+                console.log('Rate Limit request failed');
+                console.log('Token is not valid');
+                cookieJar.set('valid_auth', false);
+                callback(false);
+            });
+
+        } else {
+            console.log('No Access Token');
+            cookieJar.set('valid_auth', false);
+            callback(false);
         }
     },
 

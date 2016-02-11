@@ -896,7 +896,7 @@ $(document).ready(function () {
         console.log('');
 
         // Check Authentication if last auth was more that five minutes ago
-        if (cookieJar.has('auth_time')) {
+        if (cookieJar.has('auth_time') && cookieJar.has('access_token')) {
             now = new Date();
             lastauth = new Date(cookieJar.get('auth_time'));
             if ((now - lastauth) > FIVE_MIN_IN_MS) {

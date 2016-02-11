@@ -316,6 +316,11 @@ var github = {
         var url = [this.api_url, 'repos', owner, repo, 'stats', stat].join('/') + this.build_params();
         return url;
     },
+    repository_languages_url : function (owner, repo) {
+        // https://api.github.com/repos/{owner}/{repo}/languages
+        var url = [this.api_url, 'repos', owner, repo, 'languages'].join('/') + this.build_params();
+        return url;
+    },
     starred_url : function () {
         // https://api.github.com/user/starred
         var url = [this.api_url, 'user', 'starred'].join('/') + this.build_params();

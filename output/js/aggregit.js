@@ -888,7 +888,7 @@ $(document).ready(function () {
         console.log('Welcome');
         console.log('');
         // Check Authentication
-        check_authentication(authOn);
+        github.check_authentication(authOn);
 
     } else {
         lastvisit = cookieJar.get('lastvisit');
@@ -900,13 +900,13 @@ $(document).ready(function () {
             now = new Date();
             lastauth = new Date(cookieJar.get('auth_time'));
             if ((now - lastauth) > FIVE_MIN_IN_MS) {
-                check_authentication(authOn);
+                github.check_authentication(authOn);
             } else {
                 console.log('Authenticated within the last 5 minutes.');
                 authOn(true);
             }
         } else {
-            check_authentication(authOn);
+            github.check_authentication(authOn);
         }
 
         // Identify Cookies

@@ -108,19 +108,25 @@ function parse_headers(header_string) {
 
 var github = {
     // API Defaults and Constants
+    //--------------------------------------------------------------------------------------------------------------------------
     api_url : 'https://api.github.com',
     client_id : '85bd6112f2a60a7edd66',
     oauth_url : 'https://github.com/login/oauth/authorize?',
     client_redirect : 'http://aggregit.com/#!/authenticate',
     oauth_proxy_url : 'http://aggregit-proxy-576273.appspot.com/?',
     auth_scope : '',
+    repo_stats : ['contributors', 'commit_activity', 'code_frequency', 'participation', 'punch_card'],
+
     // API Access
+    //--------------------------------------------------------------------------------------------------------------------------
     state : cookieJar.has('state') ? cookieJar.get('state') : '',
     access_token : cookieJar.has('access_token') && cookieJar.get('valid_auth') ? cookieJar.get('access_token') : '',
     rate_limit : 60,
     remaining_calls : 60,
     rate_limit_reset : 0,
+
     // Authorize and Authenticate
+    //--------------------------------------------------------------------------------------------------------------------------
     authorize : function() {
         var url = '';
         this.state = Math.random().toString(36).substr(2, 8) + Math.random().toString(36).substr(2, 8)
@@ -170,6 +176,9 @@ var github = {
             location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';
         }
     },
+
+    // API Access
+    //--------------------------------------------------------------------------------------------------------------------------
     // Request Handler
     request_handler : function(request) {
         var url = this[request + '_url']();
@@ -231,7 +240,9 @@ var github = {
         }
 
     },
+
     // API request urls
+    //--------------------------------------------------------------------------------------------------------------------------
     // build params, starts with access_token if it exists then extends with other_params if neccesary
     build_params : function(other_params) {
         var params = {};

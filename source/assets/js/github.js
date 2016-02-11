@@ -176,7 +176,7 @@ var github = {
             location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/home';
         }
     },
-    function check_authentication(callback) {
+    check_authentication : function(callback) {
         // Uses the rate_limit API to check if user authorization is still valid
         console.log('Checking GitHub Authorization');
 

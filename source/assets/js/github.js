@@ -200,6 +200,11 @@ var github = {
             console.log('response was successful');
             console.log(data);
 
+        // response was accepted, background processing needed, try again
+        } else if (xhr.status === 202) {
+            console.log('response was accepted, background processing needed, try again');
+            console.log(data);
+
         // response has a redirect
         } else if (xhr.status === 301 || xhr.status === 302 || xhr.status === 307) {
             console.log('response has a redirect');
@@ -304,6 +309,11 @@ var github = {
     repository_url : function (owner, repo) {
         // https://api.github.com/repos/{owner}/{repo}
         var url = [this.api_url, 'repos', owner, repo].join('/') + this.build_params();
+        return url;
+    },
+    repository_stats_url : function (owner, repo, stat) {
+        // https://api.github.com/repos/{owner}/{repo}/stats/{stat}
+        var url = [this.api_url, 'repos', owner, repo, 'stats', stat].join('/') + this.build_params();
         return url;
     },
     starred_url : function () {

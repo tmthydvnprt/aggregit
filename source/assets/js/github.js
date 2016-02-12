@@ -228,36 +228,36 @@ var github = {
         console.log(xhr.status);
         // response was successful, continue processing
         if (xhr.status === 200) {
-            console.log('response was successful');
+            console.log('Response was successful');
             console.log(data);
 
         // response was accepted, background processing needed, try again
         } else if (xhr.status === 202) {
-            console.log('response was accepted, background processing needed, try again');
+            console.log('Response was accepted, background processing needed, try again');
             console.log(data);
 
         // response has a redirect
         } else if (xhr.status === 301 || xhr.status === 302 || xhr.status === 307) {
-            console.log('response has a redirect');
+            console.log('Response has a redirect');
             console.log(data);
 
         // response has a client error
         } else if (xhr.status === 400 || xhr.status === 422) {
-            console.log('response has a client error');
+            console.log('Response has a client error');
             console.log(data);
 
         // response is unauthorized
         } else if (xhr.status === 401) {
-            console.log('response is unauthorized');
+            console.log('Response is unauthorized');
             console.log(data);
 
         // response is forbidden or not found
         } else if (xhr.status === 404 || xhr.status === 403) {
-            console.log('response is forbidden or no found');
+            console.log('Response is forbidden or no found');
             console.log(data);
 
         } else {
-            console.log('reponse has unknown status');
+            console.log('Response has unknown status');
             console.log(data);
         }
 

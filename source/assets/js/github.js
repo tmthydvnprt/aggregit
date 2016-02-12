@@ -368,7 +368,7 @@ var github = {
         this.request_handler('user', unurl(user));
     },
     get_repo : function(owner, repo) {
-        this.request_handler('repo', owner, repo);
+        this.request_handler('repository', owner, repo);
     }
 };
 

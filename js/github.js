@@ -200,8 +200,10 @@ var github = {
     //--------------------------------------------------------------------------------------------------------------------------
     // Request Handler
     request_handler : function(request) {
-        console.log(arguments);
-        var url = this[request + '_url'](arguments);
+        // Split of argument object into array for arguments after request
+        var args = Array.prototype.splice.call(arguments, 1);
+        // Pass argument array into requesting url function
+        var url = this[request + '_url'].apply(null, args);
         // Make sure there are enough API call available
         if (this.remaining_calls > 0) {
             console.log('Making API call');

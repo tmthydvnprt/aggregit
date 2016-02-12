@@ -208,7 +208,11 @@ var github = {
         if (this.remaining_calls > 0) {
             console.log('Making API call');
             console.log(url);
-            return $.getJSON(url, this.response_handler);
+            return $.ajax({
+                dataType: "json",
+                url: url,
+                always: this.response_handler
+            })
         } else {
             console.log('Not enough API calls left');
             return false;

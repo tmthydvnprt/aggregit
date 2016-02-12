@@ -5,7 +5,7 @@
  *
  * Copyright 2016 Timothy Davenport; Licensed MIT
  */
-/*
+*/
 
 function parse_headers(header_string) {
     /* Parses a header string as returned by xhr.getAllResponseHeaders()

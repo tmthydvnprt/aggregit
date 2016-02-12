@@ -207,6 +207,7 @@ var github = {
         // Make sure there are enough API call available
         if (this.remaining_calls > 0) {
             console.log('Making API call');
+            console.log(url);
             return $.getJSON(url, this.response_handler);
         } else {
             console.log('Not enough API calls left');
@@ -230,6 +231,20 @@ var github = {
         if (xhr.status === 200) {
             console.log('Response was successful');
             console.log(data);
+
+            // Response Routing
+            if (data.url.match('https://api.github.com/users/') || data.url.match('https://api.github.com/user/')) {
+                console.log('Response is a User');
+
+            } else if (data.url.match('https://api.github.com/repos/') ||
+                       data.url.match('https://api.github.com/user/repos') ||
+                       data.url.match('https://api.github.com/users/.*/repos')) {
+                console.log('Response is a Repo');
+
+            } else {
+                console.log('Response data has unknown type');
+
+            }
 
         // response was accepted, background processing needed, try again
         } else if (xhr.status === 202) {

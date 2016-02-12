@@ -170,7 +170,7 @@ var github = {
             console.log('Has Access Token, check if still valid');
 
             // Check rate
-            $.when(this.request_handler('rate_limit')).done(function (rate_limit) {
+             this.request_handler('rate_limit')).done(function (rate_limit) {
                 console.log('Rate Limit request done');
                 if (rate_limit["message"] === "Bad credentials") {
                     console.log('Token is not valid');
@@ -210,8 +210,7 @@ var github = {
             console.log(url);
             return $.ajax({
                 dataType: "json",
-                url: url,
-                always: this.response_handler
+                url: url
             })
         } else {
             console.log('Not enough API calls left');
@@ -392,10 +391,10 @@ var github = {
     // API requests
     //--------------------------------------------------------------------------------------------------------------------------
     get_user : function(user) {
-        this.request_handler('user', unurl(user));
+        $.when(this.request_handler('user', unurl(user))).always(this.response_handler);
     },
     get_repo : function(owner, repo) {
-        this.request_handler('repository', owner, repo);
+        $.when(this.request_handler('repository', owner, repo)).always(this.response_handler);
     }
 };
 

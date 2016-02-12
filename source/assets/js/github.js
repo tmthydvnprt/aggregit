@@ -179,8 +179,9 @@ var github = {
                 }
 
                 console.log('Rate Limit request done');
-                if (rate_limit["message"] === "Bad credentials") {
+                if (status === 'error' || data["message"] === "Bad credentials") {
                     console.log('Token is not valid');
+                    console.log(data);
                     cookieJar.set('valid_auth', false);
                     callback(false);
                 } else {
@@ -189,11 +190,6 @@ var github = {
                     cookieJar.set('auth_time', (new Date()).toISOString());
                     callback(true);
                 }
-            }).fail(function (response) {
-                console.log('Rate Limit request failed');
-                console.log('Token is not valid');
-                cookieJar.set('valid_auth', false);
-                callback(false);
             });
 
         } else {

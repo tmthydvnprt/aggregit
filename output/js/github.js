@@ -199,8 +199,9 @@ var github = {
     // API Access
     //--------------------------------------------------------------------------------------------------------------------------
     // Request Handler
-    request_handler : function(request, args) {
-        var url = this[request + '_url'](args);
+    request_handler : function(request) {
+        console.log(arguments);
+        var url = this[request + '_url'](arguments);
         // Make sure there are enough API call available
         if (this.remaining_calls > 0) {
             console.log('Making API call');

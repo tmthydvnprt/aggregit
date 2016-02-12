@@ -233,7 +233,10 @@ var github = {
             console.log(data);
 
             // Response Routing
-            if (data.url.match('https://api.github.com/users/') || data.url.match('https://api.github.com/user/')) {
+            if (data.hasOwnProperty(rate)) {
+                console.log('Response is a Rate Limit');
+
+            } else if (data.url.match('https://api.github.com/users/') || data.url.match('https://api.github.com/user/')) {
                 console.log('Response is a User');
 
             } else if (data.url.match('https://api.github.com/repos/') ||

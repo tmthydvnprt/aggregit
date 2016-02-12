@@ -170,7 +170,7 @@ var github = {
             console.log('Has Access Token, check if still valid');
 
             // Check rate
-             this.request_handler('rate_limit')).done(function (rate_limit) {
+            $.when(this.request_handler('rate_limit')).done(function (rate_limit) {
                 console.log('Rate Limit request done');
                 if (rate_limit["message"] === "Bad credentials") {
                     console.log('Token is not valid');

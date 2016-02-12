@@ -380,7 +380,7 @@ var github = {
             var url = [this.api_url, 'gists', 'starred'].join('/') + this.build_params();
             return url;
         },
-    }
+    },
 
     // API requests
     //--------------------------------------------------------------------------------------------------------------------------

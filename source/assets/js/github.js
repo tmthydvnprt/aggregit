@@ -203,7 +203,7 @@ var github = {
         // Split of argument object into array for arguments after request
         var args = Array.prototype.splice.call(arguments, 1),
         // Pass argument array into requesting url function
-            url = this[request + '_url'].apply(null, args);
+            url = this[request + '_url'].apply(this, args);
         // Make sure there are enough API call available
         if (this.remaining_calls > 0) {
             console.log('Making API call');

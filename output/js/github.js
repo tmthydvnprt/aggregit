@@ -203,10 +203,11 @@ var github = {
         // Split of argument object into array for arguments after request
         var args = Array.prototype.splice.call(arguments, 1),
         // Pass argument array into requesting url function
-            url = this[request + '_url'].apply(this, args);
+            url = this.urls[request].apply(this, args);
         // Make sure there are enough API call available
         if (this.remaining_calls > 0) {
             console.log('Making API call');
+            console.log(url);
             return $.getJSON(url, this.response_handler);
         } else {
             console.log('Not enough API calls left');
@@ -228,36 +229,50 @@ var github = {
         console.log(xhr.status);
         // response was successful, continue processing
         if (xhr.status === 200) {
-            console.log('response was successful');
+            console.log('Response was successful');
             console.log(data);
+
+            // Response Routing
+            if (data.url.match('https://api.github.com/users/') || data.url.match('https://api.github.com/user/')) {
+                console.log('Response is a User');
+
+            } else if (data.url.match('https://api.github.com/repos/') ||
+                       data.url.match('https://api.github.com/user/repos') ||
+                       data.url.match('https://api.github.com/users/.*/repos')) {
+                console.log('Response is a Repo');
+
+            } else {
+                console.log('Response data has unknown type');
+
+            }
 
         // response was accepted, background processing needed, try again
         } else if (xhr.status === 202) {
-            console.log('response was accepted, background processing needed, try again');
+            console.log('Response was accepted, background processing needed, try again');
             console.log(data);
 
         // response has a redirect
         } else if (xhr.status === 301 || xhr.status === 302 || xhr.status === 307) {
-            console.log('response has a redirect');
+            console.log('Response has a redirect');
             console.log(data);
 
         // response has a client error
         } else if (xhr.status === 400 || xhr.status === 422) {
-            console.log('response has a client error');
+            console.log('Response has a client error');
             console.log(data);
 
         // response is unauthorized
         } else if (xhr.status === 401) {
-            console.log('response is unauthorized');
+            console.log('Response is unauthorized');
             console.log(data);
 
         // response is forbidden or not found
         } else if (xhr.status === 404 || xhr.status === 403) {
-            console.log('response is forbidden or no found');
+            console.log('Response is forbidden or no found');
             console.log(data);
 
         } else {
-            console.log('reponse has unknown status');
+            console.log('Response has unknown status');
             console.log(data);
         }
 
@@ -282,88 +297,90 @@ var github = {
         }
         return params;
     },
-    current_user_url : function () {
-        // https://api.github.com/user
-        var url = [this.api_url, 'user'].join('/') + this.build_params();
-        return url;
-    },
-    current_user_repositories_url : function (type, page, per_page, sort) {
-        // https://api.github.com/user/repos{?type,page,per_page,sort}
-        var url = '',
+    urls : {
+        current_user : function () {
+            // https://api.github.com/user
+            var url = [this.api_url, 'user'].join('/') + this.build_params();
+            return url;
+        },
+        current_user_repositories : function (type, page, per_page, sort) {
+            // https://api.github.com/user/repos{?type,page,per_page,sort}
+            var url = '',
             params = {};
-        if (type) { params['type'] = type; }
-        if (page) { params['page'] = page; }
-        if (per_page) { params['per_page'] = per_page; }
-        if (sort) { params['sort'] = sort; }
-        url = [this.api_url, 'user', 'repos'].join('/') + this.build_params();
-        return url;
-    },
-    user_url : function (user) {
-        // https://api.github.com/users/{user}
-        var url = [this.api_url, 'users', user].join('/') + this.build_params();
-        return url;
-    },
-    user_repositories_url : function (user, type, page, per_page, sort) {
-        // https://api.github.com/users/{user}/repos{?type,page,per_page,sort}
-        var url = '',
+            if (type) { params['type'] = type; }
+            if (page) { params['page'] = page; }
+            if (per_page) { params['per_page'] = per_page; }
+            if (sort) { params['sort'] = sort; }
+            url = [this.api_url, 'user', 'repos'].join('/') + this.build_params();
+            return url;
+        },
+        user : function (user) {
+            // https://api.github.com/users/{user}
+            var url = [this.api_url, 'users', user].join('/') + this.build_params();
+            return url;
+        },
+        user_repositories : function (user, type, page, per_page, sort) {
+            // https://api.github.com/users/{user}/repos{?type,page,per_page,sort}
+            var url = '',
             params = {};
-        if (type) { params['type'] = type; }
-        if (page) { params['page'] = page; }
-        if (per_page) { params['per_page'] = per_page; }
-        if (sort) { params['sort'] = sort; }
-        url = [this.api_url, 'users', user, 'repos'].join('/') + this.build_params();
-        return url;
-    },
-    emojis_url : function () {
-        // https://api.github.com/emojis
-        var url = [this.api_url, 'emojis'].join('/') + this.build_params();
-        return url;
-    },
-    followers_url : function (user) {
-        // https://api.github.com/users/{user}/followers
-        var url = [this.api_url, 'users', user, 'followers'].join('/') + this.build_params();
-        return url;
-    },
-    following_url : function (user) {
-        // https://api.github.com/users/{user}/following
-        var url = [this.api_url, 'users', user, 'following'].join('/') + this.build_params();
-        return url;
-    },
-    gists_url : function (user) {
-        // https://api.github.com/users/{user}/gists
-        var url = [this.api_url, 'users', user, 'gists'].join('/') + this.build_params();
-        return url;
-    },
-    rate_limit_url : function () {
-        // https://api.github.com/rate_limit
-        var url = [this.api_url, 'rate_limit'].join('/') + this.build_params();
-        return url;
-    },
-    repository_url : function (owner, repo) {
-        // https://api.github.com/repos/{owner}/{repo}
-        var url = [this.api_url, 'repos', owner, repo].join('/') + this.build_params();
-        return url;
-    },
-    repository_stats_url : function (owner, repo, stat) {
-        // https://api.github.com/repos/{owner}/{repo}/stats/{stat}
-        var url = [this.api_url, 'repos', owner, repo, 'stats', stat].join('/') + this.build_params();
-        return url;
-    },
-    repository_languages_url : function (owner, repo) {
-        // https://api.github.com/repos/{owner}/{repo}/languages
-        var url = [this.api_url, 'repos', owner, repo, 'languages'].join('/') + this.build_params();
-        return url;
-    },
-    starred_url : function () {
-        // https://api.github.com/user/starred
-        var url = [this.api_url, 'user', 'starred'].join('/') + this.build_params();
-        return url;
-    },
-    starred_gists_url : function () {
-        // https://api.github.com/gists/starred
-        var url = [this.api_url, 'gists', 'starred'].join('/') + this.build_params();
-        return url;
-    },
+            if (type) { params['type'] = type; }
+            if (page) { params['page'] = page; }
+            if (per_page) { params['per_page'] = per_page; }
+            if (sort) { params['sort'] = sort; }
+            url = [this.api_url, 'users', user, 'repos'].join('/') + this.build_params();
+            return url;
+        },
+        emojis : function () {
+            // https://api.github.com/emojis
+            var url = [this.api_url, 'emojis'].join('/') + this.build_params();
+            return url;
+        },
+        followers : function (user) {
+            // https://api.github.com/users/{user}/followers
+            var url = [this.api_url, 'users', user, 'followers'].join('/') + this.build_params();
+            return url;
+        },
+        following : function (user) {
+            // https://api.github.com/users/{user}/following
+            var url = [this.api_url, 'users', user, 'following'].join('/') + this.build_params();
+            return url;
+        },
+        gists : function (user) {
+            // https://api.github.com/users/{user}/gists
+            var url = [this.api_url, 'users', user, 'gists'].join('/') + this.build_params();
+            return url;
+        },
+        rate_limit : function () {
+            // https://api.github.com/rate_limit
+            var url = [this.api_url, 'rate_limit'].join('/') + this.build_params();
+            return url;
+        },
+        repository : function (owner, repo) {
+            // https://api.github.com/repos/{owner}/{repo}
+            var url = [this.api_url, 'repos', owner, repo].join('/') + this.build_params();
+            return url;
+        },
+        repository_stats : function (owner, repo, stat) {
+            // https://api.github.com/repos/{owner}/{repo}/stats/{stat}
+            var url = [this.api_url, 'repos', owner, repo, 'stats', stat].join('/') + this.build_params();
+            return url;
+        },
+        repository_languages : function (owner, repo) {
+            // https://api.github.com/repos/{owner}/{repo}/languages
+            var url = [this.api_url, 'repos', owner, repo, 'languages'].join('/') + this.build_params();
+            return url;
+        },
+        starred : function () {
+            // https://api.github.com/user/starred
+            var url = [this.api_url, 'user', 'starred'].join('/') + this.build_params();
+            return url;
+        },
+        starred_gists : function () {
+            // https://api.github.com/gists/starred
+            var url = [this.api_url, 'gists', 'starred'].join('/') + this.build_params();
+            return url;
+        },
+    }
 
     // API requests
     //--------------------------------------------------------------------------------------------------------------------------

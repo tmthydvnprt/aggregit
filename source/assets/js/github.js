@@ -65,6 +65,43 @@ var github = {
     oauth_proxy_url : 'http://aggregit-proxy-576273.appspot.com/?',
     auth_scope : '',
     repo_stats : ['contributors', 'commit_activity', 'code_frequency', 'participation', 'punch_card'],
+    user_keys : {
+        "login": "",
+        "id": 0,
+        "avatar_url": "",
+        "html_url": "",
+        "site_admin": false,
+        "name": "",
+        "company": "",
+        "blog": "",
+        "location": "",
+        "email": "",
+        "hireable": false,
+        "public_repos": 0,
+        "public_gists": 0,
+        "followers": 0,
+        "following": 0,
+        "created_at": null,
+        "updated_at": null,
+        "is_cookie" : false
+    },
+    repo_keys : {
+        "name": "",
+        "owner": {"login": ""},
+        "html_url": "",
+        "description": "",
+        "fork": false,
+        "created_at": null,
+        "updated_at": null,
+        "pushed_at": null,
+        "size": 0,
+        "stargazers_count": 0,
+        "watchers_count": 0,
+        "has_pages": true,
+        "forks_count": 0,
+        "open_issues_count": 0,
+        "is_cookie" : false
+    },
 
     // API Access
     //--------------------------------------------------------------------------------------------------------------------------
@@ -163,8 +200,8 @@ var github = {
     // API Access
     //--------------------------------------------------------------------------------------------------------------------------
     // Request Handler
-    request_handler : function(request) {
-        var url = this[request + '_url']();
+    request_handler : function(request, args) {
+        var url = this[request + '_url'](args);
         // Make sure there are enough API call available
         if (this.remaining_calls > 0) {
             console.log('Making API call');
@@ -324,6 +361,12 @@ var github = {
         // https://api.github.com/gists/starred
         var url = [this.api_url, 'gists', 'starred'].join('/') + this.build_params();
         return url;
+    },
+
+    // API requests
+    //--------------------------------------------------------------------------------------------------------------------------
+    get_user : function(user) {
+        this.request_handler('user', unurl(user));
     }
 };
 
@@ -357,7 +400,7 @@ function getGitHubUser(username, callback) {
         repo = {
             "name": "",
             "owner": {"login": ""},
-//                "html_url": "",
+            "html_url": "",
             "description": "",
             "fork": false,
             "created_at": null,

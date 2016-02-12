@@ -5,58 +5,7 @@
  *
  * Copyright 2016 Timothy Davenport; Licensed MIT
  */
-
- /*
-GitHub API Reference: https://api.github.com
-    [ ] "current_user_url": "https://api.github.com/user",
-    [-] "current_user_authorizations_html_url": "https://github.com/settings/connections/applications{/client_id}",
-    [-] "authorizations_url": "https://api.github.com/authorizations",
-    [-] "code_search_url": "https://api.github.com/search/code?q={query}{&page,per_page,sort,order}",
-    [-] "emails_url": "https://api.github.com/user/emails",
-    [ ] "emojis_url": "https://api.github.com/emojis",
-    [-] "events_url": "https://api.github.com/events",
-    [-] "feeds_url": "https://api.github.com/feeds",
-    [ ] "followers_url": "https://api.github.com/user/followers",
-    [ ] "following_url": "https://api.github.com/user/following{/target}",
-    [ ] "gists_url": "https://api.github.com/gists{/gist_id}",
-    [-] "hub_url": "https://api.github.com/hub",
-    [-] "issue_search_url": "https://api.github.com/search/issues?q={query}{&page,per_page,sort,order}",
-    [?] "issues_url": "https://api.github.com/issues",
-    [-] "keys_url": "https://api.github.com/user/keys",
-    [-] "notifications_url": "https://api.github.com/notifications",
-    [?] "organization_repositories_url": "https://api.github.com/orgs/{org}/repos{?type,page,per_page,sort}",
-    [?] "organization_url": "https://api.github.com/orgs/{org}",
-    [-] "public_gists_url": "https://api.github.com/gists/public",
-    [x] "rate_limit_url": "https://api.github.com/rate_limit",
-    [x] "repository_url": "https://api.github.com/repos/{owner}/{repo}",
-    [-] "repository_search_url": "https://api.github.com/search/repositories?q={query}{&page,per_page,sort,order}",
-    [ ] "current_user_repositories_url": "https://api.github.com/user/repos{?type,page,per_page,sort}",
-    [ ] "starred_url": "https://api.github.com/user/starred{/owner}{/repo}",
-    [ ] "starred_gists_url": "https://api.github.com/gists/starred",
-    [?] "team_url": "https://api.github.com/teams",
-    [x] "user_url": "https://api.github.com/users/{user}",
-    [-] "user_organizations_url": "https://api.github.com/user/orgs",
-    [ ] "user_repositories_url": "https://api.github.com/users/{user}/repos{?type,page,per_page,sort}",
-    [-] "user_search_url": "https://api.github.com/search/users?q={query}{&page,per_page,sort,order}"
-*/
-
 /*
-Github API to use:
-    - [ ] "current_user_url": "https://api.github.com/user"
-    - [ ] "current_user_repositories_url": "https://api.github.com/user/repos{?type,page,per_page,sort}"
-    - [x] "user_url": "https://api.github.com/users/{user}"
-    - [ ] "user_repositories_url": "https://api.github.com/users/{user}/repos{?type,page,per_page,sort}"
-    - [ ] "emojis_url": "https://api.github.com/emojis"
-    - [ ] "followers_url": "https://api.github.com/users/{user}/followers"
-    - [ ] "following_url": "https://api.github.com/users/{user}/following"
-    - [ ] "gists_url": "https://api.github.com/users/{user}/gists"
-    - [x] "rate_limit_url": "https://api.github.com/rate_limit"
-    - [x] "repository_url": "https://api.github.com/repos/{owner}/{repo}"
-    - [ ] "starred_url": "https://api.github.com/user/starred"
-    - [ ] "starred_gists_url": "https://api.github.com/gists/starred"
-
-    * on all append: '?=access_token{access_token}'
-*/
 
 function parse_headers(header_string) {
     /* Parses a header string as returned by xhr.getAllResponseHeaders()
@@ -116,6 +65,43 @@ var github = {
     oauth_proxy_url : 'http://aggregit-proxy-576273.appspot.com/?',
     auth_scope : '',
     repo_stats : ['contributors', 'commit_activity', 'code_frequency', 'participation', 'punch_card'],
+    user_keys : {
+        "login": "",
+        "id": 0,
+        "avatar_url": "",
+        "html_url": "",
+        "site_admin": false,
+        "name": "",
+        "company": "",
+        "blog": "",
+        "location": "",
+        "email": "",
+        "hireable": false,
+        "public_repos": 0,
+        "public_gists": 0,
+        "followers": 0,
+        "following": 0,
+        "created_at": null,
+        "updated_at": null,
+        "is_cookie" : false
+    },
+    repo_keys : {
+        "name": "",
+        "owner": {"login": ""},
+        "html_url": "",
+        "description": "",
+        "fork": false,
+        "created_at": null,
+        "updated_at": null,
+        "pushed_at": null,
+        "size": 0,
+        "stargazers_count": 0,
+        "watchers_count": 0,
+        "has_pages": true,
+        "forks_count": 0,
+        "open_issues_count": 0,
+        "is_cookie" : false
+    },
 
     // API Access
     //--------------------------------------------------------------------------------------------------------------------------
@@ -214,8 +200,8 @@ var github = {
     // API Access
     //--------------------------------------------------------------------------------------------------------------------------
     // Request Handler
-    request_handler : function(request) {
-        var url = this[request + '_url']();
+    request_handler : function(request, args) {
+        var url = this[request + '_url'](args);
         // Make sure there are enough API call available
         if (this.remaining_calls > 0) {
             console.log('Making API call');
@@ -375,6 +361,12 @@ var github = {
         // https://api.github.com/gists/starred
         var url = [this.api_url, 'gists', 'starred'].join('/') + this.build_params();
         return url;
+    },
+
+    // API requests
+    //--------------------------------------------------------------------------------------------------------------------------
+    get_user : function(user) {
+        this.request_handler('user', unurl(user));
     }
 };
 
@@ -408,7 +400,7 @@ function getGitHubUser(username, callback) {
         repo = {
             "name": "",
             "owner": {"login": ""},
-//                "html_url": "",
+            "html_url": "",
             "description": "",
             "fork": false,
             "created_at": null,

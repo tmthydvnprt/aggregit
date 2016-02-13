@@ -170,7 +170,7 @@ var github = {
         console.log('Checking GitHub Authorization');
 
         // If token exists, user authenticated at one point... check if still valid
-        if (this.access_token) {
+        if (cookieJar.has('access_token')) {
             console.log('Has Access Token, check if still valid');
 
             // Check rate

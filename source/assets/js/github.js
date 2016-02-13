@@ -505,7 +505,7 @@ var github = {
                 function(repos) {
                     // loop thru the repos
                     repos.forEach(function (repo, i) {
-                        this.get_repo(repo.owner.login, repo.name);
+                        github.get_repo(repo.owner.login, repo.name);
                     });
                 }
             )

@@ -918,6 +918,14 @@ $(document).ready(function () {
         console.log('');
     }
 
+    // Get auth user data if it doesn't exist
+    if (cookieJar.has('valid_auth') && cookieJar.get('valid_auth') && !cookieJar.has('auth_user')) {
+        console.log('Getting auth user data');
+        github.get_current_user();
+    } else {
+        console.log('Not authorized or already have auth user data');
+    }
+
     // listen for hash change or page load
     $(window).on('hashchange', router);
     $(window).on('load', router);

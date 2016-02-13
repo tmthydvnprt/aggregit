@@ -528,11 +528,19 @@ var github = {
             // Then get user's repos list
             this.get_user_repos(
                 user,
-                // Then get each repo
+                // Then loop thru each repo
                 function(repos) {
-                    // loop thru the repos
                     repos.forEach(function (repo, i) {
-                        github.get_repo(repo.owner.login, repo.name);
+                        // Get each individual repo data
+                        github.get_repo(
+                            repo.owner.login,
+                            repo.name,
+                            // Get each repo language
+                            github.get_repo_lang(
+                                repo.owner.login,
+                                repo.name
+                            )
+                        );
                     });
                 }
             )

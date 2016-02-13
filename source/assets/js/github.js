@@ -183,7 +183,7 @@ var github = {
                 }
 
                 console.log('Rate Limit request done');
-                if (status === 'error' || data["message"] === "Bad credentials") {
+                if (status === 'error' && data["message"] === "Bad credentials") {
                     console.log('Token is not valid');
                     console.log(data);
                     cookieJar.set('valid_auth', false);

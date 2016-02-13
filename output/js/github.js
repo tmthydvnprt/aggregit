@@ -442,7 +442,11 @@ var github = {
             // Grab only the data we need
             var user = copyBIfInA(github.user_keys, user_data);
             // Store Data
-            github.data['user'] = user;
+            if (github.data.hasOwnProperty('user')) {
+                $.extend(true, github.data.user, user);
+            } else {
+                github.data['user'] = user;
+            }
             // Send back data
             if (callback) {
                 callback(user);
@@ -453,20 +457,17 @@ var github = {
         user = unurl(user);
         $.when(this.request_handler('user_repositories', user)).always(this.response_handler).done(function(repos_data) {
             var repos = [];
-
             // Loop thru repos
             repos_data.forEach(function (repo_data, i) {
                 // Grab only the data we need
                 repos.push(copyBIfInA(github.repo_keys, repo_data));
             });
-
             // Store Data
             if (github.data.user.hasOwnProperty('repos')) {
                 github.data.user.repos.push.apply(github.data.user.repos, repos);
             } else {
                 github.data.user['repos'] = repos;
             }
-
             // Send back data
             if (callback) {
                 callback(repos);

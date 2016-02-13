@@ -249,7 +249,7 @@ var github = {
             console.log(data);
 
             // Response Routing
-            if (data.hasOwnProperty(rate)) {
+            if (data.hasOwnProperty('rate')) {
                 console.log('Response is a Rate Limit');
 
             } else if (data.url.match('https://api.github.com/user/') ||

@@ -479,12 +479,13 @@ var github = {
         repo = unurl(repo);
         $.when(this.request_handler('repository', owner, repo)).always(this.response_handler).done(function(repo_data) {
             // Grab only the data we need
-            var repo = copyBIfInA(github.repo_keys, repo_data);
+            var repo = copyBIfInA(github.repo_keys, repo_data),
+                name = repo.name;
             // Store Data
             if (github.data.user.hasOwnProperty('repos')) {
-                github.data.user.repos[repo['name']] = repo;
+                github.data.user.repos[name] = repo;
             } else {
-                github.data.user['repos'] = {repo['name']: repo};
+                github.data.user['repos'] = {name : repo};
             }
             // Send back data
             if (callback) {

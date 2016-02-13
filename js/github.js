@@ -148,10 +148,14 @@ var github = {
                 if (access.hasOwnProperty('access_token')) {
                     console.log('token is good');
                     console.log('authenticated');
+                    // Store auth access
                     github.access_token = access['access_token'];
                     cookieJar.set('access_token', access['access_token']);
                     cookieJar.set('valid_auth', true);
                     cookieJar.set('auth_time', (new Date()).toISOString());
+                    // Get auth user data
+                    github.get_current_user();
+                    // if user was begining a search before authenticating, send them back to their search
                     username = cookieJar.has('searchUser') ? cookieJar.get('searchUser') : '';
                     location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/user=' + username;
                 } else {
@@ -404,14 +408,34 @@ var github = {
 
     // API requests
     //--------------------------------------------------------------------------------------------------------------------------
+    // Auth User
+    get_current_user : function() {
+        $.when(this.request_handler('current_user')).always(this.response_handler).done(function(user_data) {
+            // Grab only the data we need
+            var user = copyBIfInA(github.user_keys, user_data);
+            // Store Data
+            github.data['auth_user'] = user;
+            cookieJar.set('auth_user', user);
+        });
+    },
+    current_user_repos : function() {
+        $.when(this.request_handler('current_user_repositories')).always(this.response_handler).done(function(repo_data) {
+            // Grab only the data we need
+            var repo = copyBIfInA(github.repo_keys, repo_data);
+        });
+    },
+    // Queried User
     get_user : function(user) {
-        $.when(this.request_handler('user', unurl(user))).always(this.response_handler).always(function(data) {
-            console.log('Got to a second always function');
-            console.log(data);
+        $.when(this.request_handler('user', unurl(user))).always(this.response_handler).done(function(user_data) {
+            // Grab only the data we need
+            var user = copyBIfInA(github.user_keys, user_data);
         });
     },
     get_repo : function(owner, repo) {
-        $.when(this.request_handler('repository', owner, repo)).always(this.response_handler);
+        $.when(this.request_handler('repository', owner, repo)).always(this.response_handler).done(function(repo_data) {
+            // Grab only the data we need
+            var repo = copyBIfInA(github.repo_keys, repo_data);
+        });
     }
 };
 

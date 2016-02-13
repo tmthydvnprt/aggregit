@@ -153,8 +153,6 @@ var github = {
                     cookieJar.set('access_token', access['access_token']);
                     cookieJar.set('valid_auth', true);
                     cookieJar.set('auth_time', (new Date()).toISOString());
-                    // Get auth user data
-                    github.get_current_user();
                     // if user was begining a search before authenticating, send them back to their search
                     username = cookieJar.has('searchUser') ? cookieJar.get('searchUser') : '';
                     location.href = location.href.replace(location.search, '').replace(location.hash, '') + '#!/user=' + username;

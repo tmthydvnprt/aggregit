@@ -112,7 +112,10 @@ var github = {
 
     // API Data
     //--------------------------------------------------------------------------------------------------------------------------
-    data : {},
+    data : {
+        'auth_user' : {},
+        'user' : {}
+    },
 
     // Authorize and Authenticate
     //--------------------------------------------------------------------------------------------------------------------------
@@ -432,24 +435,64 @@ var github = {
     },
     // Queried User
     get_user : function(user, callback) {
-        $.when(this.request_handler('user', unurl(user))).always(this.response_handler).done(function(user_data) {
+        user = unurl(user);
+        $.when(this.request_handler('user', user)).always(this.response_handler).done(function(user_data) {
             // Grab only the data we need
             var user = copyBIfInA(github.user_keys, user_data);
+            // Store Data
+            github.data['user'] = user;
             // Send back data
             if (callback) {
                 callback(user);
             }
         });
     },
+    get_user_repos : function(user, callback) {
+        user = unurl(user);
+        $.when(this.request_handler('user_repositories', user)).always(this.response_handler).done(function(repos_data) {
+            var repos = [];
+
+            // Loop thru repos
+            repos_data.forEach(function (repo_data, i) {
+                // Grab only the data we need
+                repos.push(copyBIfInA(github.repo_keys, repo_data));
+            });
+
+            // Store Data
+            if (github.data.user.hasOwnProperty('repos')) {
+                github.data.user.repos.push.apply(github.data.user.repos, repos);
+            } else {
+                github.data.user['repos'] = repos;
+            }
+
+            // Send back data
+            if (callback) {
+                callback(repos);
+            }
+        });
+    },
     get_repo : function(owner, repo, callback) {
+        owner = unurl(owner);
+        repo = unurl(repo);
         $.when(this.request_handler('repository', owner, repo)).always(this.response_handler).done(function(repo_data) {
             // Grab only the data we need
             var repo = copyBIfInA(github.repo_keys, repo_data);
+            // Store Data
+            if (github.data.user.hasOwnProperty('repos')) {
+                github.data.user.repos.push(repo);
+            } else {
+                github.data.user['repos'] = [repo];
+            }
             // Send back data
             if (callback) {
                 callback(repo);
             }
         });
+    },
+    // Try to get everything public from a queried user
+    get_all_user_data : function(user, callback) {
+        // Start with user Object
+        this.get_user(user, this.get_user_repos(user));
     }
 };
 

@@ -213,14 +213,13 @@ var github = {
             url = this.urls[request].apply(this, args);
         // Make sure there are enough API call available
         if (this.remaining_calls > 0) {
-            console.log('Making API call');
-            console.log(url);
+            console.log('({0}) Making API call: {1}'.format((this.rate_limit - this.remaining_calls), url));
             return $.ajax({
                 dataType: "json",
                 url: url
             })
         } else {
-            console.log('Not enough API calls left');
+            console.log('Not enough API calls left. Reset at {0}'.format(new Date(this.rate_limit_reset * 1000)));
             return false;
         }
     },
@@ -240,7 +239,7 @@ var github = {
         // store rate limits
         github.rate_limit = headers['X-RateLimit-Limit'];
         github.remaining_calls = headers['X-RateLimit-Remaining'];
-        github.rate_limit_reset = headers['X-RateLimit-Reset']; // new Date(this.rate_limit_reset * 1000)
+        github.rate_limit_reset = headers['X-RateLimit-Reset'];
 
         // check Response Status
         console.log(xhr.status);
@@ -253,7 +252,8 @@ var github = {
             if (data.hasOwnProperty(rate)) {
                 console.log('Response is a Rate Limit');
 
-            } else if (data.url.match('https://api.github.com/users/') || data.url.match('https://api.github.com/user/')) {
+            } else if (data.url.match('https://api.github.com/user/') ||
+                       data.url.match('https://api.github.com/users/')) {
                 console.log('Response is a User');
 
             } else if (data.url.match('https://api.github.com/repos/') ||

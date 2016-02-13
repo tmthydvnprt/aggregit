@@ -105,7 +105,7 @@ var github = {
     // API Access
     //--------------------------------------------------------------------------------------------------------------------------
     state : cookieJar.has('state') ? cookieJar.get('state') : null,
-    access_token : cookieJar.has('access_token') && cookieJar.get('valid_auth') ? cookieJar.get('access_token') : null,
+    access_token : cookieJar.has('access_token') ? cookieJar.get('access_token') : null,
     rate_limit : 60,
     remaining_calls : 60,
     rate_limit_reset : 0,
@@ -170,7 +170,7 @@ var github = {
         console.log('Checking GitHub Authorization');
 
         // If token exists, user authenticated at one point... check if still valid
-        if (cookieJar.has('access_token')) {
+        if (this.access_token) {
             console.log('Has Access Token, check if still valid');
 
             // Check rate

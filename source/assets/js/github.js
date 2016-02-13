@@ -405,7 +405,10 @@ var github = {
     // API requests
     //--------------------------------------------------------------------------------------------------------------------------
     get_user : function(user) {
-        $.when(this.request_handler('user', unurl(user))).always(this.response_handler);
+        $.when(this.request_handler('user', unurl(user))).always(this.response_handler).always(function(data) {
+            console.log('Got to a second always function');
+            console.log(data);
+        });
     },
     get_repo : function(owner, repo) {
         $.when(this.request_handler('repository', owner, repo)).always(this.response_handler);

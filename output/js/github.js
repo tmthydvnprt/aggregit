@@ -110,6 +110,10 @@ var github = {
     remaining_calls : 60,
     rate_limit_reset : 0,
 
+    // API Data
+    //--------------------------------------------------------------------------------------------------------------------------
+    data : {},
+
     // Authorize and Authenticate
     //--------------------------------------------------------------------------------------------------------------------------
     authorize : function() {
@@ -179,7 +183,7 @@ var github = {
                 }
 
                 console.log('Rate Limit request done');
-                if (status === 'error' || data["message"] === "Bad credentials") {
+                if (status === 'error' && data["message"] === "Bad credentials") {
                     console.log('Token is not valid');
                     console.log(data);
                     cookieJar.set('valid_auth', false);
@@ -209,14 +213,13 @@ var github = {
             url = this.urls[request].apply(this, args);
         // Make sure there are enough API call available
         if (this.remaining_calls > 0) {
-            console.log('Making API call');
-            console.log(url);
+            console.log('({0}) Making API call: {1}'.format((this.rate_limit - this.remaining_calls), url));
             return $.ajax({
                 dataType: "json",
                 url: url
             })
         } else {
-            console.log('Not enough API calls left');
+            console.log('Not enough API calls left. Reset at {0}'.format(new Date(this.rate_limit_reset * 1000)));
             return false;
         }
     },
@@ -236,7 +239,7 @@ var github = {
         // store rate limits
         github.rate_limit = headers['X-RateLimit-Limit'];
         github.remaining_calls = headers['X-RateLimit-Remaining'];
-        github.rate_limit_reset = headers['X-RateLimit-Reset']; // new Date(this.rate_limit_reset * 1000)
+        github.rate_limit_reset = headers['X-RateLimit-Reset'];
 
         // check Response Status
         console.log(xhr.status);
@@ -249,7 +252,8 @@ var github = {
             if (data.hasOwnProperty(rate)) {
                 console.log('Response is a Rate Limit');
 
-            } else if (data.url.match('https://api.github.com/users/') || data.url.match('https://api.github.com/user/')) {
+            } else if (data.url.match('https://api.github.com/user/') ||
+                       data.url.match('https://api.github.com/users/')) {
                 console.log('Response is a User');
 
             } else if (data.url.match('https://api.github.com/repos/') ||
@@ -401,7 +405,10 @@ var github = {
     // API requests
     //--------------------------------------------------------------------------------------------------------------------------
     get_user : function(user) {
-        $.when(this.request_handler('user', unurl(user))).always(this.response_handler);
+        $.when(this.request_handler('user', unurl(user))).always(this.response_handler).always(function(data) {
+            console.log('Got to a second always function');
+            console.log(data);
+        });
     },
     get_repo : function(owner, repo) {
         $.when(this.request_handler('repository', owner, repo)).always(this.response_handler);

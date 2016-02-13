@@ -214,11 +214,14 @@ var github = {
     request_handler : function(request) {
         // Split of argument object into array for arguments after request
         var args = Array.prototype.splice.call(arguments, 1),
-        // Pass argument array into requesting url function
-            url = this.urls[request].apply(this, args);
+            // Pass argument array into requesting url function
+            url = this.urls[request].apply(this, args),
+            // Get last number of remaining_calls and subtract the number of existing unfinished calls
+            remaining_calls = this.remaining_calls - $.active(),
+            call_number = this.rate_limit - this.remaining_calls + $.active();
         // Make sure there are enough API call available
-        if (this.remaining_calls > 0) {
-            console.log('({0}) Making API call: {1}'.format((this.rate_limit - this.remaining_calls), url));
+        if (remaining_calls > 0) {
+            console.log('({0}) Making API call: {1}'.format(call_number, url));
             return $.ajax({
                 dataType: "json",
                 url: url

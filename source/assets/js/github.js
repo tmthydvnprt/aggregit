@@ -257,13 +257,13 @@ var github = {
             if (data.hasOwnProperty('rate')) {
                 console.log('Response is a Rate Limit');
 
-            } else if (request_url.match('https://api.github.com/user/') ||
-                       request_url.match('https://api.github.com/users/')) {
-                console.log('Response is a User');
-
             } else if (request_url.match('https://api.github.com/user/repos') ||
                        request_url.match('https://api.github.com/users/.*/repos')) {
                 console.log('Response is a list of Repos');
+
+            } else if (request_url.match('https://api.github.com/user/') ||
+                       request_url.match('https://api.github.com/users/')) {
+                console.log('Response is a User');
 
             } else if (request_url.match('https://api.github.com/repos/') ) {
                 console.log('Response is a Repo');

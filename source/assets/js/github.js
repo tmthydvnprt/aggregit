@@ -482,9 +482,9 @@ var github = {
             var repo = copyBIfInA(github.repo_keys, repo_data);
             // Store Data
             if (github.data.user.hasOwnProperty('repos')) {
-                github.data.user.repos[repo.name] = repo;
+                github.data.user.repos[repo['name']] = repo;
             } else {
-                github.data.user['repos'] = {repo.name: repo};
+                github.data.user['repos'] = {repo['name']: repo};
             }
             // Send back data
             if (callback) {

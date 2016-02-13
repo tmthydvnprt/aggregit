@@ -642,6 +642,8 @@ $(document).ready(function () {
             $('#auth-icon').attr('href', 'Nice!');
             $('#auth-icon').attr('alt', 'GitHub access is authorized!');
             $('#auth-icon').attr('title', 'GitHub access is authorized!');
+            // Recheck auth user data
+            github.get_current_user();
         } else {
             $('#auth-icon i').removeClass('fa-check-circle');
             $('#auth-icon i').addClass('fa-times-circle');
@@ -919,6 +921,7 @@ $(document).ready(function () {
     }
 
     // Get auth user data if it doesn't exist
+    // This is placed here to catch a newly authenticated user coming back from a github redirect to a new page (all object re initialiazed, only have cookies)
     if (cookieJar.has('valid_auth') && cookieJar.get('valid_auth') && !cookieJar.has('auth_user')) {
         console.log('Getting auth user data');
         github.get_current_user();

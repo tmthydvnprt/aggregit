@@ -407,32 +407,48 @@ var github = {
     // API requests
     //--------------------------------------------------------------------------------------------------------------------------
     // Auth User
-    get_current_user : function() {
+    get_current_user : function(callback) {
         $.when(this.request_handler('current_user')).always(this.response_handler).done(function(user_data) {
             // Grab only the data we need
             var user = copyBIfInA(github.user_keys, user_data);
             // Store Data
             github.data['auth_user'] = user;
             cookieJar.set('auth_user', user);
+            // Send back data
+            if (callback) {
+                callback(user);
+            }
         });
     },
-    current_user_repos : function() {
+    current_user_repos : function(callback) {
         $.when(this.request_handler('current_user_repositories')).always(this.response_handler).done(function(repo_data) {
             // Grab only the data we need
             var repo = copyBIfInA(github.repo_keys, repo_data);
+            // Send back data
+            if (callback) {
+                callback(repo);
+            }
         });
     },
     // Queried User
-    get_user : function(user) {
+    get_user : function(user, callback) {
         $.when(this.request_handler('user', unurl(user))).always(this.response_handler).done(function(user_data) {
             // Grab only the data we need
             var user = copyBIfInA(github.user_keys, user_data);
+            // Send back data
+            if (callback) {
+                callback(user);
+            }
         });
     },
-    get_repo : function(owner, repo) {
+    get_repo : function(owner, repo, callback) {
         $.when(this.request_handler('repository', owner, repo)).always(this.response_handler).done(function(repo_data) {
             // Grab only the data we need
             var repo = copyBIfInA(github.repo_keys, repo_data);
+            // Send back data
+            if (callback) {
+                callback(repo);
+            }
         });
     }
 };

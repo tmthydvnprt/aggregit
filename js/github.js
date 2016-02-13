@@ -496,6 +496,30 @@ var github = {
             }
         });
     },
+    get_repo_lang : function(owner, repo, callback) {
+        owner = unurl(owner);
+        repo = unurl(repo);
+        $.when(this.request_handler('repository_languages', owner, repo)).always(this.response_handler).done(function(repo_lang_data) {
+            // Determine which repo it came from based on url
+            var name = this.url.match(/https:\/\/api.github.com\/repos\/.*\/(.*)\/languages\?access_token=.*/);
+
+            if (name && name.length > 1) {
+                name = name[1];
+                // Store Data
+                if (github.data.user.repos.hasOwnProperty(name)) {
+                    github.data.user.repos[name]['languages'] = repo_lang_data;
+                } else {
+                    github.data.user.repos = {'languages' : repo_lang_data};
+                }
+            } else {
+                console.log('Bad url parse. Couldn\'t get repo name.');
+            }
+            // Send back data
+            if (callback) {
+                callback(repo);
+            }
+        });
+    },
     // Try to get everything public from a queried user
     get_all_user_data : function(user, callback) {
         // Start with user Object
@@ -504,11 +528,19 @@ var github = {
             // Then get user's repos list
             this.get_user_repos(
                 user,
-                // Then get each repo
+                // Then loop thru each repo
                 function(repos) {
-                    // loop thru the repos
                     repos.forEach(function (repo, i) {
-                        github.get_repo(repo.owner.login, repo.name);
+                        // Get each individual repo data
+                        github.get_repo(
+                            repo.owner.login,
+                            repo.name,
+                            // Get each repo language
+                            github.get_repo_lang(
+                                repo.owner.login,
+                                repo.name
+                            )
+                        );
                     });
                 }
             )

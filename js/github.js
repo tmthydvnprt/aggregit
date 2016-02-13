@@ -463,10 +463,10 @@ var github = {
                 repos.push(copyBIfInA(github.repo_keys, repo_data));
             });
             // Store Data
-            if (github.data.user.hasOwnProperty('repos')) {
-                github.data.user.repos.push.apply(github.data.user.repos, repos);
+            if (github.data.user.hasOwnProperty('repo_list')) {
+                github.data.user.repo_list.push.apply(github.data.user.repo_list, repos);
             } else {
-                github.data.user['repos'] = repos;
+                github.data.user['repo_list'] = repos;
             }
             // Send back data
             if (callback) {
@@ -482,9 +482,9 @@ var github = {
             var repo = copyBIfInA(github.repo_keys, repo_data);
             // Store Data
             if (github.data.user.hasOwnProperty('repos')) {
-                github.data.user.repos.push(repo);
+                github.data.user.repos[repo.name] = repo;
             } else {
-                github.data.user['repos'] = [repo];
+                github.data.user['repos'] = {repo.name: repo};
             }
             // Send back data
             if (callback) {
@@ -495,7 +495,20 @@ var github = {
     // Try to get everything public from a queried user
     get_all_user_data : function(user, callback) {
         // Start with user Object
-        this.get_user(user, this.get_user_repos(user));
+        this.get_user(
+            user,
+            // Then get user's repos list
+            this.get_user_repos(
+                user,
+                // Then get each repo
+                function(repos) {
+                    // loop thru the repos
+                    repos.forEach(function (repo, i) {
+                        this.get_repo(repo.owner.login, repo.name);
+                    }
+                }
+            )
+        );
     }
 };
 

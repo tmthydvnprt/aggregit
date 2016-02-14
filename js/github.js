@@ -256,7 +256,6 @@ var github = {
         // response was successful, continue processing
         if (xhr.status === 200) {
             route_log += ' Response was successful: ';
-
             // Response Routing
             if (data.hasOwnProperty('rate')) {
                 route_log += ' Rate Limit';
@@ -266,9 +265,9 @@ var github = {
             } else if (request_url.match('https://api.github.com/user/') ||
                        request_url.match('https://api.github.com/users/')) {
                 route_log += ' User';
-            } else if (request_url.match('https://api.github.com/users/repos/.*/.*/languages')) {
+            } else if (request_url.match('https://api.github.com/repos/.*/.*/languages')) {
                 route_log += ' Repo Language';
-            } else if (request_url.match('https://api.github.com/users/repos/.*/.*/stat')) {
+            } else if (request_url.match('https://api.github.com/repos/.*/.*/stat')) {
                 route_log += ' Repo Stat';
             } else if (request_url.match('https://api.github.com/repos/') ) {
                 route_log += ' Repo';
@@ -279,7 +278,7 @@ var github = {
         // response was accepted, background processing needed, try again
         } else if (xhr.status === 202) {
             route_log += ' Response was accepted, background processing needed, try again';
-            this.postponed_requests.push(request_url);
+            github.postponed_requests.push(request_url);
         // response has a redirect
         } else if (xhr.status === 301 || xhr.status === 302 || xhr.status === 307) {
             route_log += ' Response has a redirect';

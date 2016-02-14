@@ -523,7 +523,7 @@ var github = {
             }
         });
     },
-    get_repo_stats : function(owner, repo, stat, callback) {
+    get_repo_stat : function(owner, repo, stat, callback) {
         owner = unurl(owner);
         repo = unurl(repo);
         stat = unurl(stat);

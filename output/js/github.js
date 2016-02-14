@@ -569,7 +569,7 @@ var github = {
             }
         );
         // Set up callback to execute when all ajax requests are done
-        this.ajaxStop(function() {
+        $(document).ajaxStop(function() {
             alert('AJAX done');
         });
     }

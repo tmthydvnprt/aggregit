@@ -660,7 +660,7 @@ $(document).ready(function () {
         }
     }
 
-    // page js
+    // Page js
     // -------------------------------------------------------------------------------------
     var page        = $('#page'),
         hashparams  = [],
@@ -672,12 +672,12 @@ $(document).ready(function () {
         initHoldOff = 0,
         bringOut    = 0,
         now         = null,
-        // cookies
+        // Cookies
         lastvisit   = null,
         lastauth    = null,
-        //this will store the scroll position
+        // This will store the scroll position
         keepScroll  = false,
-        // store pages
+        // Store pages
         pages = {
             home : function () {
                 renderTemplate(page, 'home', 'aggregit');
@@ -685,29 +685,29 @@ $(document).ready(function () {
             user : function (params) {
                 // Check if auth is valid
                 var auth = cookieJar.get('valid_auth'),
-                // username fallback
+                // Username fallback
                     username = params[0] || EXAMPLE_USERNAME,
                     unauth = (params.length > 1 || params[1] === 'unauth') ? true : false;
-                // proceed as usual if authorized
+                // Proceed as usual if authorized
                 if (auth || unauth || username === EXAMPLE_USERNAME) {
                     console.log('Authorized! Aggregit User\n');
-                    // start rendering page
+                    // Start rendering page
                     renderTemplate(page, 'user', 'aggregit: ' + username);
-                    // check if cached user exists
-                    if (github.data.user && github.data.user.login === username) {
-                        console.log('Using Cached User Data (already requested this)');
+                    // Decide what data to get
+                    if (username === 'tmthydvnprt_example') {
+                        console.log('Requesting Example User Data (local)');
                         console.log('---------------------------------------------');
                         console.log('');
-                        renderUser(github.data.user, '');
+                        $.getJSON('data/tmthydvnprt_example.json', function (user) {
+                            renderUser(user, '');
+                        });
                     } else {
-                        // decide what data to get
-                        if (username === 'tmthydvnprt_example') {
-                            console.log('Requesting Example User Data (local)');
+                        // Check if cached user exists
+                        if (github.data.user && github.data.user.login === username) {
+                            console.log('Using Cached User Data (already requested this)');
                             console.log('---------------------------------------------');
                             console.log('');
-                            $.getJSON('data/tmthydvnprt_example.json', function (user) {
-                                renderUser(user, '');
-                            });
+                            renderUser(github.data.user, '');
                         } else {
                             // aggregit it all
                             $('#cached-user').remove();

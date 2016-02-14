@@ -478,7 +478,7 @@ var github = {
             // Store Data
             $.extend(true, github.data.user, {
                 'repos' : {
-                    [name] : repo_data
+                    [name] : repo
                 }
             });
             // Send back data

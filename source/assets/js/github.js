@@ -510,10 +510,11 @@ var github = {
                     if (github.data.user.repos.hasOwnProperty(name)) {
                         github.data.user.repos[name]['languages'] = repo_lang_data;
                     } else {
-                        github.data.user.repos = {'languages' : repo_lang_data};
+                        github.data.user.repos[name] = {'languages' : repo_lang_data};
                     }
                 } else {
-                    github.data.user['repos'] = {name : {'languages' : repo_lang_data}};
+                    github.data.user['repos'] = {};
+                    github.data.user['repos'][name] = {'languages' : repo_lang_data};
                 }
             } else {
                 console.log('Bad url parse. Couldn\'t get repo name.');

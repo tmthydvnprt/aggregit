@@ -1,4 +1,4 @@
-/*globals $,console,d3,cookieJar */
+/*globals $,console,d3,cookieJar,github */
 /*!
  * aggregit.js
  *
@@ -32,10 +32,7 @@ console.log('Is Blink: ' + isBlink);
 $(document).ready(function () {
     'use strict';
 
-    var cachedUser  = {
-            "message" : "There is no user data. Return to http://aggregit.com to access a GitHub user first."
-        },
-        textFile = null;
+    var textFile = null;
 
     function makeJsonFile(obj) {
 		var data = null,
@@ -61,10 +58,10 @@ $(document).ready(function () {
         }
 
         // Download/export user data as json
-        $('#export-btn').attr('href', makeJsonFile(cachedUser));
-        if (cachedUser.hasOwnProperty('login')) {
-            $('#export-btn').attr('download', cachedUser['login'] + '.json');
-            $('.filename').html(cachedUser['login'] + '.json');
+        $('#export-btn').attr('href', makeJsonFile(github.data.user));
+        if (github.data.user.hasOwnProperty('login')) {
+            $('#export-btn').attr('download', github.data.user['login'] + '.json');
+            $('.filename').html(github.data.user['login'] + '.json');
         } else {
             $('#export-btn').attr('download', 'warning_no_user_data.json');
             $('.filename').html('warning_no_user_data.json');
@@ -430,7 +427,9 @@ $(document).ready(function () {
         var aggPunchCard = [],
             h = 0,
             d = 0,
-            punchRepos = [];
+            punchRepos = [],
+            key = '',
+            repo = {};
 
         // fill empty punchcard
         for (d = 0; d < 7; d += 1) {
@@ -446,14 +445,15 @@ $(document).ready(function () {
 
         // aggregate punch card data
         console.log('Aggregating Punch Card:');
-        user.repos.forEach(function (repo, i) {
+        for (key in user.repos) {
+            repo = user.repos[key];
             if ($.inArray(repo.name, punchRepos) > -1) {
                 console.log('    ' + repo.name);
                 repo.stats.punch_card.forEach(function (punch, i) {
                     aggPunchCard[i][2] += punch[2];
                 });
             }
-        });
+        }
         console.log('');
         renderPunchCard('#punchcard', aggPunchCard);
     }
@@ -467,7 +467,9 @@ $(document).ready(function () {
             punchRepos = [],
             owner = false,
             all = false,
-            zoom = false;
+            zoom = false,
+            key = '',
+            repo = {};
 
         //gather which repos, time, and who to include
         $('#participation-checklist input:checked').each(function () {
@@ -493,7 +495,8 @@ $(document).ready(function () {
 
         // aggregate participation data
         console.log('Aggregating Participation:');
-        user.repos.forEach(function (repo, i) {
+        for (key in user.repos) {
+            repo = user.repos[key];
             if ($.inArray(repo.name, punchRepos) > -1) {
                 console.log('    ' + repo.name);
                 for (d = 0; d < PARTICIPATION_SIZE; d += 1) {
@@ -505,7 +508,7 @@ $(document).ready(function () {
                     }
                 }
             }
-        });
+        }
         if (zoom) {
             for (z = 0; z < aggParticipation.length; z += 1) {
                 if (aggParticipation[z].owner > 0 || aggParticipation[z].all > 0) {
@@ -521,7 +524,9 @@ $(document).ready(function () {
     function aggregateLanguages(user) {
         var aggLanguages = [],
             punchRepos = [],
-            language;
+            language = '',
+            key = '',
+            repo = {};
 
         //gather which repos, time, and who to include
         $('#languages-checklist input:checked').each(function () {
@@ -530,8 +535,8 @@ $(document).ready(function () {
 
         // aggregate language data
         console.log('Aggregating Languages:');
-        user.repos.forEach(function (repo, i) {
-            var language;
+        for (key in user.repos) {
+            repo = user.repos[key];
             if ($.inArray(repo.name, punchRepos) > -1) {
                 console.log('    ' + repo.name);
                 for (language in repo.languages) {
@@ -544,15 +549,13 @@ $(document).ready(function () {
                     }
                 }
             }
-        });
+        }
         console.log('');
         renderLanguages('#languages', aggLanguages);
     }
 
     function renderUser(user, errors) {
-        console.log('Caching User');
 
-        cachedUser = $.extend(true, {}, user);
         console.log('Render the User');
         console.log('---------------------------------------------');
         // update the DOM
@@ -565,7 +568,9 @@ $(document).ready(function () {
             );
         } else {
             var REPO_CHECKLIST_TEMPLATE = '<li><input {1} type="checkbox" name="{0}">{2}{0}</li>',
-                repoChecklist = [];
+                repoChecklist = [],
+                key = '',
+                repo = {};
 
             // format dates
             user.created_at = formatDate(new Date(user.created_at));
@@ -598,11 +603,12 @@ $(document).ready(function () {
             );
 
             // build repos selector
-            user.repos.forEach(function (repo, i) {
+            for (key in user.repos) {
+                repo = user.repos[key];
                 var check = (repo.fork) ? '' : 'checked=""',
                     fork = (repo.fork) ? '<i class="fa fa-code-fork text-info"></i> ' : '';
                 repoChecklist.push(REPO_CHECKLIST_TEMPLATE.format(repo.name, check, fork));
-            });
+            }
 
             // draw punchcard, and update when repo selector clicked
             $('#punchcard-checklist').html(repoChecklist.join(''));
@@ -642,6 +648,8 @@ $(document).ready(function () {
             $('#auth-icon').attr('href', 'Nice!');
             $('#auth-icon').attr('alt', 'GitHub access is authorized!');
             $('#auth-icon').attr('title', 'GitHub access is authorized!');
+            // Recheck auth user data
+            github.get_current_user();
         } else {
             $('#auth-icon i').removeClass('fa-check-circle');
             $('#auth-icon i').addClass('fa-times-circle');
@@ -652,7 +660,7 @@ $(document).ready(function () {
         }
     }
 
-    // page js
+    // Page js
     // -------------------------------------------------------------------------------------
     var page        = $('#page'),
         hashparams  = [],
@@ -664,12 +672,12 @@ $(document).ready(function () {
         initHoldOff = 0,
         bringOut    = 0,
         now         = null,
-        // cookies
+        // Cookies
         lastvisit   = null,
         lastauth    = null,
-        //this will store the scroll position
+        // This will store the scroll position
         keepScroll  = false,
-        // store pages
+        // Store pages
         pages = {
             home : function () {
                 renderTemplate(page, 'home', 'aggregit');
@@ -677,29 +685,29 @@ $(document).ready(function () {
             user : function (params) {
                 // Check if auth is valid
                 var auth = cookieJar.get('valid_auth'),
-                // username fallback
+                // Username fallback
                     username = params[0] || EXAMPLE_USERNAME,
-                    unauth = (params.length > 0 || params[1] === 'unauth') ? true : false;
-                // proceed as usual if authorized
+                    unauth = (params.length > 1 || params[1] === 'unauth') ? true : false;
+                // Proceed as usual if authorized
                 if (auth || unauth || username === EXAMPLE_USERNAME) {
                     console.log('Authorized! Aggregit User\n');
-                    // start rendering page
+                    // Start rendering page
                     renderTemplate(page, 'user', 'aggregit: ' + username);
-                    // check if cached user exists
-                    if (cachedUser && cachedUser.login === username) {
-                        console.log('Using Cached User Data (already requested this)');
+                    // Decide what data to get
+                    if (username === 'tmthydvnprt_example') {
+                        console.log('Requesting Example User Data (local)');
                         console.log('---------------------------------------------');
                         console.log('');
-                        renderUser(cachedUser, '');
+                        $.getJSON('data/tmthydvnprt_example.json', function (user) {
+                            renderUser(user, '');
+                        });
                     } else {
-                        // decide what data to get
-                        if (username === 'tmthydvnprt_example') {
-                            console.log('Requesting Example User Data (local)');
+                        // Check if cached user exists
+                        if (github.data.user && github.data.user.login === username) {
+                            console.log('Using Cached User Data (already requested this)');
                             console.log('---------------------------------------------');
                             console.log('');
-                            $.getJSON('data/tmthydvnprt_example.json', function (user) {
-                                renderUser(user, '');
-                            });
+                            renderUser(github.data.user, '');
                         } else {
                             // aggregit it all
                             $('#cached-user').remove();
@@ -707,7 +715,7 @@ $(document).ready(function () {
                             console.log('Requesting GitHub User Data');
                             console.log('---------------------------------------------');
                             console.log('');
-                            getGitHubUser(username, renderUser);
+                            github.get_all_user_data(username, renderUser);
                         }
                     }
                 // Store searched username and go get authorization if auth is not valid
@@ -722,7 +730,7 @@ $(document).ready(function () {
                 renderTemplate(page, 'authorize', 'aggregit: authorize');
                 $('#unauthorized').attr('href', '#!/user=' + cookieJar.get('searchUser') + '&unauth');
                 $('#authorize-btn').click(function (e) {
-                    github_authorize();
+                    github.authorize();
                 });
             },
             authenticate : function () {
@@ -730,7 +738,7 @@ $(document).ready(function () {
                 // Check if this is am authentication redirect from GitHub
                 if (location.search.indexOf('code') > -1) {
                     console.log('github redirect, create access token.');
-                    github_authenticate();
+                    github.authenticate();
                 } else {
                     console.log('missing authorization code.');
                 }
@@ -888,7 +896,7 @@ $(document).ready(function () {
         console.log('Welcome');
         console.log('');
         // Check Authentication
-        check_authentication(authOn);
+        github.check_authentication(authOn);
 
     } else {
         lastvisit = cookieJar.get('lastvisit');
@@ -896,17 +904,17 @@ $(document).ready(function () {
         console.log('');
 
         // Check Authentication if last auth was more that five minutes ago
-        if (cookieJar.has('auth_time')) {
+        if (cookieJar.has('auth_time') && cookieJar.has('access_token')) {
             now = new Date();
             lastauth = new Date(cookieJar.get('auth_time'));
             if ((now - lastauth) > FIVE_MIN_IN_MS) {
-                check_authentication(authOn);
+                github.check_authentication(authOn);
             } else {
                 console.log('Authenticated within the last 5 minutes.');
                 authOn(true);
             }
         } else {
-            check_authentication(authOn);
+            github.check_authentication(authOn);
         }
 
         // Identify Cookies
@@ -916,6 +924,15 @@ $(document).ready(function () {
             console.log('    {0}: {1}'.format(name, cookie));
         });
         console.log('');
+    }
+
+    // Get auth user data if it doesn't exist
+    // This is placed here to catch a newly authenticated user coming back from a github redirect to a new page (all object re initialiazed, only have cookies)
+    if (cookieJar.has('valid_auth') && cookieJar.get('valid_auth') && !cookieJar.has('auth_user')) {
+        console.log('Getting auth user data');
+        github.get_current_user();
+    } else {
+        console.log('Not authorized or already have auth user data');
     }
 
     // listen for hash change or page load

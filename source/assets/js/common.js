@@ -54,3 +54,18 @@ function formatDate(d) {
     var MONTHS = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ');
     return MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
 }
+
+// Inverse of $.param, parses string for url parameters
+function deparam(string) {
+    var params = {},
+        pair,
+        i;
+    // Remove url portion of string
+    string = string.substring(string.indexOf('?') + 1).split('&');
+    // Parse
+    for (i = string.length; i > 0;) {
+        pair = string[--i].split('=');
+        params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+    }
+    return params;
+}

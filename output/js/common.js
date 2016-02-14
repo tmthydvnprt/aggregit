@@ -43,7 +43,7 @@ function parse_headers(header_string) {
     // loop thru header lines
     for (i = 0; i < lines.length; i += 1) {
         // split line on first `:` for key:val par
-        keyval = lines[i].split(/:([\w]*)/);
+        keyval = lines[i].split(/:([\s\w]*)/);
         key = keyval[0].trim();
         val = keyval[1].trim();
         // try to parse value as null

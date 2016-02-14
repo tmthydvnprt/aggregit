@@ -428,6 +428,7 @@ $(document).ready(function () {
         var aggPunchCard = [],
             h = 0,
             d = 0,
+            i = 0,
             punchRepos = [],
             key = '',
             repo = {};
@@ -451,9 +452,9 @@ $(document).ready(function () {
                 repo = user.repos[key];
                 if ($.inArray(repo.name, punchRepos) > -1) {
                     console.log('    ' + repo.name);
-                    repo.stats.punch_card.forEach(function (punch, i) {
-                        aggPunchCard[i][2] += punch[2];
-                    });
+                    for (i = 0; i < repo.stats.punch_card.length; i += 1) {
+                        aggPunchCard[i][2] += repo.stats.punch_card[i][2];
+                    }
                 }
             }
         }
@@ -775,7 +776,7 @@ $(document).ready(function () {
 
     function searchUser(e) {
         // get the form's first input
-        var username = $(this[0]).val(),
+        var username = $(e.target[0]).val(),
             auth = cookieJar.get('valid_auth');
         cookieJar.set('searchUser', username);
         if (auth || username === EXAMPLE_USERNAME) {

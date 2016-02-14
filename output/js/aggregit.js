@@ -322,7 +322,8 @@ $(document).ready(function () {
         d3.select("#languages-tooltip").remove();
 
         // Setup parameters and variables
-        var w = parseInt($(elem).width(), 10),
+        var tipStr = '<strong>{0}</strong><br>{1} kiB<br>{2}%',
+            w = parseInt($(elem).width(), 10),
             h = parseInt(w / 3, 10),
             radius = Math.min(w, h) / 2,
             pad = 20,
@@ -354,7 +355,7 @@ $(document).ready(function () {
                 .attr("id", "languages-tooltip")
                 .attr("class", "tooltip")
                 .style("opacity", 1)
-                .html('<strong>' + MAX_LANG + ' languages</strong><br>' + MAX_kiB + ' kiB');
+                .html(tipStr.format(MAX_LANG + ' Languages', MAX_kiB, 100.00));
 
         // Use object keys for series color domain
         color.domain(d3.keys(data));
@@ -393,10 +394,14 @@ $(document).ready(function () {
                 return color(d.data.language);
             })
             .on("mouseover", function (d) {
-                langTooltip.html('<strong>' + d.data.language + '</strong><br>' + d.data.kiB + ' kiB');
+                langTooltip.html(tipStr.format(
+                    d.data.language,
+                    d.data.kiB,
+                    Math.round(10000.0 * d.data.kiB / MAX_kiB) / 100
+                ));
             })
             .on("mouseout", function (d) {
-                langTooltip.html('<strong>' + MAX_LANG + ' languages</strong><br>' + MAX_kiB + ' kiB');
+                langTooltip.html(tipStr.format(MAX_LANG + ' Languages', MAX_kiB, 100.00));
             })
             .transition()
             .delay(function (d, i) {

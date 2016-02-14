@@ -572,7 +572,7 @@ var github = {
         $(document).ajaxStop(function() {
             console.log('All Requests complete!');
             if (callback) {
-                callback(this.data.user, '');
+                callback(github.data.user, '');
             }
         });
     }

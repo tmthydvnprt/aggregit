@@ -570,7 +570,10 @@ var github = {
         );
         // Set up callback to execute when all ajax requests are done
         $(document).ajaxStop(function() {
-            alert('AJAX done');
+            console.log('All Requests complete!');
+            if (callback) {
+                callback(this.data.user, '');
+            }
         });
     }
 };

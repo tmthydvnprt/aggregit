@@ -64,7 +64,7 @@
         // Remove url portion of string
         string = string.substring(string.indexOf('?') + 1).split('&');
         // Parse
-        for (i = string.length; i > 0) {
+        for (i = string.length; i > 0;) {
             pair = string[--i].split('=');
             params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
         }

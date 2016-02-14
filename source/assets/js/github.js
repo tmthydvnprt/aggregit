@@ -519,7 +519,7 @@ var github = {
             }
             // Send back data
             if (callback) {
-                callback(repo);
+                callback(repo_lang_data);
             }
         });
     },
@@ -551,7 +551,7 @@ var github = {
             }
             // Send back data
             if (callback) {
-                callback(repo);
+                callback(repo_stat_data);
             }
         });
     },

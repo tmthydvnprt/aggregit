@@ -32,7 +32,7 @@ console.log('Is Blink: ' + isBlink);
 $(document).ready(function () {
     'use strict';
 
-    // var textFile = null;
+    // Var textFile = null;
 
     function makeJsonFile(obj) {
         var data = null,
@@ -87,14 +87,14 @@ $(document).ready(function () {
     }
 
     function renderPunchCard(elem, data) {
-        // reference: http://swizec.com/blog/quick-scatterplot-tutorial-for-d3-js/swizec/5337
+        // Reference: http://swizec.com/blog/quick-scatterplot-tutorial-for-d3-js/swizec/5337
         console.log('Rendering Punchcard');
         console.log('');
 
-        // remove last plot if there
+        // Remove last plot if there
         d3.select("#punchcard-svg").remove();
 
-        // setup parameters and variables
+        // Setup parameters and variables
         var w = parseInt($(elem).width(), 10),
             h = parseInt(w / 3, 10),
             pad = 20,
@@ -134,7 +134,7 @@ $(document).ready(function () {
                 .style("opacity", 0)
                 .text("punchcard");
 
-        // add axis
+        // Add axis
         svg.append("g")
             .attr("class", "axis")
             .attr("transform", "translate(0, " + (h - pad) + ")")
@@ -144,7 +144,7 @@ $(document).ready(function () {
             .attr("transform", "translate(" + (left_pad - pad) + ", 0)")
             .call(yAxis);
 
-        // add loading text
+        // Add loading text
         svg.append("text")
             .attr("class", "aggregitting")
             .text("aggregitting...")
@@ -155,10 +155,10 @@ $(document).ready(function () {
                 return (h / 2) - 5;
             });
 
-        // remove loading text
+        // Remove loading text
         svg.selectAll(".aggregitting").remove();
 
-        // plot the data!
+        // Plot the data!
         svg.selectAll("circle")
             .data(data)
             .enter()
@@ -193,14 +193,14 @@ $(document).ready(function () {
 
     }
     function renderParticipation(elem, data) {
-        // reference: http://bl.ocks.org/mbostock/3884955
+        // Reference: http://bl.ocks.org/mbostock/3884955
         console.log('Rendering Participation');
         console.log('');
 
-        // remove last plot if there
+        // Remove last plot if there
         d3.select("#participation-svg").remove();
 
-        // setup parameters and variables
+        // Setup parameters and variables
         var w = parseInt($(elem).width(), 10),
             h = parseInt(w / 3, 10),
             pad = 20,
@@ -245,10 +245,10 @@ $(document).ready(function () {
                 .style("opacity", 0)
                 .text("participation");
 
-        // use object keys for series color domain
+        // Use object keys for series color domain
         color.domain(d3.keys(data[0]));
 
-        // repackage data for plotting
+        // Repackage data for plotting
         participations = color.domain().map(function (name) {
             return {
                 name: name,
@@ -258,7 +258,7 @@ $(document).ready(function () {
             };
         });
 
-        // add axis
+        // Add axis
         svg.append("g")
             .attr("class", "axis")
             .attr("transform", "translate(0, " + (h - bottom_pad) + ")")
@@ -281,7 +281,7 @@ $(document).ready(function () {
             .attr("dy", ".75em")
             .attr("transform", "rotate(-90)")
             .text("activity (# of commits)");
-        // add loading text
+        // Add loading text
         svg.append("text")
             .attr("class", "aggregitting")
             .text("aggregitting...")
@@ -292,10 +292,10 @@ $(document).ready(function () {
                 return (h / 2) - 5;
             });
 
-        // remove loading text
+        // Remove loading text
         svg.selectAll(".aggregitting").remove();
 
-        // plot the data!
+        // Plot the data!
         lines = svg.selectAll(".participation")
             .data(participations)
             .enter()
@@ -312,16 +312,16 @@ $(document).ready(function () {
             });
     }
     function renderLanguages(elem, data) {
-        // reference: http://bl.ocks.org/mbostock/3887193
-        // reference: http://jsfiddle.net/Nw62g/1/
+        // Reference: http://bl.ocks.org/mbostock/3887193
+        // Reference: http://jsfiddle.net/Nw62g/1/
         console.log('Rendering Languages');
         console.log('');
 
-        // remove last plot if there
+        // Remove last plot if there
         d3.select("#languages-svg").remove();
         d3.select("#languages-tooltip").remove();
 
-        // setup parameters and variables
+        // Setup parameters and variables
         var w = parseInt($(elem).width(), 10),
             h = parseInt(w / 3, 10),
             radius = Math.min(w, h) / 2,
@@ -356,10 +356,10 @@ $(document).ready(function () {
                 .style("opacity", 1)
                 .html('<strong>' + MAX_LANG + ' languages</strong><br>' + MAX_kiB + ' kiB');
 
-        // use object keys for series color domain
+        // Use object keys for series color domain
         color.domain(d3.keys(data));
 
-        // repackage data for plotting
+        // Repackage data for plotting
         languages = color.domain().map(function (name) {
             return {
                 language: name,
@@ -367,7 +367,7 @@ $(document).ready(function () {
             };
         });
 
-        // add loading text
+        // Add loading text
         svg.append("text")
             .attr("class", "aggregitting")
             .text("aggregitting...")
@@ -378,10 +378,10 @@ $(document).ready(function () {
                 return (h / 2) - 5;
             });
 
-        // remove loading text
+        // Remove loading text
         svg.selectAll(".aggregitting").remove();
 
-        // plot the data!
+        // Plot the data!
         g = svg.selectAll(".arc")
             .data(pie(languages))
             .enter()
@@ -433,19 +433,19 @@ $(document).ready(function () {
             key = '',
             repo = {};
 
-        // fill empty punchcard
+        // Fill empty punchcard
         for (d = 0; d < 7; d += 1) {
             for (h = 0; h < 24; h += 1) {
                 aggPunchCard.push([d, h, 0]);
             }
         }
 
-        //gather which repos to include
+        // Gather which repos to include
         $('#punchcard-checklist input:checked').each(function () {
             punchRepos.push($(this).attr('name'));
         });
 
-        // aggregate punch card data
+        // Aggregate punch card data
         console.log('Aggregating Punch Card:');
         for (key in user.repos) {
             if (user.repos.hasOwnProperty(key)) {
@@ -475,7 +475,7 @@ $(document).ready(function () {
             key = '',
             repo = {};
 
-        //gather which repos, time, and who to include
+        // Gather which repos, time, and who to include
         $('#participation-checklist input:checked').each(function () {
             punchRepos.push($(this).attr('name'));
         });
@@ -485,7 +485,7 @@ $(document).ready(function () {
         });
         zoom = $('#zoom-checklist input:checked').length > 0 ? true : zoom;
 
-        // fill empty participation
+        // Fill empty participation
         for (d = 0; d < PARTICIPATION_SIZE; d += 1) {
             x = {};
             if (owner) {
@@ -497,7 +497,7 @@ $(document).ready(function () {
             aggParticipation.push(x);
         }
 
-        // aggregate participation data
+        // Aggregate participation data
         console.log('Aggregating Participation:');
         for (key in user.repos) {
             if (user.repos.hasOwnProperty(key)) {
@@ -534,12 +534,12 @@ $(document).ready(function () {
             key = '',
             repo = {};
 
-        //gather which repos, time, and who to include
+        // Gather which repos, time, and who to include
         $('#languages-checklist input:checked').each(function () {
             punchRepos.push($(this).attr('name'));
         });
 
-        // aggregate language data
+        // Aggregate language data
         console.log('Aggregating Languages:');
         for (key in user.repos) {
             if (user.repos.hasOwnProperty(key)) {
@@ -566,7 +566,7 @@ $(document).ready(function () {
 
         console.log('Render the User');
         console.log('---------------------------------------------');
-        // update the DOM
+        // Update the DOM
         if (errors) {
             console.log('Errors! Rate-limit');
             $('title').text('aggregit: error');
@@ -582,13 +582,13 @@ $(document).ready(function () {
                 check = '',
                 fork = '';
 
-            // format dates
+            // Format dates
             user.created_at = formatDate(new Date(user.created_at));
             user.updated_at = formatDate(new Date(user.updated_at));
             user.site_admin = user.site_admin ? '<i class="fa fa-fw fa-github-alt"></i> site admint' : '';
             user.hireable = user.hireable ? '<i class="fa fa-fw fa-check-circle"></i> hireable' : '';
 
-            // add cached data button
+            // Add cached data button
             if ($('#cached-user').length === 0) {
                 $('#nav-search .input-group').append(
                     '<span id="cached-user" class="input-group-addon"><a href="#!/user={0}" alt="{0}\'s data"><i class="fa fa-area-chart fa-2x"></i></a></span><span id="export-user" class="input-group-addon"><a href="#!/export" alt="Export {0}\'s data"><i class="fa fa-cloud-download fa-2x"></i></a></span>'.format(user.login)
@@ -596,7 +596,7 @@ $(document).ready(function () {
             }
             $('#cached-user').attr("href", "#!/user={0}".format(user.login));
 
-            // update user info
+            // Update user info
             $('title').text('aggregit: ' + user.login);
             $('#username').val('');
             $('#username').attr('placeholder', user.login);
@@ -607,12 +607,12 @@ $(document).ready(function () {
                 $('#user-info-template').html().format(user)
             );
 
-            // update user data
+            // Update user data
             $('#user-data').html(
                 $('#user-data-template').html().format(user)
             );
 
-            // build repos selector
+            // Build repos selector
             for (key in user.repos) {
                 if (user.repos.hasOwnProperty(key)) {
                     repo = user.repos[key];
@@ -622,14 +622,14 @@ $(document).ready(function () {
                 }
             }
 
-            // draw punchcard, and update when repo selector clicked
+            // Draw punchcard, and update when repo selector clicked
             $('#punchcard-checklist').html(repoChecklist.join(''));
             aggregatePunchCard(user);
             $('#punchcard-checklist input').click(function () {
                 aggregatePunchCard(user);
             });
 
-            // draw participation, and update when clicked
+            // Draw participation, and update when clicked
             $('#participation-checklist').html(repoChecklist.join(''));
             aggregateParticipation(user);
             $('#participation-checklist input').click(function () {
@@ -642,7 +642,7 @@ $(document).ready(function () {
                 aggregateParticipation(user);
             });
 
-            // draw languages, and update when repo selector clicked
+            // Draw languages, and update when repo selector clicked
             $('#languages-checklist').html(repoChecklist.join(''));
             aggregateLanguages(user);
             $('#languages-checklist input').click(function () {
@@ -652,7 +652,7 @@ $(document).ready(function () {
     }
 
     function authOn(valid_auth) {
-        // change authentication status
+        // Change authentication status
         if (valid_auth) {
             $('#auth-icon i').removeClass('fa-times-circle');
             $('#auth-icon i').addClass('fa-check-circle');
@@ -721,7 +721,7 @@ $(document).ready(function () {
                             console.log('');
                             renderUser(github.data.user, '');
                         } else {
-                            // aggregit it all
+                            // Aggregit it all
                             $('#cached-user').remove();
                             $('#export-user').remove();
                             console.log('Requesting GitHub User Data');
@@ -775,40 +775,40 @@ $(document).ready(function () {
         };
 
     function searchUser(e) {
-        // get the form's first input
+        // Get the form's first input
         var username = $(e.target[0]).val(),
             auth = cookieJar.get('valid_auth');
         cookieJar.set('searchUser', username);
         if (auth || username === EXAMPLE_USERNAME) {
-            // route to user page
+            // Route to user page
             console.log('Authorized Route to User\n');
             location.hash = '#!/user=' + username;
         } else {
-            // route to authorize page
+            // Route to authorize page
             console.log('NOT Authorized! Route to Authorize\n');
             location.hash = '#!/authorize';
         }
         return false;
     }
 
-    // route hashchanges to page
+    // Route hashchanges to page
     function router(e) {
 
-        // clear last page stuff
+        // Clear last page stuff
         $('.help-pulse').removeClass('help-pulse');
         $('.holdoff-time').removeClass('holdoff-time');
         $('#nav-user').attr('href', "https://github.com");
         $('#nav-user').attr('title', "Go to GitHub");
         $('#nav-user').attr('alt', "Go to GitHub");
 
-        // cache page, hash, and filename
+        // Cache page, hash, and filename
         page = page || $('#page');
         hashparams = location.hash.slice(1).split('=');
         urlpath = location.pathname.split('/');
         filename = urlpath.slice(-1)[0] || 'index.html';
         hash = hashparams[0];
         params = hashparams[1];
-        // split params if multiple
+        // Split params if multiple
         if (params) {
             params = params.split('&');
         }
@@ -821,29 +821,29 @@ $(document).ready(function () {
         console.log('    params  : ' + params);
         console.log('');
 
-        // index page with internal hash routing
+        // Index page with internal hash routing
         if (filename === 'index.html') {
 
-            // default to home if on index page
+            // Default to home if on index page
             hash = hash || '!/home';
 
-            // on-page hash
+            // On-page hash
             if (hash.slice(0, 2) === '!/') {
 
-                // zoom to the top
+                // Zoom to the top
                 $('html,body').animate({
                     scrollTop: 0
                 }, 300);
 
-                // animate out
+                // Animate out
                 $('#page section').addClass('bringOut');
 
-                // wait until animation it done
+                // Wait until animation it done
                 bringOut = setTimeout(function () {
                     page.removeClass('rendered');
                     page.addClass('routing');
 
-                    // route to new page
+                    // Route to new page
                     hash = hash.slice(2);
                     if (pages.hasOwnProperty(hash)) {
                         pages[hash](params);
@@ -853,24 +853,24 @@ $(document).ready(function () {
                         pages.unknown();
                     }
 
-                    // setup page
+                    // Setup page
                     page.addClass('rendered');
-                    // on-page scroll links
+                    // On-page scroll links
                     $('a[href*="#"]').click(function () {
-                        // stop auto scroll
+                        // Stop auto scroll
                         keepScroll = document.body.scrollTop;
                     });
-                    // bind enter clicks on input
+                    // Bind enter clicks on input
                     $("#nav-search").submit(searchUser);
                     $("#home-search").submit(searchUser);
 
                     clearInterval(bringOut);
                 }, 500);
 
-            // on-page hash
+            // On-page hash
             } else if (hash) {
                 if (keepScroll !== false) {
-                    //move scroll position to stored position
+                    // Move scroll position to stored position
                     document.body.scrollTop = keepScroll;
                     keepScroll = false;
                 }
@@ -882,9 +882,9 @@ $(document).ready(function () {
                     }, 512);
                 }
             }
-        // if on any other page
+        // If on any other page
         } else {
-            // add index to hashrouting
+            // Add index to hashrouting
             if (hash.slice(0, 2) === '!/') {
                 urlpath[urlpath.length - 1] = "index.html";
                 newlocation = urlpath.join("/") + location.hash;
@@ -947,7 +947,7 @@ $(document).ready(function () {
         console.log('Not authorized or already have auth user data');
     }
 
-    // listen for hash change or page load
+    // Listen for hash change or page load
     $(window).on('hashchange', router);
     $(window).on('load', router);
 });

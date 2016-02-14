@@ -7,7 +7,7 @@
 
 // Common Utility functions used across files
 // -------------------------------------------------------------------------------------
-// check if variable is object
+// Check if variable is object
 function isObject(a) {
     "use strict";
     return (!!a) && (a.constructor === Object);
@@ -15,7 +15,7 @@ function isObject(a) {
 // Copies elements in B iff they are also already in A
 function copyBIfInA(a, b) {
     "use strict";
-    var key;
+    var key = '';
     a = $.extend(true, {}, a);
     for (key in a) {
         if (a.hasOwnProperty(key) && b.hasOwnProperty(key)) {
@@ -40,27 +40,27 @@ function parse_headers(header_string) {
         number = null,
         date = null;
 
-    // loop thru header lines
+    // Loop thru header lines
     for (i = 0; i < lines.length; i += 1) {
-        // split line on first `:` for key:val par
+        // Split line on first `:` for key:val par
         keyval = lines[i].split(/:([\s\w]*)/);
         key = keyval[0].trim();
         val = keyval[1].trim();
-        // try to parse value as null
+        // Try to parse value as null
         if (val === "") {
             val = null;
         } else {
-            // try to parse as number
+            // Try to parse as number
             number = parseInt(val, 10);
             if (!isNaN(number)) {
                 val = number;
             } else {
-                // try to parse as number
+                // Try to parse as number
                 date = new Date(val);
                 if (!isNaN(date.getTime())) {
                     val = date;
                 }
-                // leave as string
+                // Leave as string
             }
         }
         // Place in object
@@ -68,18 +68,18 @@ function parse_headers(header_string) {
     }
     return headers;
 }
-// clean url to use a key
+// Clean url to use a key
 function unurl(url) {
     "use strict";
     return url.replace(/\//ig, '_');
 }
-// add string formatting
+// Add string formatting
 if (!String.prototype.format) {
     String.prototype.format = function (a) {
         "use strict";
         var str = this.toString(),
-            args,
-            arg;
+            args = null,
+            arg = null;
         if (!arguments.length) {
             return str;
         }
@@ -104,8 +104,8 @@ function formatDate(d) {
 function deparam(string) {
     "use strict";
     var params = {},
-        pair,
-        i;
+        pair = [],
+        i = 0;
     // Remove url portion of string
     string = string.substring(string.indexOf('?') + 1).split('&');
     // Parse

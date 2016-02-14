@@ -485,11 +485,11 @@ var github = {
             var repo = copyBIfInA(github.repo_keys, repo_data),
                 name = repo.name;
             // Store Data
-            if (github.data.user.hasOwnProperty('repos')) {
-                $.extend(true, github.data.user.repos[name], repo);
-            } else {
-                github.data.user['repos'] = {name : repo};
-            }
+            $.extend(true, github.data.user, {
+                'repos' : {
+                    [name] : repo_data
+                }
+            });
             // Send back data
             if (callback) {
                 callback(repo);
@@ -501,27 +501,57 @@ var github = {
         repo = unurl(repo);
         $.when(this.request_handler('repository_languages', owner, repo)).always(this.response_handler).done(function(repo_lang_data) {
             // Determine which repo it came from based on url
-            var name = this.url.match(/https:\/\/api.github.com\/repos\/.*\/(.*)\/languages\?access_token=.*/);
+            var match = this.url.match(/https:\/\/api.github.com\/repos\/.*\/(.*)\/languages\?access_token=.*/),
+                name = '';
 
-            if (name && name.length > 1) {
-                name = name[1];
+            if (match && match.length > 1) {
+                name = match[1];
                 // Store Data
-                if (github.data.user.hasOwnProperty('repos')) {
-                    if (github.data.user.repos.hasOwnProperty(name)) {
-                        github.data.user.repos[name]['languages'] = repo_lang_data;
-                    } else {
-                        github.data.user.repos[name] = {'languages' : repo_lang_data};
+                $.extend(true, github.data.user, {
+                    'repos' : {
+                        [name] : {
+                            'languages' : repo_lang_data
+                        }
                     }
-                } else {
-                    github.data.user['repos'] = {};
-                    github.data.user['repos'][name] = {'languages' : repo_lang_data};
-                }
+                });
             } else {
                 console.log('Bad url parse. Couldn\'t get repo name.');
             }
             // Send back data
             if (callback) {
-                callback(repo);
+                callback(repo_lang_data);
+            }
+        });
+    },
+    get_repo_stats : function(owner, repo, stat, callback) {
+        owner = unurl(owner);
+        repo = unurl(repo);
+        stat = unurl(stat);
+        $.when(this.request_handler('repository_stats', owner, repo, stat)).always(this.response_handler).done(function(repo_stat_data) {
+            // Determine which repo it came from based on url
+            var match = this.url.match(/https:\/\/api.github.com\/repos\/.*\/(.*)\/stats\/(.*)\?access_token=.*/),
+                name = '',
+                stat = '';
+
+            if (match && match.length > 1) {
+                name = match[1];
+                stat = match[2];
+                // Store Data
+                $.extend(true, github.data.user, {
+                    'repos' : {
+                        [name] : {
+                            'stats' : {
+                                [stat] : repo_stat_data
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.log('Bad url parse. Couldn\'t get repo name.');
+            }
+            // Send back data
+            if (callback) {
+                callback(repo_stat_data);
             }
         });
     },
@@ -536,16 +566,15 @@ var github = {
                 // Then loop thru each repo
                 function(repos) {
                     repos.forEach(function (repo, i) {
+                        var i = 0;
                         // Get each individual repo data
-                        github.get_repo(
-                            repo.owner.login,
-                            repo.name,
-                            // Get each repo language
-                            github.get_repo_lang(
-                                repo.owner.login,
-                                repo.name
-                            )
-                        );
+                        github.get_repo(repo.owner.login, repo.name);
+                        // Get each individual repo language
+                        github.get_repo_lang(repo.owner.login, repo.name);
+                        // Get each individual repo stat
+                        for (i in github.repo_stats) {
+                            github.get_repo_stat(repo.owner.login, repo.name, github.repo_stats[i]);
+                        }
                     });
                 }
             )

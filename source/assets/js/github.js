@@ -272,7 +272,7 @@ var github = {
             } else if (request_url.match('https://api.github.com/repos/') ) {
                 route_log += ' Repo';
             } else {
-                route_log += ' has unknown type';
+                route_log += ' Unknown Type';
             }
 
         // response was accepted, background processing needed, try again

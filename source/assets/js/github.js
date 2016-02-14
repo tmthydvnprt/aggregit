@@ -566,16 +566,15 @@ var github = {
                 // Then loop thru each repo
                 function(repos) {
                     repos.forEach(function (repo, i) {
+                        var i = 0;
                         // Get each individual repo data
-                        github.get_repo(
-                            repo.owner.login,
-                            repo.name,
-                            // Get each repo language
-                            github.get_repo_lang(
-                                repo.owner.login,
-                                repo.name
-                            )
-                        );
+                        github.get_repo(repo.owner.login, repo.name);
+                        // Get each individual repo language
+                        github.get_repo_lang(repo.owner.login, repo.name);
+                        // Get each individual repo stat
+                        for (i in github.repo_stats) {
+                            github.get_repo_stat(repo.owner.login, repo.name, github.repo_stats[i]);
+                        }
                     });
                 }
             )

@@ -109,6 +109,7 @@ var github = {
     rate_limit : 60,
     remaining_calls : 60,
     rate_limit_reset : 0,
+    postponed_requests : [],
 
     // API Data
     //--------------------------------------------------------------------------------------------------------------------------
@@ -242,7 +243,8 @@ var github = {
 
         // parse out header info and original url
         var headers = parse_headers(xhr.getAllResponseHeaders()),
-            request_url = this.url;
+            request_url = this.url,
+            route_log = '';
 
         // store rate limits
         github.rate_limit = headers['X-RateLimit-Limit'];
@@ -250,61 +252,51 @@ var github = {
         github.rate_limit_reset = headers['X-RateLimit-Reset'];
 
         // check Response Status
-        console.log(xhr.status);
+        route_log = String(xhr.status);
         // response was successful, continue processing
         if (xhr.status === 200) {
-            console.log('Response was successful');
-            console.log(data);
+            route_log += ' Response was successful: ';
 
             // Response Routing
             if (data.hasOwnProperty('rate')) {
-                console.log('Response is a Rate Limit');
+                route_log += ' Rate Limit';
             } else if (request_url.match('https://api.github.com/user/repos') ||
                        request_url.match('https://api.github.com/users/.*/repos')) {
-                console.log('Response is a list of Repos');
+                route_log += ' list of Repos';
             } else if (request_url.match('https://api.github.com/user/') ||
                        request_url.match('https://api.github.com/users/')) {
-                console.log('Response is a User');
+                route_log += ' User';
             } else if (request_url.match('https://api.github.com/users/repos/.*/.*/languages')) {
-                console.log('Response is a Repo Language');
+                route_log += ' Repo Language';
             } else if (request_url.match('https://api.github.com/users/repos/.*/.*/stat')) {
-                console.log('Response is a Repo Stat');
+                route_log += ' Repo Stat';
             } else if (request_url.match('https://api.github.com/repos/') ) {
-                console.log('Response is a Repo');
+                route_log += ' Repo';
             } else {
-                console.log('Response data has unknown type');
-
+                route_log += ' has unknown type';
             }
 
         // response was accepted, background processing needed, try again
         } else if (xhr.status === 202) {
-            console.log('Response was accepted, background processing needed, try again');
-            console.log(data);
-
+            route_log += ' Response was accepted, background processing needed, try again';
+            this.postponed_requests.push(request_url);
         // response has a redirect
         } else if (xhr.status === 301 || xhr.status === 302 || xhr.status === 307) {
-            console.log('Response has a redirect');
-            console.log(data);
-
+            route_log += ' Response has a redirect';
         // response has a client error
         } else if (xhr.status === 400 || xhr.status === 422) {
-            console.log('Response has a client error');
-            console.log(data);
-
+            route_log += ' Response has a client error';
         // response is unauthorized
         } else if (xhr.status === 401) {
-            console.log('Response is unauthorized');
-            console.log(data);
-
+            route_log += ' Response is unauthorized';
         // response is forbidden or not found
         } else if (xhr.status === 404 || xhr.status === 403) {
-            console.log('Response is forbidden or no found');
-            console.log(data);
-
+            route_log += ' Response is forbidden or no found';
         } else {
-            console.log('Response has unknown status');
-            console.log(data);
+            route_log += ' Response has unknown status';
         }
+        // Log Response
+        console.log(route_log);
 
     },
 

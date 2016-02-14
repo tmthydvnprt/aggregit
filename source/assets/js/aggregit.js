@@ -1,91 +1,105 @@
-/*globals $,console,d3,cookieJar */
+/*globals $,console,d3,cookieJar,formatDate,github,opr,InstallTrigger,Blob */
 /*!
  * aggregit.js
  *
  * Copyright 2015 Timothy Davenport; Licensed MIT
  */
+var FIVE_MIN_IN_MS = 5 * 60 * 1000,
+    EXAMPLE_USERNAME = 'tmthydvnprt_example',
+    // Opera 8.0+
+    isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0,
+    // Firefox 1.0+
+    isFirefox = typeof InstallTrigger !== 'undefined',
+    // At least Safari 3+: "[object HTMLElementConstructor]"
+    isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0,
+    // Internet Explorer 6-11
+    isIE = !!document.documentMode,
+    // Edge 20+
+    isEdge = !isIE && !!window.StyleMedia,
+    // Chrome 1+
+    isChrome = !!window.chrome && !!window.chrome.webstore,
+    // Blink engine detection
+    isBlink = (isChrome || isOpera) && !!window.CSS;
+
+console.log('Is Opera: ' + isOpera);
+console.log('Is FireFox: ' + isFirefox);
+console.log('Is Safari: ' + isSafari);
+console.log('Is IE: ' + isIE);
+console.log('Is Edge: ' + isEdge);
+console.log('Is Chrome: ' + isChrome);
+console.log('Is Blink: ' + isBlink);
+
 $(document).ready(function () {
     'use strict';
 
-    var cachedUser  = null;
-    
-    // Utility functions
-	// -------------------------------------------------------------------------------------
-    function isObject(a) {
-        return (!!a) && (a.constructor === Object);
-    }
-    function copyBIfInA(a, b) {
-        var key;
-        a = $.extend(true, {}, a);
-        for (key in a) {
-            if (a.hasOwnProperty(key) && b.hasOwnProperty(key)) {
-                if (isObject(a[key]) && isObject(b[key])) {
-                    a[key] = copyBIfInA(a[key], b[key]);
-                } else {
-                    a[key] = b[key];
-                }
+    // Var textFile = null;
+
+    function makeJsonFile(obj) {
+        var data = null,
+            text = JSON.stringify(obj),
+            textFile = null;
+        if (isSafari) {
+            textFile = 'data:application/text;charset=utf-8,' + encodeURIComponent(text);
+        } else {
+            data = new Blob([text], {type: 'text/json'});
+            if (textFile !== null) {
+                window.URL.revokeObjectURL(textFile);
             }
+            textFile = window.URL.createObjectURL(data);
         }
-        return a;
-    }
-    // clena url to use a key
-    function unurl(url) {
-        return url.replace(/\//ig, '_');
+        return textFile;
     }
 
-    // add string formatting
-    if (!String.prototype.format) {
-        String.prototype.format = function () {
-            var str = this.toString(),
-                args,
-                arg;
-            if (!arguments.length) {
-                return str;
-            }
-            args = typeof arguments[0];
-            args = ("string" === args || "number" === args) ? arguments : arguments[0];
-            for (arg in args) {
-                if (args.hasOwnProperty(arg)) {
-                    str = str.replace(new RegExp("\\{" + arg + "\\}", "gi"), args[arg]);
-                }
-            }
-            return str;
-        };
+    function exportUser() {
+        // Display safari warning
+        if (isSafari) {
+            $('.panel-body').append('<div id="safari-warning" class="alert alert-warning"><p class="smallprint"><strong><i class="fa fa-warning"></i> It looks like you are using Safari.</strong><br>The file will be downloaded from a blank page and named <code>Unknown</code>. You may close the blank page once the file appears in your <code>~/Downloads</code> Folder. You should rename this file to <code class="filename">____.json</code>.</p></div>');
+        } else {
+            $('#safari-warning').remove();
+        }
+
+        // Download/export user data as json
+        $('#export-btn').attr('href', makeJsonFile(github.data.user));
+        if (github.data.user.hasOwnProperty('login')) {
+            $('#export-btn').attr('download', github.data.user.login + '.json');
+            $('.filename').html(github.data.user.login + '.json');
+        } else {
+            $('#export-btn').attr('download', 'warning_no_user_data.json');
+            $('.filename').html('warning_no_user_data.json');
+        }
+        $('#export-btn').removeClass('disabled');
+        $('#export-btn').html('Export Data');
+        $('#export-btn').attr('alt', 'Export Data');
     }
 
-	// Unique functions
-	// -------------------------------------------------------------------------------------
-    function formatDate(d) {
-        var MONTHS = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ');
-        return MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
-    }
-
+    // Unique Render functions
+    // -------------------------------------------------------------------------------------
     function renderTemplate(elem, name, titleText) {
-		if (titleText) {
-			$('title').html(titleText);
-		} else {
-			$('title').text(name);
-		}
+        if (titleText) {
+            $('title').html(titleText);
+        } else {
+            $('title').text(name);
+        }
         console.log('Rendering Page: ' + name);
         console.log('');
-		elem.html($('#' + name + '-template').html());
-		$(elem.children()[0]).attr('id', name);
-	}
+        elem.html($('#' + name + '-template').html());
+        $(elem.children()[0]).attr('id', name);
+    }
 
     function renderPunchCard(elem, data) {
-        // reference: http://swizec.com/blog/quick-scatterplot-tutorial-for-d3-js/swizec/5337
+        // Reference: http://swizec.com/blog/quick-scatterplot-tutorial-for-d3-js/swizec/5337
         console.log('Rendering Punchcard');
         console.log('');
 
-        // remove last plot if there
+        // Remove last plot if there
         d3.select("#punchcard-svg").remove();
 
-        // setup parameters and variables
-        var w = 940,
-            h = 300,
+        // Setup parameters and variables
+        var w = parseInt($(elem).width(), 10),
+            h = parseInt(w / 3, 10),
             pad = 20,
             left_pad = 100,
-            DAYS = 'Sunday Monday Tuesday Wednesday Thursday Friday Saturday'.split(' '),
+            DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
             svg = d3.select(elem)
                 .append("svg")
                 .attr("id", "punchcard-svg")
@@ -120,7 +134,7 @@ $(document).ready(function () {
                 .style("opacity", 0)
                 .text("punchcard");
 
-        // add axis
+        // Add axis
         svg.append("g")
             .attr("class", "axis")
             .attr("transform", "translate(0, " + (h - pad) + ")")
@@ -130,7 +144,7 @@ $(document).ready(function () {
             .attr("transform", "translate(" + (left_pad - pad) + ", 0)")
             .call(yAxis);
 
-        // add loading text
+        // Add loading text
         svg.append("text")
             .attr("class", "aggregitting")
             .text("aggregitting...")
@@ -141,10 +155,10 @@ $(document).ready(function () {
                 return (h / 2) - 5;
             });
 
-        // remove loading text
+        // Remove loading text
         svg.selectAll(".aggregitting").remove();
 
-        // plot the data!
+        // Plot the data!
         svg.selectAll("circle")
             .data(data)
             .enter()
@@ -179,16 +193,16 @@ $(document).ready(function () {
 
     }
     function renderParticipation(elem, data) {
-        // reference: http://bl.ocks.org/mbostock/3884955
+        // Reference: http://bl.ocks.org/mbostock/3884955
         console.log('Rendering Participation');
         console.log('');
 
-        // remove last plot if there
+        // Remove last plot if there
         d3.select("#participation-svg").remove();
 
-        // setup parameters and variables
-        var w = 940,
-            h = 300,
+        // Setup parameters and variables
+        var w = parseInt($(elem).width(), 10),
+            h = parseInt(w / 3, 10),
             pad = 20,
             bottom_pad = 40,
             left_pad = 100,
@@ -231,10 +245,10 @@ $(document).ready(function () {
                 .style("opacity", 0)
                 .text("participation");
 
-        // use object keys for series color domain
+        // Use object keys for series color domain
         color.domain(d3.keys(data[0]));
 
-        // repackage data for plotting
+        // Repackage data for plotting
         participations = color.domain().map(function (name) {
             return {
                 name: name,
@@ -244,7 +258,7 @@ $(document).ready(function () {
             };
         });
 
-        // add axis
+        // Add axis
         svg.append("g")
             .attr("class", "axis")
             .attr("transform", "translate(0, " + (h - bottom_pad) + ")")
@@ -267,7 +281,7 @@ $(document).ready(function () {
             .attr("dy", ".75em")
             .attr("transform", "rotate(-90)")
             .text("activity (# of commits)");
-        // add loading text
+        // Add loading text
         svg.append("text")
             .attr("class", "aggregitting")
             .text("aggregitting...")
@@ -278,10 +292,10 @@ $(document).ready(function () {
                 return (h / 2) - 5;
             });
 
-        // remove loading text
+        // Remove loading text
         svg.selectAll(".aggregitting").remove();
 
-        // plot the data!
+        // Plot the data!
         lines = svg.selectAll(".participation")
             .data(participations)
             .enter()
@@ -298,18 +312,18 @@ $(document).ready(function () {
             });
     }
     function renderLanguages(elem, data) {
-        // reference: http://bl.ocks.org/mbostock/3887193
-        // reference: http://jsfiddle.net/Nw62g/1/
+        // Reference: http://bl.ocks.org/mbostock/3887193
+        // Reference: http://jsfiddle.net/Nw62g/1/
         console.log('Rendering Languages');
         console.log('');
 
-        // remove last plot if there
+        // Remove last plot if there
         d3.select("#languages-svg").remove();
         d3.select("#languages-tooltip").remove();
 
-        // setup parameters and variables
-        var w = 627,
-            h = 300,
+        // Setup parameters and variables
+        var w = parseInt($(elem).width(), 10),
+            h = parseInt(w / 3, 10),
             radius = Math.min(w, h) / 2,
             pad = 20,
             bottom_pad = 40,
@@ -342,10 +356,10 @@ $(document).ready(function () {
                 .style("opacity", 1)
                 .html('<strong>' + MAX_LANG + ' languages</strong><br>' + MAX_kiB + ' kiB');
 
-        // use object keys for series color domain
+        // Use object keys for series color domain
         color.domain(d3.keys(data));
 
-        // repackage data for plotting
+        // Repackage data for plotting
         languages = color.domain().map(function (name) {
             return {
                 language: name,
@@ -353,7 +367,7 @@ $(document).ready(function () {
             };
         });
 
-        // add loading text
+        // Add loading text
         svg.append("text")
             .attr("class", "aggregitting")
             .text("aggregitting...")
@@ -364,10 +378,10 @@ $(document).ready(function () {
                 return (h / 2) - 5;
             });
 
-        // remove loading text
+        // Remove loading text
         svg.selectAll(".aggregitting").remove();
 
-        // plot the data!
+        // Plot the data!
         g = svg.selectAll(".arc")
             .data(pie(languages))
             .enter()
@@ -414,30 +428,36 @@ $(document).ready(function () {
         var aggPunchCard = [],
             h = 0,
             d = 0,
-            punchRepos = [];
+            i = 0,
+            punchRepos = [],
+            key = '',
+            repo = {};
 
-        // fill empty punchcard
+        // Fill empty punchcard
         for (d = 0; d < 7; d += 1) {
             for (h = 0; h < 24; h += 1) {
                 aggPunchCard.push([d, h, 0]);
             }
         }
 
-        //gather which repos to include
+        // Gather which repos to include
         $('#punchcard-checklist input:checked').each(function () {
             punchRepos.push($(this).attr('name'));
         });
 
-        // aggregate punch card data
+        // Aggregate punch card data
         console.log('Aggregating Punch Card:');
-        user.repos.forEach(function (repo, i) {
-            if ($.inArray(repo.name, punchRepos) > -1) {
-                console.log('    ' + repo.name);
-                repo.stats.punch_card.forEach(function (punch, i) {
-                    aggPunchCard[i][2] += punch[2];
-                });
+        for (key in user.repos) {
+            if (user.repos.hasOwnProperty(key)) {
+                repo = user.repos[key];
+                if ($.inArray(repo.name, punchRepos) > -1) {
+                    console.log('    ' + repo.name);
+                    for (i = 0; i < repo.stats.punch_card.length; i += 1) {
+                        aggPunchCard[i][2] += repo.stats.punch_card[i][2];
+                    }
+                }
             }
-        });
+        }
         console.log('');
         renderPunchCard('#punchcard', aggPunchCard);
     }
@@ -451,9 +471,11 @@ $(document).ready(function () {
             punchRepos = [],
             owner = false,
             all = false,
-            zoom = false;
+            zoom = false,
+            key = '',
+            repo = {};
 
-        //gather which repos, time, and who to include
+        // Gather which repos, time, and who to include
         $('#participation-checklist input:checked').each(function () {
             punchRepos.push($(this).attr('name'));
         });
@@ -463,7 +485,7 @@ $(document).ready(function () {
         });
         zoom = $('#zoom-checklist input:checked').length > 0 ? true : zoom;
 
-        // fill empty participation
+        // Fill empty participation
         for (d = 0; d < PARTICIPATION_SIZE; d += 1) {
             x = {};
             if (owner) {
@@ -475,21 +497,24 @@ $(document).ready(function () {
             aggParticipation.push(x);
         }
 
-        // aggregate participation data
+        // Aggregate participation data
         console.log('Aggregating Participation:');
-        user.repos.forEach(function (repo, i) {
-            if ($.inArray(repo.name, punchRepos) > -1) {
-                console.log('    ' + repo.name);
-                for (d = 0; d < PARTICIPATION_SIZE; d += 1) {
-                    if (owner) {
-                        aggParticipation[d].owner += repo.stats.participation.owner[d];
-                    }
-                    if (all) {
-                        aggParticipation[d].all += repo.stats.participation.all[d];
+        for (key in user.repos) {
+            if (user.repos.hasOwnProperty(key)) {
+                repo = user.repos[key];
+                if ($.inArray(repo.name, punchRepos) > -1) {
+                    console.log('    ' + repo.name);
+                    for (d = 0; d < PARTICIPATION_SIZE; d += 1) {
+                        if (owner) {
+                            aggParticipation[d].owner += repo.stats.participation.owner[d];
+                        }
+                        if (all) {
+                            aggParticipation[d].all += repo.stats.participation.all[d];
+                        }
                     }
                 }
             }
-        });
+        }
         if (zoom) {
             for (z = 0; z < aggParticipation.length; z += 1) {
                 if (aggParticipation[z].owner > 0 || aggParticipation[z].all > 0) {
@@ -505,30 +530,34 @@ $(document).ready(function () {
     function aggregateLanguages(user) {
         var aggLanguages = [],
             punchRepos = [],
-            language;
+            language = '',
+            key = '',
+            repo = {};
 
-        //gather which repos, time, and who to include
+        // Gather which repos, time, and who to include
         $('#languages-checklist input:checked').each(function () {
             punchRepos.push($(this).attr('name'));
         });
 
-        // aggregate language data
+        // Aggregate language data
         console.log('Aggregating Languages:');
-        user.repos.forEach(function (repo, i) {
-            var language;
-            if ($.inArray(repo.name, punchRepos) > -1) {
-                console.log('    ' + repo.name);
-                for (language in repo.languages) {
-                    if (repo.languages.hasOwnProperty(language)) {
-                        if (aggLanguages.hasOwnProperty(language)) {
-                            aggLanguages[language] += repo.languages[language];
-                        } else {
-                            aggLanguages[language] = repo.languages[language];
+        for (key in user.repos) {
+            if (user.repos.hasOwnProperty(key)) {
+                repo = user.repos[key];
+                if ($.inArray(repo.name, punchRepos) > -1) {
+                    console.log('    ' + repo.name);
+                    for (language in repo.languages) {
+                        if (repo.languages.hasOwnProperty(language)) {
+                            if (aggLanguages.hasOwnProperty(language)) {
+                                aggLanguages[language] += repo.languages[language];
+                            } else {
+                                aggLanguages[language] = repo.languages[language];
+                            }
                         }
                     }
                 }
             }
-        });
+        }
         console.log('');
         renderLanguages('#languages', aggLanguages);
     }
@@ -537,7 +566,7 @@ $(document).ready(function () {
 
         console.log('Render the User');
         console.log('---------------------------------------------');
-        // update the DOM
+        // Update the DOM
         if (errors) {
             console.log('Errors! Rate-limit');
             $('title').text('aggregit: error');
@@ -547,23 +576,27 @@ $(document).ready(function () {
             );
         } else {
             var REPO_CHECKLIST_TEMPLATE = '<li><input {1} type="checkbox" name="{0}">{2}{0}</li>',
-                repoChecklist = [];
+                repoChecklist = [],
+                key = '',
+                repo = {},
+                check = '',
+                fork = '';
 
-            // format dates
+            // Format dates
             user.created_at = formatDate(new Date(user.created_at));
             user.updated_at = formatDate(new Date(user.updated_at));
             user.site_admin = user.site_admin ? '<i class="fa fa-fw fa-github-alt"></i> site admint' : '';
             user.hireable = user.hireable ? '<i class="fa fa-fw fa-check-circle"></i> hireable' : '';
 
-            // add cached data button
+            // Add cached data button
             if ($('#cached-user').length === 0) {
                 $('#nav-search .input-group').append(
-                    '<span id="cached-user" class="input-group-addon"><a href="#!/user={0}" alt="User Data" title="User Data"><i class="fa fa-area-chart fa-2x"></i></a></span>'.format(user.login)
+                    '<span id="cached-user" class="input-group-addon"><a href="#!/user={0}" alt="{0}\'s data"><i class="fa fa-area-chart fa-2x"></i></a></span><span id="export-user" class="input-group-addon"><a href="#!/exportuser" alt="Export {0}\'s data"><i class="fa fa-cloud-download fa-2x"></i></a></span>'.format(user.login)
                 );
             }
             $('#cached-user').attr("href", "#!/user={0}".format(user.login));
-            
-            // update user info
+
+            // Update user info
             $('title').text('aggregit: ' + user.login);
             $('#username').val('');
             $('#username').attr('placeholder', user.login);
@@ -574,26 +607,29 @@ $(document).ready(function () {
                 $('#user-info-template').html().format(user)
             );
 
-            // update user data
+            // Update user data
             $('#user-data').html(
                 $('#user-data-template').html().format(user)
             );
 
-            // build repos selector
-            user.repos.forEach(function (repo, i) {
-                var check = (repo.fork) ? '' : 'checked=""',
+            // Build repos selector
+            for (key in user.repos) {
+                if (user.repos.hasOwnProperty(key)) {
+                    repo = user.repos[key];
+                    check = (repo.fork) ? '' : 'checked=""';
                     fork = (repo.fork) ? '<i class="fa fa-code-fork text-info"></i> ' : '';
-                repoChecklist.push(REPO_CHECKLIST_TEMPLATE.format(repo.name, check, fork));
-            });
+                    repoChecklist.push(REPO_CHECKLIST_TEMPLATE.format(repo.name, check, fork));
+                }
+            }
 
-            // draw punchcard, and update when repo selector clicked
+            // Draw punchcard, and update when repo selector clicked
             $('#punchcard-checklist').html(repoChecklist.join(''));
             aggregatePunchCard(user);
             $('#punchcard-checklist input').click(function () {
                 aggregatePunchCard(user);
             });
 
-            // draw participation, and update when clicked
+            // Draw participation, and update when clicked
             $('#participation-checklist').html(repoChecklist.join(''));
             aggregateParticipation(user);
             $('#participation-checklist input').click(function () {
@@ -606,290 +642,37 @@ $(document).ready(function () {
                 aggregateParticipation(user);
             });
 
-            // draw languages, and update when repo selector clicked
+            // Draw languages, and update when repo selector clicked
             $('#languages-checklist').html(repoChecklist.join(''));
             aggregateLanguages(user);
             $('#languages-checklist input').click(function () {
                 aggregateLanguages(user);
             });
-
         }
     }
 
-    function getGitHubUser(username, callback) {
-        var USERS_API_URL = 'https://api.github.com/users',
-            REPOS_API_URL = 'https://api.github.com/repos',
-            REPO_STATS_URLS = ['contributors', 'commit_activity', 'code_frequency', 'participation', 'punch_card'],
-            HOUR_IN_MS = 60 * 60 * 1000,
-            api_calls = 0,
-            user = {
-                "login": "",
-                "id": 0,
-                "avatar_url": "",
-                "html_url": "",
-                "site_admin": false,
-                "name": "",
-                "company": "",
-                "blog": "",
-                "location": "",
-                "email": "",
-                "hireable": false,
-                "public_repos": 0,
-                "public_gists": 0,
-                "followers": 0,
-                "following": 0,
-                "created_at": null,
-                "updated_at": null,
-                "is_cookie" : false
-            },
-            repo = {
-                "name": "",
-                "owner": {"login": ""},
-//                "html_url": "",
-                "description": "",
-                "fork": false,
-                "created_at": null,
-                "updated_at": null,
-                "pushed_at": null,
-                "size": 0,
-                "stargazers_count": 0,
-                "watchers_count": 0,
-                "has_pages": true,
-                "forks_count": 0,
-                "open_issues_count": 0,
-                "is_cookie" : false
-            },
-            repos = [];
-
-        function getUser(username) {
-            var userCookie = null,
-                userData = null,
-                dfUser =  null,
-                blank =  null,
-                userKey = unurl(username);
-
-            // check if cookies exists for username
-            if (cookieJar.has(userKey)) {
-                userCookie = JSON.parse(cookieJar.get(userKey));
-                // check if it is over an hour old
-                if ((new Date() - new Date(userCookie.time)) < HOUR_IN_MS) {
-                    userData = userCookie.data;
-                }
-            }
-            // only look up data if it is old or if we ran out of api calls
-            if (userData || api_calls > 60) {
-                // create a deferred object so we can use
-                // the same interface for cookie data as api data
-                dfUser = $.Deferred();
-                if (userData) {
-                    console.log('using cookie: {0}'.format(userKey));
-                    dfUser.resolve(userData);
-                } else {
-                    console.log('TOO MANY api calls: {0}'.format(api_calls));
-                    blank = $.extend(true, {}, user);
-                    dfUser.resolve(blank);
-                }
-                return dfUser;
-            } else {
-                api_calls += 1;
-                console.log('({0}) making request: {1}'.format(api_calls, username));
-                return $.getJSON([USERS_API_URL, username].join('/'));
-            }
+    function authOn(valid_auth) {
+        // Change authentication status
+        if (valid_auth) {
+            $('#auth-icon i').removeClass('fa-times-circle');
+            $('#auth-icon i').addClass('fa-check-circle');
+            $('#auth-icon').addClass('authed');
+            $('#auth-icon').attr('href', 'Nice!');
+            $('#auth-icon').attr('alt', 'GitHub access is authorized!');
+            $('#auth-icon').attr('title', 'GitHub access is authorized!');
+            // Recheck auth user data
+            github.get_current_user();
+        } else {
+            $('#auth-icon i').removeClass('fa-check-circle');
+            $('#auth-icon i').addClass('fa-times-circle');
+            $('#auth-icon').removeClass('authed');
+            $('#auth-icon').attr('href', '#!/authorize');
+            $('#auth-icon').attr('alt', 'GitHub access is locked! You should authorize Aggregit for full experience.');
+            $('#auth-icon').attr('title', 'GitHub access is locked! You should authorize Aggregit for full experience.');
         }
-
-        function getRepos(username) {
-            var reposCookie = null,
-                reposData = null,
-                dfRepos =  null,
-                blank =  null,
-                repos_url = [USERS_API_URL, username, 'repos'].join('/');
-
-            // check if cookies exists for username
-            if (cookieJar.has(repos_url)) {
-                reposCookie = JSON.parse(cookieJar.get(repos_url));
-                // check if it is over an hour old
-                if ((new Date() - new Date(reposCookie.time)) < HOUR_IN_MS) {
-                    reposData = reposCookie.data;
-                }
-            }
-            // only look up data if it is old or if we ran out of api calls
-            if (reposData || api_calls > 59) {
-                // create a deferred object so we can use
-                // the same interface for cookie data as api data
-                dfRepos = $.Deferred();
-                if (reposData) {
-                    console.log('using cookie: {0}'.format(repos_url));
-                    dfRepos.resolve(reposData);
-                } else {
-                    console.log('TOO MANY api calls: {0}'.format(api_calls));
-                    blank = $.extend(true, {}, repo);
-                    dfRepos.resolve([blank]);
-                }
-                return dfRepos;
-            } else {
-                api_calls += 1;
-                console.log('({0}) making request: {1}'.format(api_calls, repos_url));
-                return $.getJSON(repos_url);
-            }
-        }
-
-        // get the user
-        $.when(getUser(username)).done(function (userData) {
-            var key = '',
-                userCookie = null,
-                storeResponse = false,
-                cookieString = '';
-
-            // grab only the data we need
-            user = copyBIfInA(user, userData);
-            
-            // if api data, store as cookie
-            if (!user.is_cookie) {
-                // add flag and package up together with time
-                user.is_cookie = true;
-                userCookie = {
-                    'data' : user,
-                    'time' : new Date()
-                };
-                // store
-                cookieString = JSON.stringify(userCookie);
-                storeResponse = cookieJar.set(user.login, cookieString);
-                if (storeResponse) {
-                    console.log('request done, storing cookie: {0}'.format(user.login));
-                } else {
-                    console.log('TROUBLE storing cookie: {0}'.format(user.login));
-                }
-            }
-
-            // get the repos
-            $.when(getRepos(userData.login)).done(function (reposData) {
-                var reposCookie = null,
-                    getJsonArray = [],
-                    langHash = {},
-                    statsHash = {},
-                    storeResponse = false,
-                    repos_url = [USERS_API_URL, username, 'repos'].join('/'),
-                    cookieString = '',
-                    r = 0;
-
-                // loop thru the repos
-                reposData.forEach(function (repoData, i) {
-                    // grab only the data we need
-                    repos.push(copyBIfInA(repo, repoData));
-                });
-                
-                // if api data, store as cookie
-                if (!repos[0].is_cookie) {
-                    // add flag and package up together with time
-                    for (r = 0; r < repos.length; r += 1) {
-                        repos[r].is_cookie = true;
-                    }                        
-                    reposCookie = {
-                        'data' : repos,
-                        'time' : new Date()
-                    };
-                    console.log(reposCookie);
-                    // store
-                    cookieString = JSON.stringify(reposCookie);
-                    storeResponse = cookieJar.set(repos_url, cookieString);
-                    if (storeResponse) {
-                        console.log('request done, storing cookie: {0}'.format(repos_url));
-                        console.log(cookieString.length);
-                        console.log(cookieString);
-                    } else {
-                        console.log('TROUBLE storing cookie: {0}'.format(repos_url));
-                        console.log(cookieString.length);
-                        console.log(cookieString);
-                    }
-                }
-                
-                function getRepoLangs(languagesUrl, index) {
-                    api_calls += 1;
-                    console.log('({0}) making request: {1}'.format(api_calls, languagesUrl));
-                    return $.getJSON(languagesUrl, function (language) {
-                        langHash[index] = language;
-                    });
-                }
-                function getRepoStats(statUrl, index, stat) {
-                    api_calls += 1;
-                    console.log('({0}) making request: {1}'.format(api_calls, statUrl));
-                    return $.getJSON(statUrl, function (stats) {
-                        statsHash[index][stat] = stats;
-                    });
-                }
-                
-                user.repos = [];
-                // loop thru the repos
-                repos.forEach(function (repoData, i) {
-                    var key = '',
-                        repo_url = [REPOS_API_URL, username, repoData.name].join('/');
-
-                    // add the repo to the user
-                    user.repos[i] = repoData;
-
-                    //get the languages and stats
-                    getJsonArray.push(getRepoLangs([repo_url, 'languages'].join('/'), i));
-                    REPO_STATS_URLS.forEach(function (stat) {
-                        statsHash[i] = {};
-                        getJsonArray.push(getRepoStats([repo_url, 'stats', stat].join('/'), i, stat));
-                    });
-
-                });
-
-                // wait until all the json requests are done
-                $.when.apply($, getJsonArray).done(function (response) {
-                    console.log('languages and stats request done');
-                    var index,
-                        stat;
-                    // add languages to repos
-                    for (index in langHash) {
-                        if (langHash.hasOwnProperty(index)) {
-                            user.repos[index].languages = langHash[index];
-                        }
-                    }
-                    // add stats to repos
-                    for (index in statsHash) {
-                        if (statsHash.hasOwnProperty(index)) {
-                            user.repos[index].stats = {};
-                            for (stat in statsHash[index]) {
-                                if (statsHash[index].hasOwnProperty(stat)) {
-                                    user.repos[index].stats[stat] = statsHash[index][stat];
-                                }
-                            }
-                        }
-                    }
-                }).fail(function (response) {
-                    console.log('languages or stats request failed');
-
-                }).always(function (response) {
-                    console.log('all requests done!');
-                    console.log('caching results');
-                    cachedUser = $.extend(true, {}, user);
-                    cookieJar.cookies().forEach(function (name) {
-                        var time = '',
-                            cookie = cookieJar.get(name);
-                        try {
-                            time = new Date(JSON.parse(cookie).time);
-                        } catch (e) {
-                            time = cookie;
-                        }
-                        console.log('    {0}: {1}'.format(name, time));
-                    });
-                    console.log('');
-                    // ALL DONE!
-                    return callback(user, '');
-                });
-            }).fail(function (response) {
-                console.log('repos request failed');
-                callback(user, response);
-            });
-        }).fail(function (response) {
-            console.log('user request failed');
-            callback(user, response);
-        });
     }
 
-    // page js
+    // Page js
     // -------------------------------------------------------------------------------------
     var page        = $('#page'),
         hashparams  = [],
@@ -900,28 +683,29 @@ $(document).ready(function () {
         newlocation = '',
         initHoldOff = 0,
         bringOut    = 0,
-        // cookies
+        now         = null,
+        // Cookies
         lastvisit   = null,
-        //this will store the scroll position
+        lastauth    = null,
+        // This will store the scroll position
         keepScroll  = false,
-        // store pages
+        // Store pages
         pages = {
             home : function () {
                 renderTemplate(page, 'home', 'aggregit');
             },
-            user : function (username) {
-                // username fallback
-                username = username || 'tmthydvnprt_example';
-                // start rendering page
-                renderTemplate(page, 'user', 'aggregit: ' + username);
-                // check if cached user exists
-                if (cachedUser && cachedUser.login === username) {
-                    console.log('Using Cached User Data (already requested this)');
-                    console.log('---------------------------------------------');
-                    console.log('');
-                    renderUser(cachedUser, '');
-                } else {
-                    // decide what data to get
+            user : function (params) {
+                // Check if auth is valid
+                var auth = cookieJar.get('valid_auth'),
+                // Username fallback
+                    username = params[0] || EXAMPLE_USERNAME,
+                    unauth = (params.length > 1 || params[1] === 'unauth') ? true : false;
+                // Proceed as usual if authorized
+                if (auth || unauth || username === EXAMPLE_USERNAME) {
+                    console.log('Authorized! Aggregit User\n');
+                    // Start rendering page
+                    renderTemplate(page, 'user', 'aggregit: ' + username);
+                    // Decide what data to get
                     if (username === 'tmthydvnprt_example') {
                         console.log('Requesting Example User Data (local)');
                         console.log('---------------------------------------------');
@@ -930,17 +714,53 @@ $(document).ready(function () {
                             renderUser(user, '');
                         });
                     } else {
-                        // aggregit it all
-                        $('#cached-user').remove();
-                        console.log('Requesting GitHub User Data');
-                        console.log('---------------------------------------------');
-                        console.log('');
-                        getGitHubUser(username, renderUser);
+                        // Check if cached user exists
+                        if (github.data.user && github.data.user.login === username) {
+                            console.log('Using Cached User Data (already requested this)');
+                            console.log('---------------------------------------------');
+                            console.log('');
+                            renderUser(github.data.user, '');
+                        } else {
+                            // Aggregit it all
+                            $('#cached-user').remove();
+                            $('#export-user').remove();
+                            console.log('Requesting GitHub User Data');
+                            console.log('---------------------------------------------');
+                            console.log('');
+                            github.get_all_user_data(username, renderUser);
+                        }
                     }
+                // Store searched username and go get authorization if auth is not valid
+                } else {
+                    console.log('NOT Authorized! Route to Authorize first\n');
+                    cookieJar.set('searchUser', username);
+                    location.hash = '#!/authorize';
+                    return false;
+                }
+            },
+            authorize : function () {
+                renderTemplate(page, 'authorize', 'aggregit: authorize');
+                $('#unauthorized').attr('href', '#!/user=' + cookieJar.get('searchUser') + '&unauth');
+                $('#authorize-btn').click(function (e) {
+                    github.authorize();
+                });
+            },
+            authenticate : function () {
+                renderTemplate(page, 'authenticate', 'aggregit: authenticate');
+                // Check if this is am authentication redirect from GitHub
+                if (location.search.indexOf('code') > -1) {
+                    console.log('github redirect, create access token.');
+                    github.authenticate();
+                } else {
+                    console.log('missing authorization code.');
                 }
             },
             about : function () {
                 renderTemplate(page, 'about', 'aggregit: about');
+            },
+            exportuser : function () {
+                renderTemplate(page, 'exportuser', 'aggregit: export user');
+                exportUser();
             },
             help : function () {
                 renderTemplate(page, 'help', 'aggregit: help');
@@ -954,23 +774,44 @@ $(document).ready(function () {
             }
         };
 
-	// route hashchanges to page
-	function router(e) {
+    function searchUser(e) {
+        // Get the form's first input
+        var username = $(e.target[0]).val(),
+            auth = cookieJar.get('valid_auth');
+        cookieJar.set('searchUser', username);
+        if (auth || username === EXAMPLE_USERNAME) {
+            // Route to user page
+            console.log('Authorized Route to User\n');
+            location.hash = '#!/user=' + username;
+        } else {
+            // Route to authorize page
+            console.log('NOT Authorized! Route to Authorize\n');
+            location.hash = '#!/authorize';
+        }
+        return false;
+    }
 
-        // clear last page stuff
+    // Route hashchanges to page
+    function router(e) {
+
+        // Clear last page stuff
         $('.help-pulse').removeClass('help-pulse');
-		$('.holdoff-time').removeClass('holdoff-time');
+        $('.holdoff-time').removeClass('holdoff-time');
         $('#nav-user').attr('href', "https://github.com");
         $('#nav-user').attr('title', "Go to GitHub");
         $('#nav-user').attr('alt', "Go to GitHub");
 
-		// cache page, hash, and filename
-		page = page || $('#page');
-		hashparams = location.hash.slice(1).split('=');
+        // Cache page, hash, and filename
+        page = page || $('#page');
+        hashparams = location.hash.slice(1).split('=');
         urlpath = location.pathname.split('/');
         filename = urlpath.slice(-1)[0] || 'index.html';
         hash = hashparams[0];
         params = hashparams[1];
+        // Split params if multiple
+        if (params) {
+            params = params.split('&');
+        }
 
         console.log('Routing');
         console.log('-----------------------------------------');
@@ -980,29 +821,29 @@ $(document).ready(function () {
         console.log('    params  : ' + params);
         console.log('');
 
-        // index page with internal hash routing
+        // Index page with internal hash routing
         if (filename === 'index.html') {
 
-            // default to home if on index page
+            // Default to home if on index page
             hash = hash || '!/home';
 
-            // on-page hash
+            // On-page hash
             if (hash.slice(0, 2) === '!/') {
 
-                // zoom to the top
+                // Zoom to the top
                 $('html,body').animate({
                     scrollTop: 0
                 }, 300);
 
-                // animate out
+                // Animate out
                 $('#page section').addClass('bringOut');
 
-                // wait until animation it done
+                // Wait until animation it done
                 bringOut = setTimeout(function () {
                     page.removeClass('rendered');
                     page.addClass('routing');
 
-                    // route to new page
+                    // Route to new page
                     hash = hash.slice(2);
                     if (pages.hasOwnProperty(hash)) {
                         pages[hash](params);
@@ -1012,34 +853,24 @@ $(document).ready(function () {
                         pages.unknown();
                     }
 
-                    // setup page
+                    // Setup page
                     page.addClass('rendered');
-                    // on-page scroll links
+                    // On-page scroll links
                     $('a[href*="#"]').click(function () {
-                        // stop auto scroll
+                        // Stop auto scroll
                         keepScroll = document.body.scrollTop;
                     });
-                    // bind enter clicks on input
-                    $("#nav-search").submit(function () {
-                        var username = $('#nav-search-user').val();
-                        location.hash = '#!/user=' + username;
-
-                        return false;
-                    });
-                    $("#home-search").submit(function () {
-                        var username = $('#home-search-user').val();
-                        location.hash = '#!/user=' + username;
-
-                        return false;
-                    });
+                    // Bind enter clicks on input
+                    $("#nav-search").submit(searchUser);
+                    $("#home-search").submit(searchUser);
 
                     clearInterval(bringOut);
                 }, 500);
 
-            // on-page hash
+            // On-page hash
             } else if (hash) {
                 if (keepScroll !== false) {
-                    //move scroll position to stored position
+                    // Move scroll position to stored position
                     document.body.scrollTop = keepScroll;
                     keepScroll = false;
                 }
@@ -1051,9 +882,9 @@ $(document).ready(function () {
                     }, 512);
                 }
             }
-        // if on any other page
+        // If on any other page
         } else {
-            // add index to hashrouting
+            // Add index to hashrouting
             if (hash.slice(0, 2) === '!/') {
                 urlpath[urlpath.length - 1] = "index.html";
                 newlocation = urlpath.join("/") + location.hash;
@@ -1064,38 +895,59 @@ $(document).ready(function () {
         }
 
         return false;
-	}
+    }
 
-	initHoldOff = setTimeout(function () {
-		$('.holdoff').removeClass('holdoff');
-		clearTimeout(initHoldOff);
-	}, 256);
+    initHoldOff = setTimeout(function () {
+        $('.holdoff').removeClass('holdoff');
+        clearTimeout(initHoldOff);
+    }, 256);
 
     if (!cookieJar.has('lastvisit')) {
         lastvisit = (new Date()).toISOString();
         cookieJar.set('lastvisit', lastvisit);
-        console.log('welcome');
+        console.log('Welcome');
         console.log('');
+        // Check Authentication
+        github.check_authentication(authOn);
+
     } else {
-        lastvisit = cookieJar.get('visit');
-        console.log('welcome back, your last visit was ' + lastvisit);
+        lastvisit = cookieJar.get('lastvisit');
+        console.log('Welcome back, your last visit was ' + lastvisit);
         console.log('');
-        console.log('these are your stored cookie:');
-        cookieJar.cookies().forEach(function (name) {
-            var time = '',
-                cookie = cookieJar.get(name);
-            try {
-                time = new Date(JSON.parse(cookie).time);
-            } catch (e) {
-                time = cookie;
+
+        // Check Authentication if last auth was more that five minutes ago
+        if (cookieJar.has('auth_time') && cookieJar.has('access_token')) {
+            now = new Date();
+            lastauth = new Date(cookieJar.get('auth_time'));
+            if ((now - lastauth) > FIVE_MIN_IN_MS) {
+                github.check_authentication(authOn);
+            } else {
+                console.log('Authenticated within the last 5 minutes.');
+                authOn(true);
             }
-            console.log('    {0}: {1}'.format(name, time));
+        } else {
+            github.check_authentication(authOn);
+        }
+
+        // Identify Cookies
+        console.log('These are your stored cookie:');
+        cookieJar.cookies().forEach(function (name) {
+            var cookie = cookieJar.get(name);
+            console.log('    {0}: {1}'.format(name, cookie));
         });
         console.log('');
-        
     }
 
-	// listen for hash change or page load
-	$(window).on('hashchange', router);
-	$(window).on('load', router);
+    // Get auth user data if it doesn't exist
+    // This is placed here to catch a newly authenticated user coming back from a github redirect to a new page (all object re initialiazed, only have cookies)
+    if (cookieJar.has('valid_auth') && cookieJar.get('valid_auth') && !cookieJar.has('auth_user')) {
+        console.log('Getting auth user data');
+        github.get_current_user();
+    } else {
+        console.log('Not authorized or already have auth user data');
+    }
+
+    // Listen for hash change or page load
+    $(window).on('hashchange', router);
+    $(window).on('load', router);
 });

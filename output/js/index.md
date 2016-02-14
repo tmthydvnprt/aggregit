@@ -11,10 +11,10 @@
 <meta content="blank index page of js directory" name="description"/>
 <meta content="i,n,d,e,x" name="keywords"/>
 <link href="../imgs/favicon.ico" rel="favicon"/>
-<link href="../img/icon_60x60.png" rel="apple-touch-icon"/>
-<link href="../img/icon_76x76.png" rel="apple-touch-icon" sizes="76x76"/>
-<link href="../img/icon_120x120.png" rel="apple-touch-icon" sizes="120x120"/>
-<link href="../img/icon_152x152.png" rel="apple-touch-icon" sizes="152x152"/>
+<link href="../imgs/icon_60x60.png" rel="apple-touch-icon"/>
+<link href="../imgs/icon_76x76.png" rel="apple-touch-icon" sizes="76x76"/>
+<link href="../imgs/icon_120x120.png" rel="apple-touch-icon" sizes="120x120"/>
+<link href="../imgs/icon_152x152.png" rel="apple-touch-icon" sizes="152x152"/>
 <link href="../css/bootstrap_font-awesome.min_aggregit.css" rel="stylesheet" type="text/css"/></head>
 <body>
 <!--quilted nav patch-->
@@ -22,8 +22,7 @@
 <div class="container">
 <div class="navbar-header">
 <a alt="home" class="navbar-brand" href="#!/home" title="home">
-<i class="fa fa-home"></i>
-<span>aggre</span><span>git</span>
+<img alt="aggregit" class="img-responsive" id="nav-logo" src="../imgs/aggregit_logo_brand.svg" title="../imgs/aggregit_logo_brand.svg"/>
 </a>
 <span class="label label-warning" id="beta">beta</span>
 </div>
@@ -31,13 +30,14 @@
 <form class="navbar-form navbar-left" id="nav-search">
 <div class="input-group">
 <span class="input-group-addon"><i class="fa fa-search fa-2x"></i></span>
-<input class="form-control" id="nav-search-user" placeholder="Search for username" type="text"/>
+<input class="form-control" id="nav-search-user" placeholder="Search username" type="text"/>
 </div>
 </form>
 <ul class="nav navbar-nav navbar-right">
-<li><a alt="about this!" href="#!/about" title="about this!"><i class="fa fa-info-circle fa-2x"></i></a></li>
-<li><a alt="need help?" href="#!/help" title="need help?"><i class="fa fa-question-circle fa-2x"></i></a></li>
-<li><a alt="go to GitHub" href="https://github.com" id="nav-user" target="_blank" title="go to GitHub"><i class="fa fa-github fa-2x"></i></a></li>
+<li><a alt="Find out more about aggregit." href="#!/about" title="Find out more about aggregit."><i class="fa fa-info-circle fa-2x"></i></a></li>
+<li><a alt="Need help using aggregit?" href="#!/help" title="Need help using aggregit?"><i class="fa fa-question-circle fa-2x"></i></a></li>
+<li><a alt="go to GitHub" href="https://github.com" id="nav-user" target="_blank" title="Go to GitHub"><i class="fa fa-github fa-2x"></i></a></li>
+<li><a alt="GitHub access is locked! You should authorize Aggregit for full experience." href="#!/authorize" id="auth-icon" title=""><i class="fa fa-times-circle fa-2x"></i></a></li>
 </ul>
 </div>
 </div>
@@ -55,12 +55,12 @@
 <hr/>
 <div class="clearfix">
 <p class="pull-left">
-<a alt="aggregit" href="index.html" title="aggregit">aggregit</a>
-                | <a alt="contact" href="#!/contact" title="contact">contact</a>
-                &bull; <a alt="about" href="#!/about" title="about">about</a>
-                &bull; <a alt="help" href="#!/help" title="help">help</a>
+<a alt="aggregit" href="http://aggregit.com" title="aggregit">aggregit</a>
+                | <a alt="Get in Touch with aggregit." href="#!/contact" title="contact">contact</a>
+                &bull; <a alt="Find out more about aggregit." href="#!/about" title="about">about</a>
+                &bull; <a alt="Need help using aggregit?" href="#!/help" title="help">help</a>
 </p>
-<p class="pull-right">2015&ndash;2016 &copy; <a alt="tmthydvnprt" href="https://github.com/tmthydvnprt" title="tmthydvnprt">tmthydvnprt</a></p>
+<p class="pull-right">2015&ndash;2016 &copy; <a alt="Visit tmthydvnprt on GitHub." href="https://github.com/tmthydvnprt" target="_blank" title="tmthydvnprt">tmthydvnprt</a></p>
 </div>
 </div>
 </footer>
@@ -185,15 +185,45 @@
 <div class="col-sm-8 col-sm-offset-2">
 <h1>Help? <small>&mdash; it's easy!</small></h1>
 <hr/>
-<h3>
+<h4>
 <ol>
-<li>type in a GitHub username</li>
-<li>press <kbd>enter</kbd></li>
-<li>enjoy the data!</li>
+<li>Type in a GitHub username.</li>
+<li>Press <kbd>enter</kbd>.</li>
+<li>Aggregit will aggregate thats user's data.
+                                <ul>
+<li><small>If it is your first time, you will be asked to authorize GitHub access.</small></li>
+</ul>
+</li>
+<li>View or download the results and enjoy the data!</li>
 </ol>
-</h3>
+</h4>
 <hr/>
 <h2><small>Or check out this <a alt="example of user data" href="#!/user=tmthydvnprt_example" title="example of user data">example of user data</a>.</small></h2>
+</div>
+</div>
+</div>
+</section>
+</template>
+<template id="authorize-template">
+<section class="bringIn">
+<div class="jumbotron">
+<div class="row">
+<div class="col-sm-8 col-sm-offset-2">
+<div class="panel panel-primary center-block" id="auth-panel">
+<div class="panel-heading">
+<h2 class="panel-title text-center">Authorize Aggregit</h2>
+</div>
+<div class="panel-body">
+<p class="text-center">Would you like to authorize Aggregit to access your public GitHub data?</p>
+<img alt="aggregit logo" class="img-responsive center-block img-thumbnail" id="auth-logo" src="../imgs/aggregit_logo.svg" title="../imgs/aggregit_logo.svg"/>
+<div class="text-center">
+<button class="btn btn-success" id="authorize-btn">Authorize</button>
+</div>
+<p class="smallprint">
+                                Authorization is required by the <a alt="GitHub API" href="https://developer.github.com/v3/" target="_blank" title="GitHub API">GitHub API</a> to make the number of API calls (&gt; 60/hour) required for building a complete picture of a user's public data.  If you do not authorize, you may <a alt="Continue without authorization" href="#" id="unauthorized" title="continue">continue</a>, but only a portion of the data may be accessed. Alternatively, you can view a static <a alt="example" href="#!/user=tmthydvnprt_example" title="example">example</a> of a user.
+                            </p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -202,12 +232,44 @@
 <template id="user-template">
 <section class="bringIn">
 <div class="jumbotron">
-<div id="user-info"></div>
+<div id="user-info">
+<div class="text-center">
+<div id="aggregiting">
+<i class="fa fa-spinner fa-pulse"></i>
+</div>
+<h1>Aggre<strong>git</strong>ing</h1>
+</div>
+</div>
 </div>
 <div id="user-data"></div>
 </section>
 </template>
 <template id="repo-info-template">
+</template>
+<template id="exportuser-template">
+<section class="bringIn">
+<div class="jumbotron">
+<div class="row">
+<div class="col-sm-8 col-sm-offset-2">
+<div class="panel panel-primary center-block" id="export-panel">
+<div class="panel-heading">
+<h2 class="panel-title text-center">Export</h2>
+</div>
+<div class="panel-body">
+<p class="text-center">Would you like to export this user's data?</p>
+<div class="text-center text-primary" id="json-file">
+<i class="fa fa-file-text fa-5x"></i>
+</div>
+<div class="text-center">
+<a alt="Export Data" class="btn btn-success no-hover disabled" download="nothing.json" href="#" id="export-btn" target="_blank" title="Export Data"><i class="fa fa-gear fa-spin"></i>Export Data</a>
+</div>
+<p class="text-center"><code class="filename">____.json</code></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 </template>
 <template id="contact-template">
 <section class="bringIn">
@@ -216,7 +278,7 @@
 <div class="col-sm-8 col-sm-offset-2">
 <h1>Contact</h1>
 <hr/>
-<h1><a alt="tmthydvnprt" href="https://github.com/tmthydvnprt" title="tmthydvnprt">tmthydvnprt</a></h1>
+<p class="lead">If you need to get in touch, you may send emails to <a alt="info@aggregit.com" href="mailto:info@aggregit.com" title="info@aggregit.com">info@aggregit.com</a>, begin a conversation at the <a alt="aggregit" href="https://github.com/tmthydvnprt/aggregit" title="aggregit">aggregit</a> GitHub repo, or reach me directly on GitHub as <a alt="tmthydvnprt" href="https://github.com/tmthydvnprt" title="tmthydvnprt">tmthydvnprt</a>.</p>
 <hr/>
 </div>
 </div>
@@ -234,7 +296,7 @@
 <div class="row">
 <div class="col-xs-12 text-center">
 <p class="lead">
-                        Please return <a alt="home" href="../index.html" title="home">home</a>.
+                        Please return <a alt="home" href="#!/home" title="home">home</a>.
                     </p>
 </div>
 </div>
@@ -246,16 +308,18 @@
 <div class="jumbotron">
 <div class="row">
 <div class="col-sm-8 col-sm-offset-2">
-<h1>About Aggregit <small>{x|x&isin;r&isin;u}</small></h1>
+<h1>About Aggregit <small>{<var>x</var>|<var>x</var>&isin;<var>Repo</var>&isin;<var>User</var>}</small></h1>
 <hr/>
 <h3>Multi-Repo Punch Card Anyone?</h3>
-<p class="lead">Ever wanted to see your punch card for <em>all</em> your repos? your non-<code>master</code> contributions in the heat map? <em>all</em> your language stats? Well, those are the reasons for building this.</p>
+<p class="lead">
+                        Ever wanted to see your punch card for <em>all</em> your repos? Or your non-<code>master</code> contributions in the heat map? Maybe <em>all</em> your language stats? Well, those were the reasons for building this.
+                    </p>
 <h4>Data, Data, Data!</h4>
-<p class="lead">The page makes a bunch of unauthenticated calls to the <a alt="GitHub API" href="https://developer.github.com/v3/" target="_blank" title="GitHub API">GitHub API</a> to get a whole mess of <code>json</code> that can be plotted or presented in a beautiful way.</p>
-<h4>Link / Share</h4>
-<p>Share your data by linking to this site with your username passed as an parameter.</p>
-<pre>http://aggregit.com#/!user=tmthydvnprt</pre>
-<p>Check out <em>all</em> my <a alt="GitHub data" href="http://aggregit.com#/!user=tmthydvnprt" title="GitHub data">GitHub data</a>.</p>
+<p class="lead">
+                        The site makes a bunch of calls to the <a alt="GitHub API" href="https://developer.github.com/v3/" target="_blank" title="GitHub API">GitHub API</a> to get a whole mess of <code>json</code> that can be plotted or presented in a beautiful way.  You may also download the raw data for your own analysis or reporting. Share your data by linking to this site with your username passed as an parameter: <code>http://aggregit.com#!/user=tmthydvnprt</code>.
+                    </p>
+<h4>Who made this?</h4>
+<p class="lead">Timothy Davenport, or <a alt="tmthydvnprt" href="https://github.com/tmthydvnprt" target="_blank" title="tmthydvnprt"><code>tmthydvnprt</code></a> on GitHub. Check out <em>all</em> my <a alt="GitHub data" href="http://aggregit.com#!/user=tmthydvnprt" title="GitHub data">GitHub data</a>.</p>
 </div>
 </div>
 </div>
@@ -263,13 +327,16 @@
 </template>
 <template id="home-template">
 <section class="bringIn">
-<div class="jumbotron text-center">
-<h1><span class="agg">aggre</span><span class="git">git</span></h1>
-<p class="lead">See <em>all</em> your data across <em>all</em> your <a alt="GitHub" href="https://github.com" target="_blank" title="GitHub">GitHub</a> repositories.</p>
+<div class="jumbotron text-center" id="home-jumbo">
+<img alt="aggregit logo" class="img-responsive center-block" id="home-logo" src="../imgs/aggregit_logo.svg" title="../imgs/aggregit_logo.svg"/>
+<p class="lead">
+                Get <em>all</em> your data across <em>all</em> your <a alt="GitHub" href="https://github.com" target="_blank" title="GitHub">GitHub</a> repositories.<br/>
+<small>Visualize your data here or export it to process on your own.</small>
+</p>
 </div>
 <div class="row">
 <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-<h3 class="text-center">Search for a username</h3>
+<h3 class="text-center">Search for a username:</h3>
 <div class="well well-sm">
 <form id="home-search">
 <div class="input-group">
@@ -279,6 +346,31 @@
 </form>
 </div>
 <h3 class="text-center"><small>(maybe yourself, a friend or future employee)</small></h3>
+</div>
+</div>
+</section>
+</template>
+<template id="authenticate-template">
+<section class="bringIn">
+<div class="jumbotron">
+<div class="row">
+<div class="col-sm-8 col-sm-offset-2">
+<div class="panel panel-primary center-block" id="auth-panel">
+<div class="panel-heading">
+<h2 class="panel-title text-center">Authenticating Aggregit</h2>
+</div>
+<div class="panel-body">
+<p class="text-center">Awesome! You authorized Aggregit to access your public GitHub data!</p>
+<img alt="aggregit logo" class="img-responsive center-block img-thumbnail" id="auth-logo" src="../imgs/aggregit_logo.svg" title="../imgs/aggregit_logo.svg"/>
+<div class="text-center">
+<button class="btn btn-success disabled" id="authorize-btn">Authenticating</button>
+</div>
+<p class="smallprint">
+                                Aggregit is authenticating your account and then will get your data. Enjoy.
+                            </p>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -295,6 +387,6 @@
 </div>
 </template>
 <!--quilted scripts patch-->
-<script id="scripts" rel="javascript" src="../js/jquery-1.11.2.min_d3.min_cookieJar_aggregit.js" type="text/javascript"></script>
+<script id="scripts" rel="javascript" src="../js/jquery-1.11.2.min_d3.min_cookieJar_common_github_aggregit.js" type="text/javascript"></script>
 </body>
 </html>

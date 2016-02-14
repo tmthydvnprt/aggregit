@@ -4,11 +4,12 @@
     "title"       : "aggregit",
     "author"      : "tmthydvnprt",
     "email"       : "tim@tmthydvnprt.com",
-    "description" : "aggregit all of a github user's data",
-    "keywords"    : ["aggregate", "git", "user", "profile", "data"],
+    "description" : "aggregate all of a github user's data",
+    "keywords"    : ["aggregate", "git", "user", "profile", "data", "code", "software"],
     "changefreq"  : "monthly",
     "priority"    : "0.5",
     "local"       : false,
+    "combinejs"   : true,
     "patchcomment": true,
     "quiltcomment": false,
     "assetcomment": true,
@@ -17,6 +18,7 @@
     "buildblog"   : false,
     "buildatom"   : false,
     "buildrss"    : false,
+    "buildicon"   : true,
     "copydate"    : 2015,
     "copyrighter" : "tmthydvnprt"
 }

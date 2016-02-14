@@ -32,10 +32,7 @@ console.log('Is Blink: ' + isBlink);
 $(document).ready(function () {
     'use strict';
 
-    var cachedUser  = {
-            "message" : "There is no user data. Return to http://aggregit.com to access a GitHub user first."
-        },
-        textFile = null;
+    var textFile = null;
 
     function makeJsonFile(obj) {
 		var data = null,
@@ -61,10 +58,10 @@ $(document).ready(function () {
         }
 
         // Download/export user data as json
-        $('#export-btn').attr('href', makeJsonFile(cachedUser));
-        if (cachedUser.hasOwnProperty('login')) {
-            $('#export-btn').attr('download', cachedUser['login'] + '.json');
-            $('.filename').html(cachedUser['login'] + '.json');
+        $('#export-btn').attr('href', makeJsonFile(github.data.user));
+        if (github.data.user.hasOwnProperty('login')) {
+            $('#export-btn').attr('download', github.data.user['login'] + '.json');
+            $('.filename').html(github.data.user['login'] + '.json');
         } else {
             $('#export-btn').attr('download', 'warning_no_user_data.json');
             $('.filename').html('warning_no_user_data.json');
@@ -558,9 +555,7 @@ $(document).ready(function () {
     }
 
     function renderUser(user, errors) {
-        console.log('Caching User');
 
-        cachedUser = $.extend(true, {}, user);
         console.log('Render the User');
         console.log('---------------------------------------------');
         // update the DOM
@@ -699,11 +694,11 @@ $(document).ready(function () {
                     // start rendering page
                     renderTemplate(page, 'user', 'aggregit: ' + username);
                     // check if cached user exists
-                    if (cachedUser && cachedUser.login === username) {
+                    if (github.data.user && github.data.user.login === username) {
                         console.log('Using Cached User Data (already requested this)');
                         console.log('---------------------------------------------');
                         console.log('');
-                        renderUser(cachedUser, '');
+                        renderUser(github.data.user, '');
                     } else {
                         // decide what data to get
                         if (username === 'tmthydvnprt_example') {

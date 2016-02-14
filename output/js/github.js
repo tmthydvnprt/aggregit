@@ -486,7 +486,7 @@ var github = {
                 name = repo.name;
             // Store Data
             if (github.data.user.hasOwnProperty('repos')) {
-                github.data.user.repos[name] = repo;
+                $.extend(true, github.data.user.repos[name], repo);
             } else {
                 github.data.user['repos'] = {name : repo};
             }
@@ -506,10 +506,14 @@ var github = {
             if (name && name.length > 1) {
                 name = name[1];
                 // Store Data
-                if (github.data.user.repos.hasOwnProperty(name)) {
-                    github.data.user.repos[name]['languages'] = repo_lang_data;
+                if (github.data.user.hasOwnProperty('repos')) {
+                    if (github.data.user.repos.hasOwnProperty(name)) {
+                        github.data.user.repos[name]['languages'] = repo_lang_data;
+                    } else {
+                        github.data.user.repos = {'languages' : repo_lang_data};
+                    }
                 } else {
-                    github.data.user.repos = {'languages' : repo_lang_data};
+                    github.data.user['repos'] = {name : {'languages' : repo_lang_data}};
                 }
             } else {
                 console.log('Bad url parse. Couldn\'t get repo name.');

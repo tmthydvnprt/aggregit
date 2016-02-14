@@ -1,5 +1,4 @@
 /*globals $,console,d3,cookieJar,github,deparam,unurl,copyBIfInA,parse_headers */
-
 /*!
  * github.js
  *

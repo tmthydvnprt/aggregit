@@ -28,6 +28,46 @@ function copyBIfInA(a, b) {
     }
     return a;
 }
+// Parses a header string as returned by xhr.getAllResponseHeaders()
+function parse_headers(header_string) {
+    "use strict";
+    var lines = header_string.trim().split('\n'),
+        headers = {},
+        i = 0,
+        keyval = [],
+        key = '',
+        val = '',
+        number = null,
+        date = null;
+
+    // loop thru header lines
+    for (i = 0; i < lines.length; i += 1) {
+        // split line on first `:` for key:val par
+        keyval = lines[i].split(/:([\w]*)/);
+        key = keyval[0].trim();
+        val = keyval[1].trim();
+        // try to parse value as null
+        if (val === "") {
+            val = null;
+        } else {
+            // try to parse as number
+            number = parseInt(val, 10);
+            if (!isNaN(number)) {
+                val = number;
+            } else {
+                // try to parse as number
+                date = new Date(val);
+                if (!isNaN(date.getTime())) {
+                    val = date;
+                }
+                // leave as string
+            }
+        }
+        // Place in object
+        headers[key] = val;
+    }
+    return headers;
+}
 // clean url to use a key
 function unurl(url) {
     "use strict";

@@ -709,7 +709,7 @@ $(document).ready(function () {
                             console.log('Requesting GitHub User Data');
                             console.log('---------------------------------------------');
                             console.log('');
-                            getGitHubUser(username, renderUser);
+                            github.get_all_user_data(username, renderUser);
                         }
                     }
                 // Store searched username and go get authorization if auth is not valid

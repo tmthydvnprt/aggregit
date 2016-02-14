@@ -239,6 +239,31 @@
 </div>
 </section>
 </template>
+<template id="export-template">
+<section class="bringIn">
+<div class="jumbotron">
+<div class="row">
+<div class="col-sm-8 col-sm-offset-2">
+<div class="panel panel-primary center-block" id="export-panel">
+<div class="panel-heading">
+<h2 class="panel-title text-center">Export</h2>
+</div>
+<div class="panel-body">
+<p class="text-center">Would you like to export this user's data?</p>
+<div class="text-center text-primary" id="json-file">
+<i class="fa fa-file-text fa-5x"></i>
+</div>
+<div class="text-center">
+<a alt="Export Data" class="btn btn-success no-hover disabled" download="nothing.json" href="#" id="export-btn" target="_blank" title="Export Data"><i class="fa fa-gear fa-spin"></i>Export Data</a>
+</div>
+<p class="text-center"><code class="filename">____.json</code></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</template>
 <template id="user-template">
 <section class="bringIn">
 <div class="jumbotron">
@@ -353,31 +378,6 @@
 <p class="smallprint">
                                 Aggregit is authenticating your account and then will get your data. Enjoy.
                             </p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-</template>
-<template id="export-template">
-<section class="bringIn">
-<div class="jumbotron">
-<div class="row">
-<div class="col-sm-8 col-sm-offset-2">
-<div class="panel panel-primary center-block" id="export-panel">
-<div class="panel-heading">
-<h2 class="panel-title text-center">Export</h2>
-</div>
-<div class="panel-body">
-<p class="text-center">Would you like to export this user's data?</p>
-<div class="text-center text-primary" id="json-file">
-<i class="fa fa-file-text fa-5x"></i>
-</div>
-<div class="text-center">
-<a alt="Export Data" class="btn btn-success no-hover disabled" download="nothing.json" href="#" id="export-btn" target="_blank" title="Export Data"><i class="fa fa-gear fa-spin"></i>Export Data</a>
-</div>
-<p class="text-center"><code class="filename">____.json</code></p>
 </div>
 </div>
 </div>

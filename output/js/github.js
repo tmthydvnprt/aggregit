@@ -568,6 +568,10 @@ var github = {
                 });
             }
         );
+        // Set up callback to execute when all ajax requests are done
+        $.ajaxStop(function() {
+            alert('AJAX done');
+        });
     }
 };
 

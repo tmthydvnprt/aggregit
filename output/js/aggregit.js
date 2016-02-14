@@ -1,4 +1,4 @@
-/*globals $,console,d3,cookieJar,github */
+/*globals $,console,d3,cookieJar,formatDate,github,opr,InstallTrigger,Blob */
 /*!
  * aggregit.js
  *
@@ -32,22 +32,23 @@ console.log('Is Blink: ' + isBlink);
 $(document).ready(function () {
     'use strict';
 
-    var textFile = null;
+    // var textFile = null;
 
     function makeJsonFile(obj) {
-		var data = null,
-            text = JSON.stringify(obj);
+        var data = null,
+            text = JSON.stringify(obj),
+            textFile = null;
         if (isSafari) {
             textFile = 'data:application/text;charset=utf-8,' + encodeURIComponent(text);
         } else {
             data = new Blob([text], {type: 'text/json'});
-    		if (textFile !== null) {
-    			window.URL.revokeObjectURL(textFile);
-    		}
-    		textFile = window.URL.createObjectURL(data);
+            if (textFile !== null) {
+                window.URL.revokeObjectURL(textFile);
+            }
+            textFile = window.URL.createObjectURL(data);
         }
-		return textFile;
-	}
+        return textFile;
+    }
 
     function exportUser() {
         // Display safari warning
@@ -60,8 +61,8 @@ $(document).ready(function () {
         // Download/export user data as json
         $('#export-btn').attr('href', makeJsonFile(github.data.user));
         if (github.data.user.hasOwnProperty('login')) {
-            $('#export-btn').attr('download', github.data.user['login'] + '.json');
-            $('.filename').html(github.data.user['login'] + '.json');
+            $('#export-btn').attr('download', github.data.user.login + '.json');
+            $('.filename').html(github.data.user.login + '.json');
         } else {
             $('#export-btn').attr('download', 'warning_no_user_data.json');
             $('.filename').html('warning_no_user_data.json');
@@ -98,7 +99,7 @@ $(document).ready(function () {
             h = parseInt(w / 3, 10),
             pad = 20,
             left_pad = 100,
-            DAYS = 'Sunday Monday Tuesday Wednesday Thursday Friday Saturday'.split(' '),
+            DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
             svg = d3.select(elem)
                 .append("svg")
                 .attr("id", "punchcard-svg")
@@ -446,12 +447,14 @@ $(document).ready(function () {
         // aggregate punch card data
         console.log('Aggregating Punch Card:');
         for (key in user.repos) {
-            repo = user.repos[key];
-            if ($.inArray(repo.name, punchRepos) > -1) {
-                console.log('    ' + repo.name);
-                repo.stats.punch_card.forEach(function (punch, i) {
-                    aggPunchCard[i][2] += punch[2];
-                });
+            if (user.repos.hasOwnProperty(key)) {
+                repo = user.repos[key];
+                if ($.inArray(repo.name, punchRepos) > -1) {
+                    console.log('    ' + repo.name);
+                    repo.stats.punch_card.forEach(function (punch, i) {
+                        aggPunchCard[i][2] += punch[2];
+                    });
+                }
             }
         }
         console.log('');
@@ -496,15 +499,17 @@ $(document).ready(function () {
         // aggregate participation data
         console.log('Aggregating Participation:');
         for (key in user.repos) {
-            repo = user.repos[key];
-            if ($.inArray(repo.name, punchRepos) > -1) {
-                console.log('    ' + repo.name);
-                for (d = 0; d < PARTICIPATION_SIZE; d += 1) {
-                    if (owner) {
-                        aggParticipation[d].owner += repo.stats.participation.owner[d];
-                    }
-                    if (all) {
-                        aggParticipation[d].all += repo.stats.participation.all[d];
+            if (user.repos.hasOwnProperty(key)) {
+                repo = user.repos[key];
+                if ($.inArray(repo.name, punchRepos) > -1) {
+                    console.log('    ' + repo.name);
+                    for (d = 0; d < PARTICIPATION_SIZE; d += 1) {
+                        if (owner) {
+                            aggParticipation[d].owner += repo.stats.participation.owner[d];
+                        }
+                        if (all) {
+                            aggParticipation[d].all += repo.stats.participation.all[d];
+                        }
                     }
                 }
             }
@@ -536,15 +541,17 @@ $(document).ready(function () {
         // aggregate language data
         console.log('Aggregating Languages:');
         for (key in user.repos) {
-            repo = user.repos[key];
-            if ($.inArray(repo.name, punchRepos) > -1) {
-                console.log('    ' + repo.name);
-                for (language in repo.languages) {
-                    if (repo.languages.hasOwnProperty(language)) {
-                        if (aggLanguages.hasOwnProperty(language)) {
-                            aggLanguages[language] += repo.languages[language];
-                        } else {
-                            aggLanguages[language] = repo.languages[language];
+            if (user.repos.hasOwnProperty(key)) {
+                repo = user.repos[key];
+                if ($.inArray(repo.name, punchRepos) > -1) {
+                    console.log('    ' + repo.name);
+                    for (language in repo.languages) {
+                        if (repo.languages.hasOwnProperty(language)) {
+                            if (aggLanguages.hasOwnProperty(language)) {
+                                aggLanguages[language] += repo.languages[language];
+                            } else {
+                                aggLanguages[language] = repo.languages[language];
+                            }
                         }
                     }
                 }
@@ -570,7 +577,9 @@ $(document).ready(function () {
             var REPO_CHECKLIST_TEMPLATE = '<li><input {1} type="checkbox" name="{0}">{2}{0}</li>',
                 repoChecklist = [],
                 key = '',
-                repo = {};
+                repo = {},
+                check = '',
+                fork = '';
 
             // format dates
             user.created_at = formatDate(new Date(user.created_at));
@@ -604,10 +613,12 @@ $(document).ready(function () {
 
             // build repos selector
             for (key in user.repos) {
-                repo = user.repos[key];
-                var check = (repo.fork) ? '' : 'checked=""',
+                if (user.repos.hasOwnProperty(key)) {
+                    repo = user.repos[key];
+                    check = (repo.fork) ? '' : 'checked=""';
                     fork = (repo.fork) ? '<i class="fa fa-code-fork text-info"></i> ' : '';
-                repoChecklist.push(REPO_CHECKLIST_TEMPLATE.format(repo.name, check, fork));
+                    repoChecklist.push(REPO_CHECKLIST_TEMPLATE.format(repo.name, check, fork));
+                }
             }
 
             // draw punchcard, and update when repo selector clicked
@@ -746,7 +757,7 @@ $(document).ready(function () {
             about : function () {
                 renderTemplate(page, 'about', 'aggregit: about');
             },
-            export : function () {
+            export_data : function () {
                 renderTemplate(page, 'export', 'aggregit: export');
                 exportUser();
             },
@@ -762,7 +773,7 @@ $(document).ready(function () {
             }
         };
 
-    function searchUser() {
+    function searchUser(e) {
         // get the form's first input
         var username = $(this[0]).val(),
             auth = cookieJar.get('valid_auth');

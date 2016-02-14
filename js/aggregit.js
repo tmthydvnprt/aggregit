@@ -430,7 +430,9 @@ $(document).ready(function () {
         var aggPunchCard = [],
             h = 0,
             d = 0,
-            punchRepos = [];
+            punchRepos = [],
+            key = '',
+            repo = {};
 
         // fill empty punchcard
         for (d = 0; d < 7; d += 1) {
@@ -446,14 +448,15 @@ $(document).ready(function () {
 
         // aggregate punch card data
         console.log('Aggregating Punch Card:');
-        user.repos.forEach(function (repo, i) {
+        for (key in user.repos) {
+            repo = user.repos[key];
             if ($.inArray(repo.name, punchRepos) > -1) {
                 console.log('    ' + repo.name);
                 repo.stats.punch_card.forEach(function (punch, i) {
                     aggPunchCard[i][2] += punch[2];
                 });
             }
-        });
+        }
         console.log('');
         renderPunchCard('#punchcard', aggPunchCard);
     }
@@ -467,7 +470,9 @@ $(document).ready(function () {
             punchRepos = [],
             owner = false,
             all = false,
-            zoom = false;
+            zoom = false,
+            key = '',
+            repo = {};
 
         //gather which repos, time, and who to include
         $('#participation-checklist input:checked').each(function () {
@@ -493,7 +498,8 @@ $(document).ready(function () {
 
         // aggregate participation data
         console.log('Aggregating Participation:');
-        user.repos.forEach(function (repo, i) {
+        for (key in user.repos) {
+            repo = user.repos[key];
             if ($.inArray(repo.name, punchRepos) > -1) {
                 console.log('    ' + repo.name);
                 for (d = 0; d < PARTICIPATION_SIZE; d += 1) {
@@ -505,7 +511,7 @@ $(document).ready(function () {
                     }
                 }
             }
-        });
+        }
         if (zoom) {
             for (z = 0; z < aggParticipation.length; z += 1) {
                 if (aggParticipation[z].owner > 0 || aggParticipation[z].all > 0) {
@@ -521,7 +527,9 @@ $(document).ready(function () {
     function aggregateLanguages(user) {
         var aggLanguages = [],
             punchRepos = [],
-            language;
+            language = '',
+            key = '',
+            repo = {};
 
         //gather which repos, time, and who to include
         $('#languages-checklist input:checked').each(function () {
@@ -530,8 +538,8 @@ $(document).ready(function () {
 
         // aggregate language data
         console.log('Aggregating Languages:');
-        user.repos.forEach(function (repo, i) {
-            var language;
+        for (key in user.repos) {
+            repo = user.repos[key];
             if ($.inArray(repo.name, punchRepos) > -1) {
                 console.log('    ' + repo.name);
                 for (language in repo.languages) {
@@ -544,7 +552,7 @@ $(document).ready(function () {
                     }
                 }
             }
-        });
+        }
         console.log('');
         renderLanguages('#languages', aggLanguages);
     }
@@ -565,7 +573,9 @@ $(document).ready(function () {
             );
         } else {
             var REPO_CHECKLIST_TEMPLATE = '<li><input {1} type="checkbox" name="{0}">{2}{0}</li>',
-                repoChecklist = [];
+                repoChecklist = [],
+                key = '',
+                repo = {};
 
             // format dates
             user.created_at = formatDate(new Date(user.created_at));
@@ -598,11 +608,12 @@ $(document).ready(function () {
             );
 
             // build repos selector
-            user.repos.forEach(function (repo, i) {
+            for (key in user.repos) {
+                repo = user.repos[key];
                 var check = (repo.fork) ? '' : 'checked=""',
                     fork = (repo.fork) ? '<i class="fa fa-code-fork text-info"></i> ' : '';
                 repoChecklist.push(REPO_CHECKLIST_TEMPLATE.format(repo.name, check, fork));
-            });
+            }
 
             // draw punchcard, and update when repo selector clicked
             $('#punchcard-checklist').html(repoChecklist.join(''));

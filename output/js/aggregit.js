@@ -591,7 +591,7 @@ $(document).ready(function () {
             // Add cached data button
             if ($('#cached-user').length === 0) {
                 $('#nav-search .input-group').append(
-                    '<span id="cached-user" class="input-group-addon"><a href="#!/user={0}" alt="{0}\'s data"><i class="fa fa-area-chart fa-2x"></i></a></span><span id="export-user" class="input-group-addon"><a href="#!/export" alt="Export {0}\'s data"><i class="fa fa-cloud-download fa-2x"></i></a></span>'.format(user.login)
+                    '<span id="cached-user" class="input-group-addon"><a href="#!/user={0}" alt="{0}\'s data"><i class="fa fa-area-chart fa-2x"></i></a></span><span id="export-user" class="input-group-addon"><a href="#!/exportuser" alt="Export {0}\'s data"><i class="fa fa-cloud-download fa-2x"></i></a></span>'.format(user.login)
                 );
             }
             $('#cached-user').attr("href", "#!/user={0}".format(user.login));
@@ -758,8 +758,8 @@ $(document).ready(function () {
             about : function () {
                 renderTemplate(page, 'about', 'aggregit: about');
             },
-            export_data : function () {
-                renderTemplate(page, 'export', 'aggregit: export');
+            exportuser : function () {
+                renderTemplate(page, 'exportuser', 'aggregit: export user');
                 exportUser();
             },
             help : function () {

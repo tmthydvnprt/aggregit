@@ -229,7 +229,24 @@
 </div>
 </section>
 </template>
-<template id="export-template">
+<template id="user-template">
+<section class="bringIn">
+<div class="jumbotron">
+<div id="user-info">
+<div class="text-center">
+<div id="aggregiting">
+<i class="fa fa-spinner fa-pulse"></i>
+</div>
+<h1>Aggre<strong>git</strong>ing</h1>
+</div>
+</div>
+</div>
+<div id="user-data"></div>
+</section>
+</template>
+<template id="repo-info-template">
+</template>
+<template id="exportuser-template">
 <section class="bringIn">
 <div class="jumbotron">
 <div class="row">
@@ -253,23 +270,6 @@
 </div>
 </div>
 </section>
-</template>
-<template id="user-template">
-<section class="bringIn">
-<div class="jumbotron">
-<div id="user-info">
-<div class="text-center">
-<div id="aggregiting">
-<i class="fa fa-spinner fa-pulse"></i>
-</div>
-<h1>Aggre<strong>git</strong>ing</h1>
-</div>
-</div>
-</div>
-<div id="user-data"></div>
-</section>
-</template>
-<template id="repo-info-template">
 </template>
 <template id="contact-template">
 <section class="bringIn">

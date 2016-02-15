@@ -438,6 +438,89 @@ $(document).ready(function () {
 
     }
 
+    function renderHeatmap(elem, data) {
+        // Reference: http://bl.ocks.org/mbostock/4063318
+        console.log('Rendering Heatmap');
+        console.log('');
+
+        // Remove last plot if there
+        d3.select("#heatmap-svg").remove();
+
+        // Setup parameters and variables
+        var w = parseInt($(elem).width(), 10),
+            h = parseInt(w / 6, 10),
+            cell_size = parseInt(w / 56, 10),
+            pad = 20,
+            left_pad = 100,
+            percent = d3.format(".1%"),
+            format = d3.time.format("%Y-%m-%d"),
+            MIN_T = d3.min(data.map(function (d) {
+                return d3.min(d);
+            })),
+            MAX_T = d3.max(data.map(function (d) {
+                return d3.max(d);
+            })),
+            MAX_C = d3.max(data.map(function (d) {
+                return d3.max(d);
+            })),
+            color = d3.scale.quantize()
+                .domain([MIN_T, MAX_T])
+                .range(d3.range(11).map(function(d) { return "q" + d + "-11"; })),
+            svg = d3.select(elem).selectAll("svg")
+                    .data(d3.range(MIN_T, MAX_T))
+                .enter().append("svg")
+                    .attr("id", "heatmap-svg")
+                    .attr("width", w)
+                    .attr("height", h)
+                    .attr("class", "RdYlGn")
+                .append("g")
+                    .attr("transform", "translate(" + ((w - cell_size * 53) / 2) + "," + (h - cell_size * 7 - 1) + ")"),
+            rect = svg.selectAll(".day")
+                    .data(function(d) { return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
+                .enter().append("rect")
+                    .attr("class", "day")
+                    .attr("width", cell_size)
+                    .attr("height", cell_size)
+                    .attr("x", function(d) { return d3.time.weekOfYear(d) * cell_size; })
+                    .attr("y", function(d) { return d.getDay() * cell_size; })
+                    .datum(format);
+
+        svg.append("text")
+            .attr("transform", "translate(-6," + cell_size * 3.5 + ")rotate(-90)")
+            .style("text-anchor", "middle")
+            .text(function(d) { return d; });
+        rect.append("title")
+            .text(function(d) { return d; });
+        svg.selectAll(".month")
+                .data(function(d) { return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
+            .enter().append("path")
+                .attr("class", "month")
+                .attr("d", monthPath);
+
+        rect.filter(function(d) { return d in data; })
+                .attr("class", function(d) { return "day " + color(data[d]); })
+            .select("title")
+                .text(function(d) { return d + ": " + percent(data[d]); });
+
+        function monthPath(t0) {
+          var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
+              d0 = t0.getDay(), w0 = d3.time.weekOfYear(t0),
+              d1 = t1.getDay(), w1 = d3.time.weekOfYear(t1);
+          return "M" + (w0 + 1) * cell_size + "," + d0 * cell_size
+              + "H" + w0 * cell_size + "V" + 7 * cell_size
+              + "H" + w1 * cell_size + "V" + (d1 + 1) * cell_size
+              + "H" + (w1 + 1) * cell_size + "V" + 0
+              + "H" + (w0 + 1) * cell_size + "Z";
+        }
+
+            // heatmapTooltip = d3.select("body")
+            //     .append("div")
+            //     .attr("id", "heatmap-tooltip")
+            //     .attr("class", "tooltip")
+            //     .style("opacity", 0)
+            //     .text("heatmap");
+    }
+
     function aggregatePunchCard(user) {
 
         var aggPunchCard = [],
@@ -540,6 +623,15 @@ $(document).ready(function () {
         }
         console.log('');
         renderParticipation('#participation', aggParticipation);
+    }
+
+    function aggregateHeatmap(user) {
+        var aggHeatmap = [];
+
+        console.log('Aggregating Heatmap (code activity):');
+
+        console.log('');
+        renderHeatmap('#heatmap', aggHeatmap);
     }
 
     function aggregateLanguages(user) {

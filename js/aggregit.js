@@ -6,6 +6,7 @@
  */
 var FIVE_MIN_IN_MS = 5 * 60 * 1000,
     EXAMPLE_USERNAME = 'tmthydvnprt_example',
+    RENDER_DELAY = 600,
     // Opera 8.0+
     isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0,
     // Firefox 1.0+
@@ -665,7 +666,7 @@ $(document).ready(function () {
                     aggregateLanguages(user);
                 });
             }
-        }, 500);
+        }, RENDER_DELAY);
     }
 
     function authOn(valid_auth) {

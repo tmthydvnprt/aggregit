@@ -713,7 +713,7 @@ $(document).ready(function () {
                 var auth = cookieJar.get('valid_auth'),
                 // Username fallback
                     username = (params && params[0]) || EXAMPLE_USERNAME,
-                    unauth = (params.length > 1 || params[1] === 'unauth') ? true : false;
+                    unauth = (params && (params.length > 1 || params[1] === 'unauth')) ? true : false;
                 // Proceed as usual if authorized
                 if (auth || unauth || username === EXAMPLE_USERNAME) {
                     console.log('Authorized! Aggregit User\n');

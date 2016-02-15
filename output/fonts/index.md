@@ -238,6 +238,11 @@
 <i class="fa fa-spinner fa-pulse"></i>
 </div>
 <h1>Aggre<strong>git</strong>ing</h1>
+<div class="progress">
+<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="00" class="progress-bar" role="progressbar" style="width: 0%;">
+                            0%
+                        </div>
+</div>
 </div>
 </div>
 </div>

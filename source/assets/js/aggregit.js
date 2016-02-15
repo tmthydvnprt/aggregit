@@ -29,6 +29,15 @@ console.log('Is Edge: ' + isEdge);
 console.log('Is Chrome: ' + isChrome);
 console.log('Is Blink: ' + isBlink);
 
+function updateBar(value, max, text) {
+    'use strict';
+    var percent = 100.0 * value / max;
+    $('.progress-bar').attr('aria-valuenow', value);
+    $('.progress-bar').attr('aria-valuemax', max);
+    $('.progress-bar').attr('style', 'width: ' + percent + '%;');
+    $('.progress-bar').html(text);
+}
+
 $(document).ready(function () {
     'use strict';
 
@@ -732,6 +741,17 @@ $(document).ready(function () {
                             console.log('Requesting GitHub User Data');
                             console.log('---------------------------------------------');
                             console.log('');
+                            // Clear history for this access
+                            github.calls = 0;
+                            // Bind action to update progress bar
+                            $(document).bind('ajaxComplete', function (e) {
+                                var val = github.calls,
+                                    max = github.total_calls,
+                                    percent = 0;
+                                percent = 100.0 * val / max;
+                                updateBar(val, max, Math.round(100.0 *  percent) / 100);
+                            });
+                            // Get all the user's data from GitHub
                             github.get_all_user_data(username, renderUser);
                         }
                     }

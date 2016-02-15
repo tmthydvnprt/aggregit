@@ -579,91 +579,93 @@ $(document).ready(function () {
     function renderUser(user, errors) {
 
         updateBar(100,100);
-        console.log('Render the User');
-        console.log('---------------------------------------------');
-        // Update the DOM
-        if (errors) {
-            console.log('Errors! Rate-limit');
-            $('title').text('aggregit: error');
+        setTimeout(function () {
+            console.log('Render the User');
+            console.log('---------------------------------------------');
+            // Update the DOM
+            if (errors) {
+                console.log('Errors! Rate-limit');
+                $('title').text('aggregit: error');
 
-            $('#user-info').html(
-                $('#error-template').html()
-            );
-        } else {
-            var REPO_CHECKLIST_TEMPLATE = '<li><input {1} type="checkbox" name="{0}">{2}{0}</li>',
-                repoChecklist = [],
-                key = '',
-                repo = {},
-                check = '',
-                fork = '';
-
-            // Format dates
-            user.created_at = formatDate(new Date(user.created_at));
-            user.updated_at = formatDate(new Date(user.updated_at));
-            user.site_admin = user.site_admin ? '<i class="fa fa-fw fa-github-alt"></i> site admint' : '';
-            user.hireable = user.hireable ? '<i class="fa fa-fw fa-check-circle"></i> hireable' : '';
-
-            // Add cached data button
-            if ($('#cached-user').length === 0) {
-                $('#nav-search .input-group').append(
-                    '<span id="cached-user" class="input-group-addon"><a href="#!/user={0}" alt="{0}\'s data"><i class="fa fa-area-chart fa-2x"></i></a></span><span id="export-user" class="input-group-addon"><a href="#!/exportuser" alt="Export {0}\'s data"><i class="fa fa-cloud-download fa-2x"></i></a></span>'.format(user.login)
+                $('#user-info').html(
+                    $('#error-template').html()
                 );
-            }
-            $('#cached-user').attr("href", "#!/user={0}".format(user.login));
+            } else {
+                var REPO_CHECKLIST_TEMPLATE = '<li><input {1} type="checkbox" name="{0}">{2}{0}</li>',
+                    repoChecklist = [],
+                    key = '',
+                    repo = {},
+                    check = '',
+                    fork = '';
 
-            // Update user info
-            $('title').text('aggregit: ' + user.login);
-            $('#username').val('');
-            $('#username').attr('placeholder', user.login);
-            $('#nav-user').attr('href', user.html_url);
-            $('#nav-user').attr('title', "Go to User");
-            $('#nav-user').attr('alt', "Go to User");
-            $('#user-info').html(
-                $('#user-info-template').html().format(user)
-            );
+                // Format dates
+                user.created_at = formatDate(new Date(user.created_at));
+                user.updated_at = formatDate(new Date(user.updated_at));
+                user.site_admin = user.site_admin ? '<i class="fa fa-fw fa-github-alt"></i> site admint' : '';
+                user.hireable = user.hireable ? '<i class="fa fa-fw fa-check-circle"></i> hireable' : '';
 
-            // Update user data
-            $('#user-data').html(
-                $('#user-data-template').html().format(user)
-            );
-
-            // Build repos selector
-            for (key in user.repos) {
-                if (user.repos.hasOwnProperty(key)) {
-                    repo = user.repos[key];
-                    check = (repo.fork) ? '' : 'checked=""';
-                    fork = (repo.fork) ? '<i class="fa fa-code-fork text-info"></i> ' : '';
-                    repoChecklist.push(REPO_CHECKLIST_TEMPLATE.format(repo.name, check, fork));
+                // Add cached data button
+                if ($('#cached-user').length === 0) {
+                    $('#nav-search .input-group').append(
+                        '<span id="cached-user" class="input-group-addon"><a href="#!/user={0}" alt="{0}\'s data"><i class="fa fa-area-chart fa-2x"></i></a></span><span id="export-user" class="input-group-addon"><a href="#!/exportuser" alt="Export {0}\'s data"><i class="fa fa-cloud-download fa-2x"></i></a></span>'.format(user.login)
+                    );
                 }
-            }
+                $('#cached-user').attr("href", "#!/user={0}".format(user.login));
 
-            // Draw punchcard, and update when repo selector clicked
-            $('#punchcard-checklist').html(repoChecklist.join(''));
-            aggregatePunchCard(user);
-            $('#punchcard-checklist input').click(function () {
+                // Update user info
+                $('title').text('aggregit: ' + user.login);
+                $('#username').val('');
+                $('#username').attr('placeholder', user.login);
+                $('#nav-user').attr('href', user.html_url);
+                $('#nav-user').attr('title', "Go to User");
+                $('#nav-user').attr('alt', "Go to User");
+                $('#user-info').html(
+                    $('#user-info-template').html().format(user)
+                );
+
+                // Update user data
+                $('#user-data').html(
+                    $('#user-data-template').html().format(user)
+                );
+
+                // Build repos selector
+                for (key in user.repos) {
+                    if (user.repos.hasOwnProperty(key)) {
+                        repo = user.repos[key];
+                        check = (repo.fork) ? '' : 'checked=""';
+                        fork = (repo.fork) ? '<i class="fa fa-code-fork text-info"></i> ' : '';
+                        repoChecklist.push(REPO_CHECKLIST_TEMPLATE.format(repo.name, check, fork));
+                    }
+                }
+
+                // Draw punchcard, and update when repo selector clicked
+                $('#punchcard-checklist').html(repoChecklist.join(''));
                 aggregatePunchCard(user);
-            });
+                $('#punchcard-checklist input').click(function () {
+                    aggregatePunchCard(user);
+                });
 
-            // Draw participation, and update when clicked
-            $('#participation-checklist').html(repoChecklist.join(''));
-            aggregateParticipation(user);
-            $('#participation-checklist input').click(function () {
+                // Draw participation, and update when clicked
+                $('#participation-checklist').html(repoChecklist.join(''));
                 aggregateParticipation(user);
-            });
-            $('#ownerall-checklist input').click(function () {
-                aggregateParticipation(user);
-            });
-            $('#zoom-checklist input').click(function () {
-                aggregateParticipation(user);
-            });
+                $('#participation-checklist input').click(function () {
+                    aggregateParticipation(user);
+                });
+                $('#ownerall-checklist input').click(function () {
+                    aggregateParticipation(user);
+                });
+                $('#zoom-checklist input').click(function () {
+                    aggregateParticipation(user);
+                });
 
-            // Draw languages, and update when repo selector clicked
-            $('#languages-checklist').html(repoChecklist.join(''));
-            aggregateLanguages(user);
-            $('#languages-checklist input').click(function () {
+                // Draw languages, and update when repo selector clicked
+                $('#languages-checklist').html(repoChecklist.join(''));
                 aggregateLanguages(user);
-            });
-        }
+                $('#languages-checklist input').click(function () {
+                    aggregateLanguages(user);
+                });
+            }
+        }, 100);
     }
 
     function authOn(valid_auth) {

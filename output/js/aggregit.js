@@ -578,7 +578,7 @@ $(document).ready(function () {
 
     function renderUser(user, errors) {
 
-        updateBar(100,100);
+        updateBar(100, 100);
         setTimeout(function () {
             console.log('Render the User');
             console.log('---------------------------------------------');
@@ -665,7 +665,7 @@ $(document).ready(function () {
                     aggregateLanguages(user);
                 });
             }
-        }, 100);
+        }, 500);
     }
 
     function authOn(valid_auth) {

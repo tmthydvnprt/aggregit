@@ -578,6 +578,7 @@ $(document).ready(function () {
 
     function renderUser(user, errors) {
 
+        updateBar(100,100);
         console.log('Render the User');
         console.log('---------------------------------------------');
         // Update the DOM

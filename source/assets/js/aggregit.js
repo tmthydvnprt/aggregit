@@ -579,7 +579,7 @@ $(document).ready(function () {
 
     function renderUser(user, errors) {
 
-        updateBar(100, 100);
+        updateBar(100, 100, '100%');
         setTimeout(function () {
             console.log('Render the User');
             console.log('---------------------------------------------');
@@ -753,7 +753,7 @@ $(document).ready(function () {
                                     max = github.total_calls,
                                     percent = 0;
                                 percent = 100.0 * val / max;
-                                updateBar(val, max, Math.round(100.0 *  percent) / 100);
+                                updateBar(val, max, String(Math.round(100.0 *  percent) / 100) + '%');
                             });
                             // Get all the user's data from GitHub
                             github.get_all_user_data(username, renderUser);

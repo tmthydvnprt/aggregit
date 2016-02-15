@@ -176,6 +176,9 @@ nav time[datetime]:not(.no-hover):hover::before {
     z-index: 20;
     pointer-events: none;
 }
+.progress {
+    height: 21px;
+}
 #help-arrow {
     position: absolute;
     top:-28px;

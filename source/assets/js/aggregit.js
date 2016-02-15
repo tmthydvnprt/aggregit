@@ -712,7 +712,7 @@ $(document).ready(function () {
                 // Check if auth is valid
                 var auth = cookieJar.get('valid_auth'),
                 // Username fallback
-                    username = params[0] || EXAMPLE_USERNAME,
+                    username = (params && params[0]) || EXAMPLE_USERNAME,
                     unauth = (params.length > 1 || params[1] === 'unauth') ? true : false;
                 // Proceed as usual if authorized
                 if (auth || unauth || username === EXAMPLE_USERNAME) {

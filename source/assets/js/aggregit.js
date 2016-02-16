@@ -626,10 +626,40 @@ $(document).ready(function () {
     }
 
     function aggregateHeatmap(user) {
-        var aggHeatmap = [];
+        var aggHeatmap = {},
+            key = '',
+            heatRepos = [],
+            WEEKS_IN_YEAR = 52,
+            DAYS_IN_WEEK = 7,
+            d = 0,
+            w = 0,
+            weekdate = null,
+            date = null,
+            date_str = '',
+            OFFSET = 24*60*60*1000;
+
+        // Gather which repos, time, and who to include
+        $('#participation-checklist input:checked').each(function () {
+            heatRepos.push($(this).attr('name'));
+        });
 
         console.log('Aggregating Heatmap (code activity):');
-
+        for (key in user.repos) {
+            if (user.repos.hasOwnProperty(key)) {
+                repo = user.repos[key];
+                if ($.inArray(repo.name, heatRepos) > -1) {
+                    console.log('    ' + repo.name);
+                    for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
+                        weekdate = new Date(repo.stats.commit_activity[w].week * 1000);
+                        for (w = 0; w < DAYS_IN_WEEK; d += 1) {
+                            date = new Date(weekdate.getTime() + w * OFFSET);
+                            date_str = '{0}-{1}-{2}'.format(date.date.getFullYear(), date.getMonth(), date.getDate());
+                            aggHeatmap[date_str] = repo.stats.commit_activity[w].days[d];
+                        }
+                    }
+                }
+            }
+        }
         console.log('');
         renderHeatmap('#heatmap', aggHeatmap);
     }
@@ -738,17 +768,21 @@ $(document).ready(function () {
                     aggregatePunchCard(user);
                 });
 
-                // Draw participation, and update when clicked
+                // Draw participation/commit_activity, and update when clicked
                 $('#participation-checklist').html(repoChecklist.join(''));
                 aggregateParticipation(user);
+                aggregateHeatmap(user);
                 $('#participation-checklist input').click(function () {
                     aggregateParticipation(user);
+                    aggregateHeatmap(user);
                 });
                 $('#ownerall-checklist input').click(function () {
                     aggregateParticipation(user);
+                    aggregateHeatmap(user);
                 });
                 $('#zoom-checklist input').click(function () {
                     aggregateParticipation(user);
+                    aggregateHeatmap(user);
                 });
 
                 // Draw languages, and update when repo selector clicked

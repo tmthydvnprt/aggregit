@@ -463,7 +463,6 @@ $(document).ready(function () {
             cell_size = parseInt(w / 56, 10),
             pad = 20,
             left_pad = 100,
-            percent = d3.format(".1%"),
             format = d3.time.format("%Y-%m-%d"),
             MIN_T = format.parse(Object.keys(data)[0]),
             MAX_T = format.parse(Object.keys(data).slice(-1)[0]),
@@ -506,10 +505,10 @@ $(document).ready(function () {
                 .attr("class", "month")
                 .attr("d", monthPath);
 
-        rect.filter(function(d) { return d in data; })
+        rect//.filter(function(d) { return d in data; })
                 .attr("class", function(d) { return "day " + color(data[d]); })
             .select("title")
-                .text(function(d) { return d + ": " + percent(data[d]); });
+                .text(function(d) { return d + ": " + data[d]; });
 
         function monthPath(t0) {
           var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
@@ -663,7 +662,11 @@ $(document).ready(function () {
                         weekdate = new Date(repo.stats.commit_activity[w].week * 1000);
                         for (d = 0; d < DAYS_IN_WEEK; d += 1) {
                             date = new Date(weekdate.getTime() + d * OFFSET);
-                            date_str = '{0}-{1}-{2}'.format(date.getFullYear(), date.getMonth() + 1, date.getDate());
+                            date_str = '{0}-{1}-{2}'.format(
+                                date.getFullYear(),
+                                ('0' + date.getMonth() + 1).slice(-2),
+                                ('0' + date.getDate()).slice(-2)
+                            );
                             if (aggHeatmap.hasOwnProperty(date_str)) {
                                 aggHeatmap[date_str] += repo.stats.commit_activity[w].days[d];
                             } else {

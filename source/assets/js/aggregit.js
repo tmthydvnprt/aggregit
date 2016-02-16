@@ -636,7 +636,8 @@ $(document).ready(function () {
             weekdate = null,
             date = null,
             date_str = '',
-            OFFSET = 24*60*60*1000;
+            OFFSET = 24*60*60*1000,
+            repo = {};
 
         // Gather which repos, time, and who to include
         $('#participation-checklist input:checked').each(function () {
@@ -653,7 +654,7 @@ $(document).ready(function () {
                         weekdate = new Date(repo.stats.commit_activity[w].week * 1000);
                         for (w = 0; w < DAYS_IN_WEEK; d += 1) {
                             date = new Date(weekdate.getTime() + w * OFFSET);
-                            date_str = '{0}-{1}-{2}'.format(date.date.getFullYear(), date.getMonth(), date.getDate());
+                            date_str = '{0}-{1}-{2}'.format(date.getFullYear(), date.getMonth(), date.getDate());
                             aggHeatmap[date_str] = repo.stats.commit_activity[w].days[d];
                         }
                     }

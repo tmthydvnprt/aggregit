@@ -494,7 +494,7 @@ $(document).ready(function () {
                         } else {
                             return d3.time.weeks(MIN_T, d).length * cell_size;
                         }
-                    )
+                    })
                     .attr("y", function(d) { return d.getDay() * cell_size; })
                     .datum(format);
 

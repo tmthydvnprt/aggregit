@@ -488,7 +488,13 @@ $(document).ready(function () {
                     .attr("class", "day")
                     .attr("width", cell_size)
                     .attr("height", cell_size)
-                    .attr("x", function(d) { return d3.time.weeks(MIN_T, d).length * cell_size; })
+                    .attr("x", function(d) {
+                        if (d.getDay() == 0) {
+                            return (d3.time.weeks(MIN_T, d).length + 1) * cell_size;
+                        } else {
+                            return d3.time.weeks(MIN_T, d).length * cell_size;
+                        }
+                    )
                     .attr("y", function(d) { return d.getDay() * cell_size; })
                     .datum(format);
 

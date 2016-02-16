@@ -664,7 +664,7 @@ $(document).ready(function () {
                             date = new Date(weekdate.getTime() + d * OFFSET);
                             date_str = '{0}-{1}-{2}'.format(
                                 date.getFullYear(),
-                                ('0' + date.getMonth() + 1).slice(-2),
+                                ('0' + (date.getMonth() + 1)).slice(-2),
                                 ('0' + date.getDate()).slice(-2)
                             );
                             if (aggHeatmap.hasOwnProperty(date_str)) {

@@ -458,7 +458,8 @@ $(document).ready(function () {
         d3.select("#heatmap-svg").remove();
 
         // Setup parameters and variables
-        var w = parseInt($(elem).width(), 10),
+        var WEEKDAY = {0:'Sun', 1:'Mon', 2:'Tue', 3:'Wed', 4:'Thu', 5:'Fri', 6:'Sat'},
+            w = parseInt($(elem).width(), 10),
             h = parseInt(w / 6, 10),
             cell_size = parseInt(w / 56, 10),
             pad = 20,
@@ -508,7 +509,7 @@ $(document).ready(function () {
         rect//.filter(function(d) { return d in data; })
                 .attr("class", function(d) { return "day " + color(data[d]); })
             .select("title")
-                .text(function(d) { return d + ": " + data[d]; });
+                .text(function(d) { return WEEKDAY[format.parse(d).getDay()] + " " + d + ": " + data[d]; });
 
         function monthPath(t0) {
           var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),

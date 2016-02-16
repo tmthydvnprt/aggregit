@@ -459,6 +459,7 @@ $(document).ready(function () {
 
         // Setup parameters and variables
         var WEEKDAY = {0:'Sun', 1:'Mon', 2:'Tue', 3:'Wed', 4:'Thu', 5:'Fri', 6:'Sat'},
+            OFFSET = 24*60*60*1000,
             w = parseInt($(elem).width(), 10),
             h = parseInt(w / 6, 10),
             cell_size = parseInt(w / 56, 10),
@@ -506,7 +507,19 @@ $(document).ready(function () {
             .text(function(d) { return d; });
         svg.selectAll(".month")
                 .data(function(d) {
-                    return d3.time.months(MIN_T, MAX_T);
+                    var m0 = d3.time.months(MIN_T, MAX_T),
+                        m1 = d3.time.months(MIN_T, MAX_T),
+                        m = [],
+                        i = 0;
+                    for (i = 0; i < m1.length; i += 1) {
+                        m1[i] = new Date(m1[i].getTime() - OFFSET);
+                    }
+                    m0.splice(0, 0, MIN_T);
+                    m1.push(MAX_T);
+                    for (i = 0; i < m0.length; i += 1) {
+                        m.push({'m0':m0[i], 'm1':m1[i]});
+                    }
+                    return m;
                 })
             .enter().append("path")
                 .attr("class", "month")
@@ -517,10 +530,17 @@ $(document).ready(function () {
             .select("title")
                 .text(function(d) { return WEEKDAY[format.parse(d).getDay()] + " " + d + ": " + data[d]; });
 
-        function monthPath(t0) {
-          var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
-              d0 = t0.getDay(), w0 = d3.time.weekOfYear(t0),
-              d1 = t1.getDay(), w1 = d3.time.weekOfYear(t1);
+        function monthPath(m) {
+          var t0 = m['m0'],
+              t1 = m['m1'],
+              d0 = t0.getDay(), w0 = d3.time.weeks(MIN_T, t0).length,
+              d1 = t1.getDay(), w1 = d3.time.weeks(MIN_T, t1).length;
+              if (d0 == 0) {
+                  w0 += 1;
+              }
+              if (d1 == 0) {
+                  w1 += 1;
+              }
           return "M" + (w0 + 1) * cell_size + "," + d0 * cell_size
               + "H" + w0 * cell_size + "V" + 7 * cell_size
               + "H" + w1 * cell_size + "V" + (d1 + 1) * cell_size

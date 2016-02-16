@@ -438,6 +438,94 @@ $(document).ready(function () {
 
     }
 
+    function renderHeatmap(elem, data) {
+        // Reference: http://bl.ocks.org/mbostock/4063318
+        console.log('Rendering Heatmap');
+        console.log('');
+
+        function getValues(obj) {
+            var array = [],
+                key = '';
+            for (key in obj) {
+                if (data.hasOwnProperty(key)) {
+                    array.push(obj[key]);
+                }
+            }
+            return array;
+        }
+
+        // Remove last plot if there
+        d3.select("#heatmap-svg").remove();
+
+        // Setup parameters and variables
+        var w = parseInt($(elem).width(), 10),
+            h = parseInt(w / 6, 10),
+            cell_size = parseInt(w / 56, 10),
+            pad = 20,
+            left_pad = 100,
+            percent = d3.format(".1%"),
+            format = d3.time.format("%Y-%m-%d"),
+            MIN_T = format.parse(d3.min(Object.keys(data))),
+            MAX_T = format.parse(d3.max(Object.keys(data))),
+            MAX_C = d3.max(getValues(data)),
+            color = d3.scale.quantize()
+                .domain([0, MAX_C])
+                .range(d3.range(11).map(function(d) { return "q" + d + "-11"; })),
+            svg = d3.select(elem).selectAll("svg")
+                    .data(d3.range(MIN_T.getFullYear(), MAX_T.getFullYear()))
+                .enter().append("svg")
+                    .attr("id", "heatmap-svg")
+                    .attr("width", w)
+                    .attr("height", h)
+                    .attr("class", "RdYlGn")
+                .append("g")
+                    .attr("transform", "translate(" + ((w - cell_size * 53) / 2) + "," + (h - cell_size * 7 - 1) + ")"),
+            rect = svg.selectAll(".day")
+                    .data(function(d) { return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
+                .enter().append("rect")
+                    .attr("class", "day")
+                    .attr("width", cell_size)
+                    .attr("height", cell_size)
+                    .attr("x", function(d) { return d3.time.weekOfYear(d) * cell_size; })
+                    .attr("y", function(d) { return d.getDay() * cell_size; })
+                    .datum(format);
+
+        svg.append("text")
+            .attr("transform", "translate(-6," + cell_size * 3.5 + ")rotate(-90)")
+            .style("text-anchor", "middle")
+            .text(function(d) { return d; });
+        rect.append("title")
+            .text(function(d) { return d; });
+        svg.selectAll(".month")
+                .data(function(d) { return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
+            .enter().append("path")
+                .attr("class", "month")
+                .attr("d", monthPath);
+
+        rect.filter(function(d) { return d in data; })
+                .attr("class", function(d) { return "day " + color(data[d]); })
+            .select("title")
+                .text(function(d) { return d + ": " + percent(data[d]); });
+
+        function monthPath(t0) {
+          var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
+              d0 = t0.getDay(), w0 = d3.time.weekOfYear(t0),
+              d1 = t1.getDay(), w1 = d3.time.weekOfYear(t1);
+          return "M" + (w0 + 1) * cell_size + "," + d0 * cell_size
+              + "H" + w0 * cell_size + "V" + 7 * cell_size
+              + "H" + w1 * cell_size + "V" + (d1 + 1) * cell_size
+              + "H" + (w1 + 1) * cell_size + "V" + 0
+              + "H" + (w0 + 1) * cell_size + "Z";
+        }
+
+            // heatmapTooltip = d3.select("body")
+            //     .append("div")
+            //     .attr("id", "heatmap-tooltip")
+            //     .attr("class", "tooltip")
+            //     .style("opacity", 0)
+            //     .text("heatmap");
+    }
+
     function aggregatePunchCard(user) {
 
         var aggPunchCard = [],
@@ -540,6 +628,52 @@ $(document).ready(function () {
         }
         console.log('');
         renderParticipation('#participation', aggParticipation);
+    }
+
+    function aggregateHeatmap(user) {
+        var aggHeatmap = {},
+            key = '',
+            heatRepos = [],
+            WEEKS_IN_YEAR = 52,
+            DAYS_IN_WEEK = 7,
+            d = 0,
+            w = 0,
+            weekdate = null,
+            date = null,
+            date_str = '',
+            OFFSET = 24*60*60*1000,
+            repo = {};
+
+        // Gather which repos, time, and who to include
+        $('#participation-checklist input:checked').each(function () {
+            heatRepos.push($(this).attr('name'));
+        });
+
+        console.log('Aggregating Heatmap (code activity):');
+        for (key in user.repos) {
+            if (user.repos.hasOwnProperty(key)) {
+                repo = user.repos[key];
+                if ($.inArray(repo.name, heatRepos) > -1) {
+                    console.log('    ' + repo.name);
+                    for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
+                        weekdate = new Date(repo.stats.commit_activity[w].week * 1000);
+                        for (d = 0; d < DAYS_IN_WEEK; d += 1) {
+                            date = new Date(weekdate.getTime() + d * OFFSET);
+                            date_str = '{0}-{1}-{2}'.format(date.getFullYear(), date.getMonth() + 1, date.getDate());
+                            if (aggHeatmap.hasOwnProperty(date_str)) {
+                                aggHeatmap[date_str] += repo.stats.commit_activity[w].days[d];
+                            } else {
+                                aggHeatmap[date_str] = repo.stats.commit_activity[w].days[d];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        console.log('');
+        console.log(aggHeatmap);
+        console.log('');
+        renderHeatmap('#heatmap', aggHeatmap);
     }
 
     function aggregateLanguages(user) {
@@ -646,17 +780,21 @@ $(document).ready(function () {
                     aggregatePunchCard(user);
                 });
 
-                // Draw participation, and update when clicked
+                // Draw participation/commit_activity, and update when clicked
                 $('#participation-checklist').html(repoChecklist.join(''));
                 aggregateParticipation(user);
+                aggregateHeatmap(user);
                 $('#participation-checklist input').click(function () {
                     aggregateParticipation(user);
+                    aggregateHeatmap(user);
                 });
                 $('#ownerall-checklist input').click(function () {
                     aggregateParticipation(user);
+                    aggregateHeatmap(user);
                 });
                 $('#zoom-checklist input').click(function () {
                     aggregateParticipation(user);
+                    aggregateHeatmap(user);
                 });
 
                 // Draw languages, and update when repo selector clicked

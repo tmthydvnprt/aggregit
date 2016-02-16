@@ -465,14 +465,14 @@ $(document).ready(function () {
             left_pad = 100,
             percent = d3.format(".1%"),
             format = d3.time.format("%Y-%m-%d"),
-            MIN_T = format.parse(d3.min(Object.keys(data))),
-            MAX_T = format.parse(d3.max(Object.keys(data))),
+            MIN_T = format.parse(Object.keys(data)[0]),
+            MAX_T = format.parse(Object.keys(data).slice(-1)[0]),
             MAX_C = d3.max(getValues(data)),
             color = d3.scale.quantize()
                 .domain([0, MAX_C])
                 .range(d3.range(11).map(function(d) { return "q" + d + "-11"; })),
             svg = d3.select(elem).selectAll("svg")
-                    .data(d3.range(MIN_T.getFullYear(), MAX_T.getFullYear()))
+                    .data([0])
                 .enter().append("svg")
                     .attr("id", "heatmap-svg")
                     .attr("width", w)
@@ -481,23 +481,27 @@ $(document).ready(function () {
                 .append("g")
                     .attr("transform", "translate(" + ((w - cell_size * 53) / 2) + "," + (h - cell_size * 7 - 1) + ")"),
             rect = svg.selectAll(".day")
-                    .data(function(d) { return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
+                    .data(function(d) {
+                        return d3.time.days(MIN_T, MAX_T);
+                    })
                 .enter().append("rect")
                     .attr("class", "day")
                     .attr("width", cell_size)
                     .attr("height", cell_size)
-                    .attr("x", function(d) { return d3.time.weekOfYear(d) * cell_size; })
+                    .attr("x", function(d) { return d3.time.weeks(MIN_T, d).length * cell_size; })
                     .attr("y", function(d) { return d.getDay() * cell_size; })
                     .datum(format);
 
-        svg.append("text")
-            .attr("transform", "translate(-6," + cell_size * 3.5 + ")rotate(-90)")
-            .style("text-anchor", "middle")
-            .text(function(d) { return d; });
+        // svg.append("text")
+        //     .attr("transform", "translate(-6," + cell_size * 3.5 + ")rotate(-90)")
+        //     .style("text-anchor", "middle")
+        //     .text(function(d) { return d; });
         rect.append("title")
             .text(function(d) { return d; });
         svg.selectAll(".month")
-                .data(function(d) { return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
+                .data(function(d) {
+                    return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1));
+                })
             .enter().append("path")
                 .attr("class", "month")
                 .attr("d", monthPath);

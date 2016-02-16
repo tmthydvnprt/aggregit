@@ -502,13 +502,13 @@ nav #nav-search-user.form-control {
 /* User HeatMap
  ---------------------- */
  .day {
-   fill: #fff;
-   stroke: #ccc;
+   fill: #fefefe;
+   stroke: #dddddd;
  }
 
  .month {
    fill: none;
-   stroke: #000;
+   stroke: #cbcbcb;
    stroke-width: 2px;
  }
 

@@ -443,6 +443,17 @@ $(document).ready(function () {
         console.log('Rendering Heatmap');
         console.log('');
 
+        function getValues(obj) {
+            var array = [],
+                key = '';
+            for (key in obj) {
+                if (data.hasOwnProperty(key)) {
+                    array.push(obj[key]);
+                }
+            }
+            return array;
+        }
+
         // Remove last plot if there
         d3.select("#heatmap-svg").remove();
 
@@ -454,15 +465,9 @@ $(document).ready(function () {
             left_pad = 100,
             percent = d3.format(".1%"),
             format = d3.time.format("%Y-%m-%d"),
-            MIN_T = d3.min(data.map(function (d) {
-                return d3.min(d);
-            })),
-            MAX_T = d3.max(data.map(function (d) {
-                return d3.max(d);
-            })),
-            MAX_C = d3.max(data.map(function (d) {
-                return d3.max(d);
-            })),
+            MIN_T = d3.min(Object.keys(data)),
+            MAX_T = d3.max(Object.keys(data)),
+            MAX_C = d3.max(getValues(data)),
             color = d3.scale.quantize()
                 .domain([MIN_T, MAX_T])
                 .range(d3.range(11).map(function(d) { return "q" + d + "-11"; })),
@@ -652,10 +657,14 @@ $(document).ready(function () {
                     console.log('    ' + repo.name);
                     for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
                         weekdate = new Date(repo.stats.commit_activity[w].week * 1000);
-                        for (w = 0; w < DAYS_IN_WEEK; d += 1) {
-                            date = new Date(weekdate.getTime() + w * OFFSET);
-                            date_str = '{0}-{1}-{2}'.format(date.getFullYear(), date.getMonth(), date.getDate());
-                            aggHeatmap[date_str] = repo.stats.commit_activity[w].days[d];
+                        for (d = 0; d < DAYS_IN_WEEK; d += 1) {
+                            date = new Date(weekdate.getTime() + d * OFFSET);
+                            date_str = '{0}-{1}-{2}'.format(date.getFullYear(), date.getMonth() + 1, date.getDate());
+                            if (aggHeatmap.hasOwnProperty(date_str)) {
+                                aggHeatmap[date_str] += repo.stats.commit_activity[w].days[d];
+                            } else {
+                                aggHeatmap[date_str] = repo.stats.commit_activity[w].days[d];
+                            }
                         }
                     }
                 }

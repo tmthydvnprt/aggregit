@@ -465,14 +465,14 @@ $(document).ready(function () {
             left_pad = 100,
             percent = d3.format(".1%"),
             format = d3.time.format("%Y-%m-%d"),
-            MIN_T = d3.min(Object.keys(data)),
-            MAX_T = d3.max(Object.keys(data)),
+            MIN_T = format.parse(d3.min(Object.keys(data))),
+            MAX_T = format.parse(d3.max(Object.keys(data))),
             MAX_C = d3.max(getValues(data)),
             color = d3.scale.quantize()
-                .domain([MIN_T, MAX_T])
+                .domain([0, MAX_C])
                 .range(d3.range(11).map(function(d) { return "q" + d + "-11"; })),
             svg = d3.select(elem).selectAll("svg")
-                    .data(d3.range(MIN_T, MAX_T))
+                    .data(d3.range(MIN_T.getFullYear(), MAX_T.getFullYear()))
                 .enter().append("svg")
                     .attr("id", "heatmap-svg")
                     .attr("width", w)
@@ -670,6 +670,8 @@ $(document).ready(function () {
                 }
             }
         }
+        console.log('');
+        console.log(aggHeatmap);
         console.log('');
         renderHeatmap('#heatmap', aggHeatmap);
     }

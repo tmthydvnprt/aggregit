@@ -506,7 +506,7 @@ $(document).ready(function () {
             .text(function(d) { return d; });
         svg.selectAll(".month")
                 .data(function(d) {
-                    return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1));
+                    return d3.time.months(MIN_T, MAX_T);
                 })
             .enter().append("path")
                 .attr("class", "month")

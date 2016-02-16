@@ -502,24 +502,23 @@ nav #nav-search-user.form-control {
 /* User HeatMap
  ---------------------- */
  .day {
-   fill: #fefefe;
-   stroke: #dddddd;
+   fill: #eeeeee;
+   stroke: #fff;
  }
 
  .month {
    fill: none;
    stroke: #cbcbcb;
-   stroke-width: 2px;
  }
 
- .RdYlGn .q0-8{ fill: #f7fbff;}
- .RdYlGn .q1-8{ fill: #deebf7;}
- .RdYlGn .q2-8{ fill: #c6dbef;}
- .RdYlGn .q3-8{ fill: #9ecae1;}
- .RdYlGn .q4-8{ fill: #6baed6;}
- .RdYlGn .q5-8{ fill: #4292c6;}
- .RdYlGn .q6-8{ fill: #2171b5;}
- .RdYlGn .q7-8{ fill: #084594;}
+ .RdYlGn .q0-8{ fill: #eeeeee;}
+ .RdYlGn .q1-8{ fill: #c6dbef;}
+ .RdYlGn .q2-8{ fill: #9ecae1;}
+ .RdYlGn .q3-8{ fill: #6baed6;}
+ .RdYlGn .q4-8{ fill: #4292c6;}
+ .RdYlGn .q5-8{ fill: #2171b5;}
+ .RdYlGn .q6-8{ fill: #08519c;}
+ .RdYlGn .q7-8{ fill: #08306b;}
 
 /* User Languages
  ---------------------- */

@@ -5,7 +5,13 @@
  * Copyright 2016 Timothy Davenport; Licensed MIT
  */
 var DAYS_IN_WEEK = 7,
-    HOURS_IN_DAY = 24;
+    HOURS_IN_DAY = 24,
+    WEEKS_IN_YEAR = 52,
+    S_IN_M = 60,
+    M_IN_H = 60,
+    MS_IN_S = 1000,
+    PC_COMMIT_INDEX = 2,
+    MS_IN_DAY = HOURS_IN_DAY * M_IN_H * S_IN_M * MS_IN_S;
 
 (function () {
     'use strict';
@@ -43,7 +49,7 @@ var DAYS_IN_WEEK = 7,
                         !$.isEmptyObject(repo.stats.punch_card)) {
                         console.log('    ' + repo.name);
                         for (i = 0; i < repo.stats.punch_card.length; i += 1) {
-                            punch_card[i][2] += repo.stats.punch_card[i][2];
+                            punch_card[i][PC_COMMIT_INDEX] += repo.stats.punch_card[i][PC_COMMIT_INDEX];
                         }
                     } else {
                         console.log('    ' + repo.name + ' ! could not aggregate');
@@ -58,7 +64,57 @@ var DAYS_IN_WEEK = 7,
 
         },
         process_commit_activity : function () {
+            /* Takes commit activity from repo/stats and puts them in packaged form of
+            {repo0: commit_activity0, repo1: commit_activity1}.
+            each commit activity is an object with 'Y-m-d' keys and number of commit values.
+             */
+            var commit_activities = {},
+                commit_activity = {},
+                d = 0,
+                w = 0,
+                weekdate = null,
+                date = null,
+                date_str = '',
+                key = '',
+                repo = {};
 
+            console.log('Aggregating Code Activity:');
+            for (key in user.repos) {
+                if (user.repos.hasOwnProperty(key)) {
+                    repo = user.repos[key];
+
+                    // If there is commit activity for this repo, get it.
+                    if (repo.hasOwnProperty('stats') &&
+                        repo.stats.hasOwnProperty('commit_activity') &&
+                        !$.isEmptyObject(repo.stats.commit_activity)) {
+                        console.log('    ' + repo.name);
+                        // Loop thru 52 weeks
+                        for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
+                            // Get date for this week
+                            weekdate = new Date(repo.stats.commit_activity[w].week * MS);
+                            // Loop thru days of each week
+                            for (d = 0; d < DAYS_IN_WEEK; d += 1) {
+                                // Get date of that day based on offset from week start date
+                                date = new Date(weekdate.getTime() + d * MS_IN_DAY);
+                                // Convert date into YYYY-MM-DD string
+                                date_str = '{0}-{1}-{2}'.format(
+                                    date.getFullYear(),
+                                    ('0' + (date.getMonth() + 1)).slice(-2),
+                                    ('0' + date.getDate()).slice(-2)
+                                );
+                                // Add that day's commits
+                                commit_activity[date_str] += repo.stats.commit_activity[w].days[d];
+                            }
+                        }
+                    }
+                }
+                commit_activities[key] = commit_activity;
+            }
+
+            // Once all commit_activities are converted to date list, ensure all dates exist for each repo
+            // TBD
+
+            return commit_activities;
         },
         process_contributors : function () {
 

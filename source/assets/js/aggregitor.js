@@ -52,7 +52,7 @@ var DAYS_IN_WEEK = 7,
                             punch_card[i][PC_COMMIT_INDEX] += repo.stats.punch_card[i][PC_COMMIT_INDEX];
                         }
                     } else {
-                        console.log('    ' + repo.name + ' ! could not aggregate');
+                        console.log('    ' + repo.name + ' ! could not aggregate punch_card');
                     }
                     // add to punch_cards
                     punch_cards[key] = punch_card;
@@ -106,6 +106,8 @@ var DAYS_IN_WEEK = 7,
                                 commit_activity[date_str] += repo.stats.commit_activity[w].days[d];
                             }
                         }
+                    } else {
+                        console.log('    ' + repo.name + ' ! could not aggregate commit_activity');
                     }
                 }
                 commit_activities[key] = commit_activity;
@@ -120,7 +122,49 @@ var DAYS_IN_WEEK = 7,
 
         },
         process_participation : function () {
+            /* Takes participation from repo/stats and puts them in packaged form of
+            {repo0: participation0, repo1: participation1}.
+            each participation is an object with 'owner' and 'all' arrays of weekly partication commit numbers. participation
+            arrays are pre filled with 0 so that empty or unavailable repos will be aggregated gracefully later.
+             */
+            var participations = {},
+                participation = {},
+                w = 0,
+                z = 0,
+                key = '',
+                repo = {};
 
+            // Aggregate participation data
+            console.log('Aggregating Participation:');
+            for (key in user.repos) {
+                if (user.repos.hasOwnProperty(key)) {
+                    repo = user.repos[key];participation
+
+                    // Fill empty participation
+                    participation = {owner: [], all: []};
+                    for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
+                        participation.owner.push(0);
+                        participation.all.push(0);
+                    }
+
+                    // If there is commit activity for this repo, get it.
+                    if (repo.hasOwnProperty('stats') &&
+                        repo.stats.hasOwnProperty('participation') &&
+                        !$.isEmptyObject(repo.stats.participation)) {
+                        console.log('    ' + repo.name);
+                        // Loop thru each week
+                        for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
+                            // Add owner and all particiation for the week
+                            participation.owner[w] += repo.stats.participation.owner[w];
+                            participation.all[w] += repo.stats.participation.all[w];
+                        }
+                    } else {
+                        console.log('    ' + repo.name + ' ! could not aggregate participation');
+                    }
+                }
+                participations[key] = particiation;
+            }
+            return participations;
         }
     };
 }());

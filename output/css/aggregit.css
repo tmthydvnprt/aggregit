@@ -179,6 +179,10 @@ nav time[datetime]:not(.no-hover):hover::before {
 .progress {
     height: 21px;
 }
+/*weird fix to stop div:before from being displayed from bootstrap */
+.progress-bar:last-child::before {
+    content: '';
+}
 #help-arrow {
     position: absolute;
     top:-28px;

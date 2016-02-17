@@ -638,10 +638,10 @@ $(document).ready(function () {
                 if ($.inArray(repo.name, punchRepos) > -1) {
                     console.log('    ' + repo.name);
                     for (d = 0; d < PARTICIPATION_SIZE; d += 1) {
-                        if (owner) {
+                        if (owner && repo.stats.participation.hasOwnProperty('owner')) {
                             aggParticipation[d].owner += repo.stats.participation.owner[d];
                         }
-                        if (all) {
+                        if (all && repo.stats.participation.hasOwnProperty('all')) {
                             aggParticipation[d].all += repo.stats.participation.all[d];
                         }
                     }
@@ -685,19 +685,21 @@ $(document).ready(function () {
                 repo = user.repos[key];
                 if ($.inArray(repo.name, heatRepos) > -1) {
                     console.log('    ' + repo.name);
-                    for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
-                        weekdate = new Date(repo.stats.commit_activity[w].week * 1000);
-                        for (d = 0; d < DAYS_IN_WEEK; d += 1) {
-                            date = new Date(weekdate.getTime() + d * OFFSET);
-                            date_str = '{0}-{1}-{2}'.format(
-                                date.getFullYear(),
-                                ('0' + (date.getMonth() + 1)).slice(-2),
-                                ('0' + date.getDate()).slice(-2)
-                            );
-                            if (aggHeatmap.hasOwnProperty(date_str)) {
-                                aggHeatmap[date_str] += repo.stats.commit_activity[w].days[d];
-                            } else {
-                                aggHeatmap[date_str] = repo.stats.commit_activity[w].days[d];
+                    if (repo.stats.commit_activity) {
+                        for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
+                            weekdate = new Date(repo.stats.commit_activity[w].week * 1000);
+                            for (d = 0; d < DAYS_IN_WEEK; d += 1) {
+                                date = new Date(weekdate.getTime() + d * OFFSET);
+                                date_str = '{0}-{1}-{2}'.format(
+                                    date.getFullYear(),
+                                    ('0' + (date.getMonth() + 1)).slice(-2),
+                                    ('0' + date.getDate()).slice(-2)
+                                );
+                                if (aggHeatmap.hasOwnProperty(date_str)) {
+                                    aggHeatmap[date_str] += repo.stats.commit_activity[w].days[d];
+                                } else {
+                                    aggHeatmap[date_str] = repo.stats.commit_activity[w].days[d];
+                                }
                             }
                         }
                     }

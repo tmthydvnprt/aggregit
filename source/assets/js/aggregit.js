@@ -584,9 +584,11 @@ $(document).ready(function () {
             if (user.repos.hasOwnProperty(key)) {
                 repo = user.repos[key];
                 if ($.inArray(repo.name, punchRepos) > -1) {
-                    console.log('    ' + repo.name);
-                    for (i = 0; i < repo.stats.punch_card.length; i += 1) {
-                        aggPunchCard[i][2] += repo.stats.punch_card[i][2];
+                    if (!$.isEmptyObject(repo.stats.punch_card)) {
+                        console.log('    ' + repo.name);
+                        for (i = 0; i < repo.stats.punch_card.length; i += 1) {
+                            aggPunchCard[i][2] += repo.stats.punch_card[i][2];
+                        }
                     }
                 }
             }
@@ -685,7 +687,7 @@ $(document).ready(function () {
                 repo = user.repos[key];
                 if ($.inArray(repo.name, heatRepos) > -1) {
                     console.log('    ' + repo.name);
-                    if (repo.stats.commit_activity) {
+                    if (!$.isEmptyObject(repo.stats.commit_activity)) {
                         for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
                             weekdate = new Date(repo.stats.commit_activity[w].week * 1000);
                             for (d = 0; d < DAYS_IN_WEEK; d += 1) {

@@ -207,14 +207,14 @@ var DAYS_IN_WEEK = 7,
                     if (repo.hasOwnProperty('stats') && repo.stats.hasOwnProperty('contributors') && !$.isEmptyObject(repo.stats.contributors)) {
                         console.log('    ' + repo.name);
                         // Loop thru each contributors
-                        for (c = 0; c < repo.stats.contributors.contributors; c += 1) {
-                            if (repo.stats.contributors.contributors[c].hasOwnProperty('author') && repo.stats.contributors.contributors[c].author.hasOwnProperty('login')) {
-                                author = repo.stats.contributors.contributors[c].author.login;
-                                if (repo.stats.contributors.contributors[c].hasOwnProperty('weeks')) {
+                        for (c = 0; c < repo.stats.contributors; c += 1) {
+                            if (repo.stats.contributors[c].hasOwnProperty('author') && repo.stats.contributors[c].author.hasOwnProperty('login')) {
+                                author = repo.stats.contributors[c].author.login;
+                                if (repo.stats.contributors[c].hasOwnProperty('weeks')) {
                                     // Loop thru each contributors
-                                    for (w = 0; w < repo.stats.contributors.contributors[c].weeks.length; w += 1) {
+                                    for (w = 0; w < repo.stats.contributors[c].weeks.length; w += 1) {
                                         // Get date for this week
-                                        weekdate = new Date(repo.stats.contributors.contributors[c].weeks[w][C_WEEK_INDEX] * MS_IN_S);
+                                        weekdate = new Date(repo.stats.contributors[c].weeks[w][C_WEEK_INDEX] * MS_IN_S);
                                         // Convert date into YYYY-MM-DD string
                                         date_str = '{0}-{1}-{2}'.format(
                                             weekdate.getFullYear(),
@@ -223,8 +223,8 @@ var DAYS_IN_WEEK = 7,
                                         );
                                         // Add that week's additions and deletions
                                         contributor[date_str] = {
-                                            'a' : repo.stats.contributors.contributors[c].weeks[w][C_A_INDEX],
-                                            'd' : repo.stats.contributors.contributors[c].weeks[w][C_D_INDEX]
+                                            'a' : repo.stats.contributors[c].weeks[w][C_A_INDEX],
+                                            'd' : repo.stats.contributors[c].weeks[w][C_D_INDEX]
                                         };
                                     }
                                 }

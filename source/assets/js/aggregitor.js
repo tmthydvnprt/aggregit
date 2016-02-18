@@ -14,6 +14,9 @@ var DAYS_IN_WEEK = 7,
     CF_WEEK_INDEX = 0,
     CF_A_INDEX = 1,
     CF_D_INDEX = 2,
+    C_WEEK_INDEX = 0,
+    C_A_INDEX = 1,
+    C_D_INDEX = 2,
     MS_IN_DAY = HOURS_IN_DAY * M_IN_H * S_IN_M * MS_IN_S;
 
 (function () {
@@ -189,50 +192,50 @@ var DAYS_IN_WEEK = 7,
                 key = '',
                 repo = {};
 
-                // Aggregate contributors data
-                console.log('Aggregating Contributors:');
-                for (key in user.repos) {
-                    if (user.repos.hasOwnProperty(key)) {
-                        repo = user.repos[key];
+            // Aggregate contributors data
+            console.log('Aggregating Contributors:');
+            for (key in user.repos) {
+                if (user.repos.hasOwnProperty(key)) {
+                    repo = user.repos[key];
 
-                        // Fill empty contributor
-                        contributor = {};
-                        author = 'unknown';
-                        weekdate = null;
+                    // Fill empty contributor
+                    contributor = {};
+                    author = 'unknown';
+                    weekdate = null;
 
-                        // If there is contributors for this repo, get it.
-                        if (repo.hasOwnProperty('stats') && repo.stats.hasOwnProperty('contributors') && !$.isEmptyObject(repo.stats.contributors)) {
-                            console.log('    ' + repo.name);
-                            // Loop thru each contributors
-                            for (c = 0; c < repo.stats.contributors.contributors; c += 1) {
-                                if (repo.stats.contributors.contributors[c].hasOwnProperty('author') && repo.stats.contributors.contributors[c].author.hasOwnProperty('login')) {
-                                    author = repo.stats.contributors.contributors[c].author.login;
-                                    if (repo.stats.contributors.contributors[c].hasOwnProperty('weeks')) {
-                                        // Loop thru each contributors
-                                        for (w = 0; w < repo.stats.contributors.contributors[c].weeks.length; w += 1) {
-                                            // Get date for this week
-                                            weekdate = new Date(repo.stats.contributors.contributors[c].weeks[w][C_WEEK_INDEX] * MS_IN_S);
-                                            // Convert date into YYYY-MM-DD string
-                                            date_str = '{0}-{1}-{2}'.format(
-                                                weekdate.getFullYear(),
-                                                ('0' + (weekdate.getMonth() + 1)).slice(-2),
-                                                ('0' + weekdate.getDate()).slice(-2)
-                                            );
-                                            // Add that week's additions and deletions
-                                            contributor[date_str] = {
-                                                'a' : repo.stats.contributors.contributors[c].weeks[w][C_A_INDEX],
-                                                'd' : repo.stats.contributors.contributors[c].weeks[w][C_D_INDEX]
-                                            };
-                                        }
+                    // If there is contributors for this repo, get it.
+                    if (repo.hasOwnProperty('stats') && repo.stats.hasOwnProperty('contributors') && !$.isEmptyObject(repo.stats.contributors)) {
+                        console.log('    ' + repo.name);
+                        // Loop thru each contributors
+                        for (c = 0; c < repo.stats.contributors.contributors; c += 1) {
+                            if (repo.stats.contributors.contributors[c].hasOwnProperty('author') && repo.stats.contributors.contributors[c].author.hasOwnProperty('login')) {
+                                author = repo.stats.contributors.contributors[c].author.login;
+                                if (repo.stats.contributors.contributors[c].hasOwnProperty('weeks')) {
+                                    // Loop thru each contributors
+                                    for (w = 0; w < repo.stats.contributors.contributors[c].weeks.length; w += 1) {
+                                        // Get date for this week
+                                        weekdate = new Date(repo.stats.contributors.contributors[c].weeks[w][C_WEEK_INDEX] * MS_IN_S);
+                                        // Convert date into YYYY-MM-DD string
+                                        date_str = '{0}-{1}-{2}'.format(
+                                            weekdate.getFullYear(),
+                                            ('0' + (weekdate.getMonth() + 1)).slice(-2),
+                                            ('0' + weekdate.getDate()).slice(-2)
+                                        );
+                                        // Add that week's additions and deletions
+                                        contributor[date_str] = {
+                                            'a' : repo.stats.contributors.contributors[c].weeks[w][C_A_INDEX],
+                                            'd' : repo.stats.contributors.contributors[c].weeks[w][C_D_INDEX]
+                                        };
                                     }
                                 }
                             }
-                        } else {
-                            console.log('    ' + repo.name + ' ! could not aggregate repo.stats.contributors');
                         }
-                        contributors[author] = contributor;
+                    } else {
+                        console.log('    ' + repo.name + ' ! could not aggregate repo.stats.contributors');
                     }
+                    contributors[author] = contributor;
                 }
+            }
 
             // Once all commit_activities are converted to date list, ensure all dates exist for each repo
             // TBD

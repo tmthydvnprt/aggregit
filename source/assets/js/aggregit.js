@@ -753,6 +753,13 @@ $(document).ready(function () {
 
         updateBar(100, 100, '100%');
         setTimeout(function () {
+
+            aggregitor.process_contributors(user);
+            aggregitor.process_code_frequency(user);
+            aggregitor.process_commit_activity(user);
+            aggregitor.process_participation(user);
+            aggregitor.process_punch_card(user);
+
             console.log('Render the User');
             console.log('---------------------------------------------');
             // Update the DOM

@@ -207,7 +207,7 @@ var DAYS_IN_WEEK = 7,
                     if (repo.hasOwnProperty('stats') && repo.stats.hasOwnProperty('contributors') && !$.isEmptyObject(repo.stats.contributors)) {
                         console.log('    ' + repo.name);
                         // Loop thru each contributors
-                        for (c = 0; c < repo.stats.contributors; c += 1) {
+                        for (c = 0; c < repo.stats.contributors.length; c += 1) {
                             if (repo.stats.contributors[c].hasOwnProperty('author') && repo.stats.contributors[c].author.hasOwnProperty('login')) {
                                 author = repo.stats.contributors[c].author.login;
                                 if (repo.stats.contributors[c].hasOwnProperty('weeks')) {

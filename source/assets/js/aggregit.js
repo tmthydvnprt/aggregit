@@ -754,11 +754,17 @@ $(document).ready(function () {
         updateBar(100, 100, '100%');
         setTimeout(function () {
 
-            aggregitor.process_contributors(user);
-            aggregitor.process_code_frequency(user);
-            aggregitor.process_commit_activity(user);
-            aggregitor.process_participation(user);
-            aggregitor.process_punch_card(user);
+            var contributors = aggregitor.process_contributors(user),
+                code_frequency = aggregitor.process_code_frequency(user),
+                commit_activity = aggregitor.process_commit_activity(user),
+                participation = aggregitor.process_participation(user),
+                punch_card = aggregitor.process_punch_card(user);
+
+            console.log(contributors);
+            console.log(code_frequency);
+            console.log(commit_activity);
+            console.log(participation);
+            console.log(punch_card);
 
             console.log('Render the User');
             console.log('---------------------------------------------');

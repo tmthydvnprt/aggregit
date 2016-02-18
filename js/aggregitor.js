@@ -14,9 +14,6 @@ var DAYS_IN_WEEK = 7,
     CF_WEEK_INDEX = 0,
     CF_A_INDEX = 1,
     CF_D_INDEX = 2,
-    C_WEEK_INDEX = 0,
-    C_A_INDEX = 1,
-    C_D_INDEX = 2,
     MS_IN_DAY = HOURS_IN_DAY * M_IN_H * S_IN_M * MS_IN_S;
 
 (function () {
@@ -184,6 +181,7 @@ var DAYS_IN_WEEK = 7,
             */
             var contributors = {},
                 contributor = {},
+                contributions = {},
                 c = 0,
                 w = 0,
                 author = 'unknown',
@@ -200,6 +198,7 @@ var DAYS_IN_WEEK = 7,
 
                     // Fill empty contributor
                     contributor = {};
+                    contributions = {};
                     author = 'unknown';
                     weekdate = null;
 
@@ -214,7 +213,7 @@ var DAYS_IN_WEEK = 7,
                                     // Loop thru each contributors
                                     for (w = 0; w < repo.stats.contributors[c].weeks.length; w += 1) {
                                         // Get date for this week
-                                        weekdate = new Date(repo.stats.contributors[c].weeks[w][C_WEEK_INDEX] * MS_IN_S);
+                                        weekdate = new Date(repo.stats.contributors[c].weeks[w].w * MS_IN_S);
                                         // Convert date into YYYY-MM-DD string
                                         date_str = '{0}-{1}-{2}'.format(
                                             weekdate.getFullYear(),
@@ -222,18 +221,20 @@ var DAYS_IN_WEEK = 7,
                                             ('0' + weekdate.getDate()).slice(-2)
                                         );
                                         // Add that week's additions and deletions
-                                        contributor[date_str] = {
-                                            'a' : repo.stats.contributors[c].weeks[w][C_A_INDEX],
-                                            'd' : repo.stats.contributors[c].weeks[w][C_D_INDEX]
+                                        contributions[date_str] = {
+                                            'a' : repo.stats.contributors[c].weeks[w].a,
+                                            'd' : repo.stats.contributors[c].weeks[w].d,
+                                            'c' : repo.stats.contributors[c].weeks[w].c
                                         };
                                     }
                                 }
+                                contributor[author] = contributions;
                             }
                         }
                     } else {
                         console.log('    ' + repo.name + ' ! could not aggregate repo.stats.contributors');
                     }
-                    contributors[author] = contributor;
+                    contributors[key] = contributor;
                 }
             }
 

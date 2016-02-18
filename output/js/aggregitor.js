@@ -159,7 +159,11 @@ var DAYS_IN_WEEK = 7,
                                     ('0' + date.getDate()).slice(-2)
                                 );
                                 // Add that day's commits
-                                commit_activity[date_str] += repo.stats.commit_activity[w].days[d];
+                                if (commit_activity.hasOwnProperty(date_str)) {
+                                    commit_activity[date_str] += repo.stats.commit_activity[w].days[d];
+                                } else {
+                                    commit_activity[date_str] = repo.stats.commit_activity[w].days[d];
+                                }
                             }
                         }
                     } else {

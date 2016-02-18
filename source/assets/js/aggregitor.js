@@ -22,7 +22,7 @@ var DAYS_IN_WEEK = 7,
 (function () {
     'use strict';
     window.aggregitor = {
-        process_punch_cards : function (user) {
+        process_punch_card : function (user) {
             /* Takes punch cards from repo/stats and puts them in packaged form of {repo0: punch_card0, repo1: punch_card1}.
             each punch card is an array of [d, h, c], where d = weekday, h = 24 hour, and c = number of commits. punch cards
             are pre filled with 0 so that empty or unavailable repos will be aggregated gracefully later.

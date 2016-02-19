@@ -295,9 +295,15 @@ var DAYS_IN_WEEK = 7,
         var contributors = {},
             repo = '';
 
+        // Aggregate contributors data
+        console.log('Aggregating Contributors:');
+        // Loop thru requested repos and aggregate
         for (repo in repos) {
-            if repos.hasOwnProperty(repo) {
+            if (repo_contributors.hasOwnProperty(repo)) {
+                console.log('    ' + repo);
 
+            } else {
+                console.log('    ' + repo + ' ! could not aggregate contributors');
             }
         }
 
@@ -308,9 +314,15 @@ var DAYS_IN_WEEK = 7,
         var commit_activity = {},
             repo = '';
 
+        // Aggregate commit activity data
+        console.log('Aggregating Commit Activity:');
+        // Loop thru requested repos and aggregate
         for (repo in repos) {
-            if repos.hasOwnProperty(repo) {
+            if (repo_commit_activitiy.hasOwnProperty(repo)) {
+                console.log('    ' + repo);
 
+            } else {
+                console.log('    ' + repo + ' ! could not aggregate commit_activity');
             }
         }
 
@@ -321,9 +333,15 @@ var DAYS_IN_WEEK = 7,
         var code_frequency = [],
             repo = '';
 
+        // Aggregate code_frequency data
+        console.log('Aggregating Code Frequency:');
+        // Loop thru requested repos and aggregate
         for (repo in repos) {
-            if repos.hasOwnProperty(repo) {
+            if (repo_code_frequency.hasOwnProperty(repo)) {
+                console.log('    ' + repo);
 
+            } else {
+                console.log('    ' + repo + ' ! could not aggregate code_frequency');
             }
         }
 
@@ -334,9 +352,15 @@ var DAYS_IN_WEEK = 7,
         var participation = [],
             repo = '';
 
+        // Aggregate participation data
+        console.log('Aggregating Participation:');
+        // Loop thru requested repos and aggregate
         for (repo in repos) {
-            if repos.hasOwnProperty(repo) {
+            if (repo_participation.hasOwnProperty(repo)) {
+                console.log('    ' + repo);
 
+            } else {
+                console.log('    ' + repo + ' ! could not aggregate participation');
             }
         }
 
@@ -346,11 +370,29 @@ var DAYS_IN_WEEK = 7,
         /* Aggregate punch_card across provided repos */
 
         var punch_card = [],
-            repo = '';
+            repo = '',
+            d = 0,
+            h = 0,
+            i = 0;
 
+        // Fill empty punchcard
+        for (d = 0; d < DAYS_IN_WEEK; d += 1) {
+            for (h = 0; h < HOURS_IN_DAY; h += 1) {
+                punch_card.push([d, h, 0]);
+            }
+        }
+
+        // Aggregate punch card data
+        console.log('Aggregating Punch Card:');
+        // Loop thru requested repos and aggregate
         for (repo in repos) {
-            if repos.hasOwnProperty(repo) {
-
+            if (repo_punch_card.hasOwnProperty(repo)) {
+                console.log('    ' + repo);
+                for (i = 0; i < repo_punch_card[repo].length; i += 1) {
+                    punch_card[i][PC_COMMIT_INDEX] += repo_punch_card[repo][i][PC_COMMIT_INDEX];
+                }
+            } else {
+                console.log('    ' + repo + ' ! could not aggregate punch_card');
             }
         }
 

@@ -24,7 +24,7 @@ var DAYS_IN_WEEK = 7,
             {repo0: contributors0, repo1: contributors1}.
             each contributoris an object with 'Y-m-d' keys and weekly addition/deletion commit values.
             */
-            var contributors = {},
+            var repo_contributors = {},
                 contributor = {},
                 contributions = {},
                 c = 0,
@@ -79,21 +79,21 @@ var DAYS_IN_WEEK = 7,
                     } else {
                         console.log('    ' + repo.name + ' ! could not aggregate repo.stats.contributors');
                     }
-                    contributors[key] = contributor;
+                    repo_contributors[key] = contributor;
                 }
             }
 
             // Once all commit_activities are converted to date list, ensure all dates exist for each repo
             // TBD
 
-            return contributors;
+            return repo_contributors;
         },
         process_commit_activity : function (user) {
             /* Takes commit activity from repo/stats and puts them in packaged form of
             {repo0: commit_activity0, repo1: commit_activity1}.
             each commit activity is an object with 'Y-m-d' keys and number of commit values.
              */
-            var commit_activities = {},
+            var repo_commit_activity = {},
                 commit_activity = {},
                 d = 0,
                 w = 0,
@@ -139,14 +139,14 @@ var DAYS_IN_WEEK = 7,
                     } else {
                         console.log('    ' + repo.name + ' ! could not aggregate commit_activity');
                     }
-                    commit_activities[key] = commit_activity;
+                    repo_commit_activity[key] = commit_activity;
                 }
             }
 
             // Once all commit_activities are converted to date list, ensure all dates exist for each repo
             // TBD
 
-            return commit_activities;
+            return repo_commit_activity;
         },
         process_code_frequency : function (user) {
             /* Takes code frequency from repo/stats and puts them in packaged form of
@@ -155,7 +155,7 @@ var DAYS_IN_WEEK = 7,
             deletions. ode frequencies are pre filled with 0 so that empty or unavailable repos will be aggregated gracefully
             later.
             */
-            var code_frequencies = {},
+            var repo_code_frequency = {},
                 code_frequency = {},
                 w = 0,
                 weekdate = null,
@@ -196,14 +196,14 @@ var DAYS_IN_WEEK = 7,
                         console.log('    ' + repo.name + ' ! could not aggregate code_frequency');
                     }
                     // add to code_frequencies
-                    code_frequencies[key] = code_frequency;
+                    repo_code_frequency[key] = code_frequency;
                 }
             }
 
             // Once all commit_activities are converted to date list, ensure all dates exist for each repo
             // TBD
 
-            return code_frequencies;
+            return repo_code_frequency;
         },
         process_participation : function (user) {
             /* Takes participation from repo/stats and puts them in packaged form of
@@ -211,7 +211,7 @@ var DAYS_IN_WEEK = 7,
             each participation is an object with 'owner' and 'all' arrays of weekly partication commit numbers. participation
             arrays are pre filled with 0 so that empty or unavailable repos will be aggregated gracefully later.
             */
-            var participations = {},
+            var repo_participation = {},
                 participation = {},
                 w = 0,
                 key = '',
@@ -242,17 +242,17 @@ var DAYS_IN_WEEK = 7,
                     } else {
                         console.log('    ' + repo.name + ' ! could not aggregate participation');
                     }
-                    participations[key] = participation;
+                    repo_participation[key] = participation;
                 }
             }
-            return participations;
+            return repo_participation;
         },
         process_punch_card : function (user) {
             /* Takes punch cards from repo/stats and puts them in packaged form of {repo0: punch_card0, repo1: punch_card1}.
             each punch card is an array of [d, h, c], where d = weekday, h = 24 hour, and c = number of commits. punch cards
             are pre filled with 0 so that empty or unavailable repos will be aggregated gracefully later.
             */
-            var punch_cards = {},
+            var repo_punch_card = {},
                 punch_card = [],
                 h = 0,
                 d = 0,
@@ -284,10 +284,40 @@ var DAYS_IN_WEEK = 7,
                         console.log('    ' + repo.name + ' ! could not aggregate punch_card');
                     }
                     // add to punch_cards
-                    punch_cards[key] = punch_card;
+                    repo_punch_card[key] = punch_card;
                 }
             }
-            return punch_cards;
+            return repo_punch_card;
         }
+    },
+    process_contributors : function (repo_contributors, repos) {
+        /* Aggregate contributors across provided repos */
+        var contributors = {};
+
+        return contributors;
+    },
+    process_commit_activity : function (repo_commit_activitiy, repos) {
+        /* Aggregate commit_activity across provided repos */
+        var commit_activity = {};
+
+        return commit_activity;
+    },
+    process_code_frequency : function (repo_code_frequency, repos) {
+        /* Aggregate code_frequency across provided repos */
+        var code_frequency = [];
+
+        return code_frequency;
+    },
+    agg_participation : function (repo_participation, repos) {
+        /* Aggregate participation across provided repos */
+        var participation = [];
+
+        return participation;
+    },
+    agg_punch_card : function (repo_punch_card, repos) {
+        /* Aggregate punch_card across provided repos */
+        var punch_card = [];
+
+        return punch_card;
     };
 }());

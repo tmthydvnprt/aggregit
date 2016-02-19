@@ -36,7 +36,7 @@ var DAYS_IN_WEEK = 7,
                 repo = {};
 
             // Aggregate contributors data
-            console.log('Aggregating Contributors:');
+            console.log('Processing Contributors:');
             for (key in user.repos) {
                 if (user.repos.hasOwnProperty(key)) {
                     repo = user.repos[key];
@@ -77,7 +77,7 @@ var DAYS_IN_WEEK = 7,
                             }
                         }
                     } else {
-                        console.log('    ' + repo.name + ' ! could not aggregate repo.stats.contributors');
+                        console.log('    ' + repo.name + ' ! could not process repo.stats.contributors');
                     }
                     repo_contributors[key] = contributor;
                 }
@@ -103,7 +103,7 @@ var DAYS_IN_WEEK = 7,
                 key = '',
                 repo = {};
 
-            console.log('Aggregating Commit Activity:');
+            console.log('Processing Commit Activity:');
             for (key in user.repos) {
                 if (user.repos.hasOwnProperty(key)) {
                     repo = user.repos[key];
@@ -137,7 +137,7 @@ var DAYS_IN_WEEK = 7,
                             }
                         }
                     } else {
-                        console.log('    ' + repo.name + ' ! could not aggregate commit_activity');
+                        console.log('    ' + repo.name + ' ! could not process commit_activity');
                     }
                     repo_commit_activity[key] = commit_activity;
                 }
@@ -163,7 +163,7 @@ var DAYS_IN_WEEK = 7,
                 key = '',
                 repo = {};
 
-            console.log('Aggregating Code Frequency:');
+            console.log('Processing Code Frequency:');
             for (key in user.repos) {
                 if (user.repos.hasOwnProperty(key)) {
                     repo = user.repos[key];
@@ -193,7 +193,7 @@ var DAYS_IN_WEEK = 7,
                         }
 
                     } else {
-                        console.log('    ' + repo.name + ' ! could not aggregate code_frequency');
+                        console.log('    ' + repo.name + ' ! could not process code_frequency');
                     }
                     // add to code_frequencies
                     repo_code_frequency[key] = code_frequency;
@@ -218,7 +218,7 @@ var DAYS_IN_WEEK = 7,
                 repo = {};
 
             // Aggregate participation data
-            console.log('Aggregating Participation:');
+            console.log('Processing Participation:');
             for (key in user.repos) {
                 if (user.repos.hasOwnProperty(key)) {
                     repo = user.repos[key];
@@ -240,7 +240,7 @@ var DAYS_IN_WEEK = 7,
                             participation.all[w] += repo.stats.participation.all[w];
                         }
                     } else {
-                        console.log('    ' + repo.name + ' ! could not aggregate participation');
+                        console.log('    ' + repo.name + ' ! could not process participation');
                     }
                     repo_participation[key] = participation;
                 }
@@ -261,7 +261,7 @@ var DAYS_IN_WEEK = 7,
                 repo = {};
 
             // Aggregate punch card data
-            console.log('Aggregating Punch Card:');
+            console.log('Processing Punch Card:');
             // Loop thru repos
             for (key in user.repos) {
                 if (user.repos.hasOwnProperty(key)) {
@@ -281,7 +281,7 @@ var DAYS_IN_WEEK = 7,
                             punch_card[i][PC_COMMIT_INDEX] += repo.stats.punch_card[i][PC_COMMIT_INDEX];
                         }
                     } else {
-                        console.log('    ' + repo.name + ' ! could not aggregate punch_card');
+                        console.log('    ' + repo.name + ' ! could not process punch_card');
                     }
                     // add to punch_cards
                     repo_punch_card[key] = punch_card;
@@ -292,31 +292,67 @@ var DAYS_IN_WEEK = 7,
     },
     process_contributors : function (repo_contributors, repos) {
         /* Aggregate contributors across provided repos */
-        var contributors = {};
+        var contributors = {},
+            repo = '';
+
+        for (repo in repos) {
+            if repos.hasOwnProperty(repo) {
+
+            }
+        }
 
         return contributors;
     },
     process_commit_activity : function (repo_commit_activitiy, repos) {
         /* Aggregate commit_activity across provided repos */
-        var commit_activity = {};
+        var commit_activity = {},
+            repo = '';
+
+        for (repo in repos) {
+            if repos.hasOwnProperty(repo) {
+
+            }
+        }
 
         return commit_activity;
     },
     process_code_frequency : function (repo_code_frequency, repos) {
         /* Aggregate code_frequency across provided repos */
-        var code_frequency = [];
+        var code_frequency = [],
+            repo = '';
+
+        for (repo in repos) {
+            if repos.hasOwnProperty(repo) {
+
+            }
+        }
 
         return code_frequency;
     },
     agg_participation : function (repo_participation, repos) {
         /* Aggregate participation across provided repos */
-        var participation = [];
+        var participation = [],
+            repo = '';
+
+        for (repo in repos) {
+            if repos.hasOwnProperty(repo) {
+
+            }
+        }
 
         return participation;
     },
     agg_punch_card : function (repo_punch_card, repos) {
         /* Aggregate punch_card across provided repos */
-        var punch_card = [];
+
+        var punch_card = [],
+            repo = '';
+
+        for (repo in repos) {
+            if repos.hasOwnProperty(repo) {
+
+            }
+        }
 
         return punch_card;
     };

@@ -99,7 +99,11 @@ function formatDate(d) {
     var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep Oct', 'Nov', 'Dec'];
     return MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
 }
-
+// Convert date into YYYY-MM-DD string
+function date2str(d) {
+    "use strict";
+    return '{0}-{1}-{2}'.format(d.getFullYear(), ('0' + (d.getMonth() + 1)).slice(-2), ('0' + d.getDate()).slice(-2));
+};
 // Inverse of $.param, parses string for url parameters
 function deparam(string) {
     "use strict";

@@ -349,8 +349,14 @@ var DAYS_IN_WEEK = 7,
     },
     agg_participation : function (repo_participation, repos) {
         /* Aggregate participation across provided repos */
-        var participation = [],
+        var participation = {owner:[], all:[]},
             repo = '';
+
+        // Fill empty participation
+        for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
+            participation.owner.push(0);
+            participation.all.push(0);
+        }
 
         // Aggregate participation data
         console.log('Aggregating Participation:');
@@ -358,7 +364,12 @@ var DAYS_IN_WEEK = 7,
         for (repo in repos) {
             if (repo_participation.hasOwnProperty(repo)) {
                 console.log('    ' + repo);
-
+                // Loop thru each week
+                for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
+                    // Add owner and all particiation for the week
+                    participation.owner[w] += repo_participation[repo].owner[w];
+                    participation.all[w] += repo_participation[repo].all[w];
+                }
             } else {
                 console.log('    ' + repo + ' ! could not aggregate participation');
             }

@@ -1,4 +1,4 @@
-/*globals $,console,d3,cookieJar,formatDate,github,opr,InstallTrigger,Blob */
+/*globals $,console,d3,cookieJar,formatDate,date2str,github,opr,InstallTrigger,Blob */
 /*!
  * aggregitor.js
  *
@@ -33,7 +33,9 @@ var DAYS_IN_WEEK = 7,
                 weekdate = null,
                 date_str = '',
                 key = '',
-                repo = {};
+                repo = {},
+                mindates = {},
+                maxdates = {};
 
             // Aggregate contributors data
             console.log('Processing Contributors:');
@@ -55,16 +57,16 @@ var DAYS_IN_WEEK = 7,
                             if (repo.stats.contributors[c].hasOwnProperty('author') && repo.stats.contributors[c].author.hasOwnProperty('login')) {
                                 author = repo.stats.contributors[c].author.login;
                                 if (repo.stats.contributors[c].hasOwnProperty('weeks')) {
+
+                                    // Set min/max
+                                    mindates[key] = new Date(repo.stats.contributors[c].weeks[0].w * MS_IN_S);
+                                    maxdates[key] = new Date(repo.stats.contributors[c].weeks[repo.stats.contributors[c].weeks.length - 1].w * MS_IN_S);
                                     // Loop thru each contributors
                                     for (w = 0; w < repo.stats.contributors[c].weeks.length; w += 1) {
                                         // Get date for this week
                                         weekdate = new Date(repo.stats.contributors[c].weeks[w].w * MS_IN_S);
                                         // Convert date into YYYY-MM-DD string
-                                        date_str = '{0}-{1}-{2}'.format(
-                                            weekdate.getFullYear(),
-                                            ('0' + (weekdate.getMonth() + 1)).slice(-2),
-                                            ('0' + weekdate.getDate()).slice(-2)
-                                        );
+                                        date_str = date2str(weekdate);
                                         // Add that week's additions and deletions
                                         contributions[date_str] = {
                                             'a' : repo.stats.contributors[c].weeks[w].a,
@@ -101,7 +103,9 @@ var DAYS_IN_WEEK = 7,
                 date = null,
                 date_str = '',
                 key = '',
-                repo = {};
+                repo = {},
+                mindates = {},
+                maxdates = {};
 
             console.log('Processing Commit Activity:');
             for (key in user.repos) {
@@ -114,6 +118,10 @@ var DAYS_IN_WEEK = 7,
                     // If there is commit activity for this repo, get it.
                     if (repo.hasOwnProperty('stats') && repo.stats.hasOwnProperty('commit_activity') && !$.isEmptyObject(repo.stats.commit_activity)) {
                         console.log('    ' + repo.name);
+
+                        // Set min/max
+                        mindates[key] = new Date(repo.stats.commit_activity[0].week * MS_IN_S);
+                        maxdates[key] = new Date(repo.stats.commit_activity[WEEKS_IN_YEAR - 1].week * MS_IN_S);
                         // Loop thru 52 weeks
                         for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
                             // Get date for this week
@@ -123,11 +131,7 @@ var DAYS_IN_WEEK = 7,
                                 // Get date of that day based on offset from week start date
                                 date = new Date(weekdate.getTime() + d * MS_IN_DAY);
                                 // Convert date into YYYY-MM-DD string
-                                date_str = '{0}-{1}-{2}'.format(
-                                    date.getFullYear(),
-                                    ('0' + (date.getMonth() + 1)).slice(-2),
-                                    ('0' + date.getDate()).slice(-2)
-                                );
+                                date_str = date2str(date);
                                 // Add that day's commits
                                 if (commit_activity.hasOwnProperty(date_str)) {
                                     commit_activity[date_str] += repo.stats.commit_activity[w].days[d];
@@ -161,7 +165,9 @@ var DAYS_IN_WEEK = 7,
                 weekdate = null,
                 date_str = '',
                 key = '',
-                repo = {};
+                repo = {},
+                mindates = {},
+                maxdates = {};
 
             console.log('Processing Code Frequency:');
             for (key in user.repos) {
@@ -175,16 +181,15 @@ var DAYS_IN_WEEK = 7,
                     if (repo.hasOwnProperty('stats') && repo.stats.hasOwnProperty('code_frequency') && !$.isEmptyObject(repo.stats.code_frequency)) {
                         console.log('    ' + repo.name);
 
+                        // Set min/max
+                        mindates[key] = new Date(repo.stats.code_frequency[0].week * MS_IN_S);
+                        maxdates[key] = new Date(repo.stats.code_frequency[repo.stats.code_frequency.length - 1].week * MS_IN_S);
                         // Loop thru ? weeks
                         for (w = 0; w < repo.stats.code_frequency.length; w += 1) {
                             // Get date for this week
                             weekdate = new Date(repo.stats.code_frequency[w][CF_WEEK_INDEX] * MS_IN_S);
                             // Convert date into YYYY-MM-DD string
-                            date_str = '{0}-{1}-{2}'.format(
-                                weekdate.getFullYear(),
-                                ('0' + (weekdate.getMonth() + 1)).slice(-2),
-                                ('0' + weekdate.getDate()).slice(-2)
-                            );
+                            date_str = date2str(weekdate);
                             // Add that week's additions and deletions
                             code_frequency[date_str] = {
                                 'a' : repo.stats.code_frequency[w][CF_A_INDEX],
@@ -288,125 +293,136 @@ var DAYS_IN_WEEK = 7,
                 }
             }
             return repo_punch_card;
-        }
-    },
-    process_contributors : function (repo_contributors, repos) {
-        /* Aggregate contributors across provided repos */
-        var contributors = {},
-            repo = '';
+        },
+        agg_contributors : function (repo_contributors, repos) {
+            /* Aggregate contributors across provided repos */
+            var contributors = {},
+                r = 0,
+                repo = '';
 
-        // Aggregate contributors data
-        console.log('Aggregating Contributors:');
-        // Loop thru requested repos and aggregate
-        for (repo in repos) {
-            if (repo_contributors.hasOwnProperty(repo)) {
-                console.log('    ' + repo);
+            // Aggregate contributors data
+            console.log('Aggregating Contributors:');
+            // Loop thru requested repos and aggregate
+            for (r = 0; r < repos.length; r += 1) {
+                repo = repos[r];
+                if (repo_contributors.hasOwnProperty(repo)) {
+                    console.log('    ' + repo);
 
-            } else {
-                console.log('    ' + repo + ' ! could not aggregate contributors');
-            }
-        }
-
-        return contributors;
-    },
-    process_commit_activity : function (repo_commit_activitiy, repos) {
-        /* Aggregate commit_activity across provided repos */
-        var commit_activity = {},
-            repo = '';
-
-        // Aggregate commit activity data
-        console.log('Aggregating Commit Activity:');
-        // Loop thru requested repos and aggregate
-        for (repo in repos) {
-            if (repo_commit_activitiy.hasOwnProperty(repo)) {
-                console.log('    ' + repo);
-
-            } else {
-                console.log('    ' + repo + ' ! could not aggregate commit_activity');
-            }
-        }
-
-        return commit_activity;
-    },
-    process_code_frequency : function (repo_code_frequency, repos) {
-        /* Aggregate code_frequency across provided repos */
-        var code_frequency = [],
-            repo = '';
-
-        // Aggregate code_frequency data
-        console.log('Aggregating Code Frequency:');
-        // Loop thru requested repos and aggregate
-        for (repo in repos) {
-            if (repo_code_frequency.hasOwnProperty(repo)) {
-                console.log('    ' + repo);
-
-            } else {
-                console.log('    ' + repo + ' ! could not aggregate code_frequency');
-            }
-        }
-
-        return code_frequency;
-    },
-    agg_participation : function (repo_participation, repos) {
-        /* Aggregate participation across provided repos */
-        var participation = {owner:[], all:[]},
-            repo = '';
-
-        // Fill empty participation
-        for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
-            participation.owner.push(0);
-            participation.all.push(0);
-        }
-
-        // Aggregate participation data
-        console.log('Aggregating Participation:');
-        // Loop thru requested repos and aggregate
-        for (repo in repos) {
-            if (repo_participation.hasOwnProperty(repo)) {
-                console.log('    ' + repo);
-                // Loop thru each week
-                for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
-                    // Add owner and all particiation for the week
-                    participation.owner[w] += repo_participation[repo].owner[w];
-                    participation.all[w] += repo_participation[repo].all[w];
+                } else {
+                    console.log('    ' + repo + ' ! could not aggregate contributors');
                 }
-            } else {
-                console.log('    ' + repo + ' ! could not aggregate participation');
             }
-        }
 
-        return participation;
-    },
-    agg_punch_card : function (repo_punch_card, repos) {
-        /* Aggregate punch_card across provided repos */
+            return contributors;
+        },
+        agg_commit_activity : function (repo_commit_activitiy, repos) {
+            /* Aggregate commit_activity across provided repos */
+            var commit_activity = {},
+                r = 0,
+                repo = '';
 
-        var punch_card = [],
-            repo = '',
-            d = 0,
-            h = 0,
-            i = 0;
+            // Aggregate commit activity data
+            console.log('Aggregating Commit Activity:');
+            // Loop thru requested repos and aggregate
+            for (r = 0; r < repos.length; r += 1) {
+                repo = repos[r];
+                if (repo_commit_activitiy.hasOwnProperty(repo)) {
+                    console.log('    ' + repo);
 
-        // Fill empty punchcard
-        for (d = 0; d < DAYS_IN_WEEK; d += 1) {
-            for (h = 0; h < HOURS_IN_DAY; h += 1) {
-                punch_card.push([d, h, 0]);
-            }
-        }
-
-        // Aggregate punch card data
-        console.log('Aggregating Punch Card:');
-        // Loop thru requested repos and aggregate
-        for (repo in repos) {
-            if (repo_punch_card.hasOwnProperty(repo)) {
-                console.log('    ' + repo);
-                for (i = 0; i < repo_punch_card[repo].length; i += 1) {
-                    punch_card[i][PC_COMMIT_INDEX] += repo_punch_card[repo][i][PC_COMMIT_INDEX];
+                } else {
+                    console.log('    ' + repo + ' ! could not aggregate commit_activity');
                 }
-            } else {
-                console.log('    ' + repo + ' ! could not aggregate punch_card');
             }
-        }
 
-        return punch_card;
+            return commit_activity;
+        },
+        agg_code_frequency : function (repo_code_frequency, repos) {
+            /* Aggregate code_frequency across provided repos */
+            var code_frequency = [],
+                r = 0,
+                repo = '';
+
+            // Aggregate code_frequency data
+            console.log('Aggregating Code Frequency:');
+            // Loop thru requested repos and aggregate
+            for (r = 0; r < repos.length; r += 1) {
+                repo = repos[r];
+                if (repo_code_frequency.hasOwnProperty(repo)) {
+                    console.log('    ' + repo);
+
+                } else {
+                    console.log('    ' + repo + ' ! could not aggregate code_frequency');
+                }
+            }
+
+            return code_frequency;
+        },
+        agg_participation : function (repo_participation, repos) {
+            /* Aggregate participation across provided repos */
+            var participation = {owner: [], all: []},
+                r = 0,
+                repo = '',
+                w = 0;
+
+            // Fill empty participation
+            for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
+                participation.owner.push(0);
+                participation.all.push(0);
+            }
+
+            // Aggregate participation data
+            console.log('Aggregating Participation:');
+            // Loop thru requested repos and aggregate
+            for (r = 0; r < repos.length; r += 1) {
+                repo = repos[r];
+                if (repo_participation.hasOwnProperty(repo)) {
+                    console.log('    ' + repo);
+                    // Loop thru each week
+                    for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
+                        // Add owner and all particiation for the week
+                        participation.owner[w] += repo_participation[repo].owner[w];
+                        participation.all[w] += repo_participation[repo].all[w];
+                    }
+                } else {
+                    console.log('    ' + repo + ' ! could not aggregate participation');
+                }
+            }
+
+            return participation;
+        },
+        agg_punch_card : function (repo_punch_card, repos) {
+            /* Aggregate punch_card across provided repos */
+
+            var punch_card = [],
+                r = 0,
+                repo = '',
+                d = 0,
+                h = 0,
+                i = 0;
+
+            // Fill empty punchcard
+            for (d = 0; d < DAYS_IN_WEEK; d += 1) {
+                for (h = 0; h < HOURS_IN_DAY; h += 1) {
+                    punch_card.push([d, h, 0]);
+                }
+            }
+
+            // Aggregate punch card data
+            console.log('Aggregating Punch Card:');
+            // Loop thru requested repos and aggregate
+            for (r = 0; r < repos.length; r += 1) {
+                repo = repos[r];
+                if (repo_punch_card.hasOwnProperty(repo)) {
+                    console.log('    ' + repo);
+                    for (i = 0; i < repo_punch_card[repo].length; i += 1) {
+                        punch_card[i][PC_COMMIT_INDEX] += repo_punch_card[repo][i][PC_COMMIT_INDEX];
+                    }
+                } else {
+                    console.log('    ' + repo + ' ! could not aggregate punch_card');
+                }
+            }
+
+            return punch_card;
+        }
     };
 }());

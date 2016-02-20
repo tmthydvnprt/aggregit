@@ -294,6 +294,31 @@ var DAYS_IN_WEEK = 7,
             }
             return repo_punch_card;
         },
+        process_languages : function (user) {
+            /* Takes languages from repo and puts them in packaged form of {repo0: languages0, repo1: languages1}.
+            */
+            var repo_languages = {},
+                key = '',
+                repo = {};
+
+            // Aggregate punch card data
+            console.log('Processing Languages:');
+            // Loop thru repos
+            for (key in user.repos) {
+                if (user.repos.hasOwnProperty(key)) {
+                    repo = user.repos[key];
+
+                    // If there is a punch card for this repo, get it.
+                    if (repo.hasOwnProperty('languages') && !$.isEmptyObject(repo.languages)) {
+                        console.log('    ' + repo.name);
+                        repo_languages[key] = repo.languages;
+                    } else {
+                        console.log('    ' + repo.name + ' ! could not process languages');
+                    }
+                }
+            }
+            return repo_languages;
+        },
         agg_contributors : function (repo_contributors, repos) {
             /* Aggregate contributors across provided repos */
             var contributors = {},
@@ -463,6 +488,38 @@ var DAYS_IN_WEEK = 7,
             }
 
             return punch_card;
+        },
+        agg_languages : function (repo_languages, repos) {
+            /* Aggregate punch_card across provided repos */
+
+            var languages = [],
+                r = 0,
+                repo = '',
+                lang = 0;
+
+            // Aggregate punch card data
+            console.log('Aggregating Languages:');
+            // Loop thru requested repos and aggregate
+            for (r = 0; r < repos.length; r += 1) {
+                repo = repos[r];
+                if (repo_languages.hasOwnProperty(repo)) {
+                    console.log('    ' + repo);
+
+                    for (lang in repo_languages[repo]) {
+                        if (repo_languages[repo].hasOwnProperty(lang)) {
+                            if (languages.hasOwnProperty(lang)) {
+                                languages[lang] += repo_languages[repo][lang];
+                            } else {
+                                languages[lang] = repo_languages[repo][lang];
+                            }
+                        }
+                    }
+
+                } else {
+                    console.log('    ' + repo + ' ! could not aggregate languages');
+                }
+            }
+            return languages;
         }
     };
 }());

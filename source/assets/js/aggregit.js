@@ -756,11 +756,12 @@ $(document).ready(function () {
         updateBar(100, 100, '100%');
         setTimeout(function () {
 
-            console.log(aggregitor.process_contributors(user));
-            console.log(aggregitor.process_code_frequency(user));
-            console.log(aggregitor.process_commit_activity(user));
-            console.log(aggregitor.process_participation(user));
-            console.log(aggregitor.process_punch_card(user));
+            var repos = ["aggregit", "allisondavenport", "compfipy", "dffrnet", "ende", "eugene", "juxtapy", "quilt", "tmthydvnprt.github.io", "utilipy"];
+            console.log(aggregitor.agg_contributors(aggregitor.process_contributors(user), repos));
+            console.log(aggregitor.agg_code_frequency(aggregitor.process_code_frequency(user), repos));
+            console.log(aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
+            console.log(aggregitor.agg_participation(aggregitor.process_participation(user), repos));
+            console.log(aggregitor.agg_punch_card(aggregitor.process_punch_card(user), repos));
 
             console.log('Render the User');
             console.log('---------------------------------------------');

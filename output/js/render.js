@@ -553,7 +553,8 @@
                 renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
 
                 // Update when clicked
-                $('#repo-list input').click(function () {
+                $('#repo-list input').click(function (e) {
+
                     var repos = [];
                     // Gather which repos to include
                     $('#repo-list input:checked').each(function () {
@@ -564,6 +565,7 @@
                     renderParticipation('#participation', aggregitor.agg_participation(aggregitor.process_participation(user), repos));
                     renderHeatmap('#heatmap', aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
                     renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
+
                 });
 
             }

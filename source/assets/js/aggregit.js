@@ -112,6 +112,17 @@ $(document).ready(function () {
         }
     }
 
+    function sticky() {
+        var window_top = $(window).scrollTop(),
+            div_top = $('#sticky').offset().top;
+        if (window_top > (div_top - 48)) {
+            $('#user-select').addClass('stick');
+            $('#user-select').attr('style', 'top:'+String(window_top) + 'px;');
+        } else {
+            $('#user-select').removeClass('stick');
+        }
+    }
+
     // Page js
     // -------------------------------------------------------------------------------------
     var page        = $('#page'),
@@ -401,4 +412,8 @@ $(document).ready(function () {
     // Listen for hash change or page load
     $(window).on('hashchange', router);
     $(window).on('load', router);
+
+    // Listen for scroll
+    $(window).scroll(sticky);
+    sticky();
 });

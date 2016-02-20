@@ -92,7 +92,7 @@
     };
     // Custom Date formater
     window.formatDate = function (d) {
-        var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep Oct', 'Nov', 'Dec'];
+        var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         return MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
     };
     // Convert date into YYYY-MM-DD string

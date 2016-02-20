@@ -430,8 +430,7 @@ var DAYS_IN_WEEK = 7,
 
             // Fill empty participation
             for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
-                participation.owner.push(0);
-                participation.all.push(0);
+                participation.push({owner: 0, all: 0});
             }
 
             // Aggregate participation data

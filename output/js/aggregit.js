@@ -559,196 +559,47 @@ $(document).ready(function () {
     }
 
     function aggregatePunchCard(user) {
-
-        var aggPunchCard = [],
-            h = 0,
-            d = 0,
-            i = 0,
-            punchRepos = [],
-            key = '',
-            repo = {};
-
-        // Fill empty punchcard
-        for (d = 0; d < 7; d += 1) {
-            for (h = 0; h < 24; h += 1) {
-                aggPunchCard.push([d, h, 0]);
-            }
-        }
-
+        var repos = [];
         // Gather which repos to include
         $('#punchcard-checklist input:checked').each(function () {
-            punchRepos.push($(this).attr('name'));
+            repos.push($(this).attr('name'));
         });
-
-        // Aggregate punch card data
-        console.log('Aggregating Punch Card:');
-        for (key in user.repos) {
-            if (user.repos.hasOwnProperty(key)) {
-                repo = user.repos[key];
-                if ($.inArray(repo.name, punchRepos) > -1) {
-                    if (!$.isEmptyObject(repo.stats.punch_card)) {
-                        console.log('    ' + repo.name);
-                        for (i = 0; i < repo.stats.punch_card.length; i += 1) {
-                            aggPunchCard[i][2] += repo.stats.punch_card[i][2];
-                        }
-                    }
-                }
-            }
-        }
-        console.log('');
-        renderPunchCard('#punchcard', aggPunchCard);
+        renderPunchCard('#punchcard', aggregitor.agg_punch_card(aggregitor.process_punch_card(user), repos));
     }
 
     function aggregateParticipation(user) {
-        var aggParticipation = [],
-            d = 0,
-            x = 0,
-            z = 0,
-            PARTICIPATION_SIZE = 52,
-            punchRepos = [],
-            owner = false,
+        var repos = [],
             all = false,
-            zoom = false,
-            key = '',
-            repo = {};
-
+            owner = true,
+            zoom = false;
         // Gather which repos, time, and who to include
         $('#participation-checklist input:checked').each(function () {
-            punchRepos.push($(this).attr('name'));
+            repos.push($(this).attr('name'));
         });
         $('#ownerall-checklist input:checked').each(function () {
             owner = ($(this).attr('name') === 'owner') ? true : owner;
             all = ($(this).attr('name') === 'all') ? true : all;
         });
         zoom = $('#zoom-checklist input:checked').length > 0 ? true : zoom;
-
-        // Fill empty participation
-        for (d = 0; d < PARTICIPATION_SIZE; d += 1) {
-            x = {};
-            if (owner) {
-                x.owner = 0;
-            }
-            if (all) {
-                x.all = 0;
-            }
-            aggParticipation.push(x);
-        }
-
-        // Aggregate participation data
-        console.log('Aggregating Participation:');
-        for (key in user.repos) {
-            if (user.repos.hasOwnProperty(key)) {
-                repo = user.repos[key];
-                if ($.inArray(repo.name, punchRepos) > -1) {
-                    console.log('    ' + repo.name);
-                    for (d = 0; d < PARTICIPATION_SIZE; d += 1) {
-                        if (owner && repo.stats.participation.hasOwnProperty('owner')) {
-                            aggParticipation[d].owner += repo.stats.participation.owner[d];
-                        }
-                        if (all && repo.stats.participation.hasOwnProperty('all')) {
-                            aggParticipation[d].all += repo.stats.participation.all[d];
-                        }
-                    }
-                }
-            }
-        }
-        if (zoom) {
-            for (z = 0; z < aggParticipation.length; z += 1) {
-                if (aggParticipation[z].owner > 0 || aggParticipation[z].all > 0) {
-                    aggParticipation = aggParticipation.slice(z);
-                    break;
-                }
-            }
-        }
-        console.log('');
-        renderParticipation('#participation', aggParticipation);
+        renderParticipation('#participation', aggregitor.agg_participation(aggregitor.process_participation(user), repos));
     }
 
     function aggregateHeatmap(user) {
-        var aggHeatmap = {},
-            key = '',
-            heatRepos = [],
-            WEEKS_IN_YEAR = 52,
-            DAYS_IN_WEEK = 7,
-            d = 0,
-            w = 0,
-            weekdate = null,
-            date = null,
-            date_str = '',
-            OFFSET = 24 * 60 * 60 * 1000,
-            repo = {};
-
+        var repos = [];
         // Gather which repos, time, and who to include
         $('#participation-checklist input:checked').each(function () {
-            heatRepos.push($(this).attr('name'));
+            repos.push($(this).attr('name'));
         });
-
-        console.log('Aggregating Heatmap (code activity):');
-        for (key in user.repos) {
-            if (user.repos.hasOwnProperty(key)) {
-                repo = user.repos[key];
-                if ($.inArray(repo.name, heatRepos) > -1) {
-                    console.log('    ' + repo.name);
-                    if (!$.isEmptyObject(repo.stats.commit_activity)) {
-                        for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
-                            weekdate = new Date(repo.stats.commit_activity[w].week * 1000);
-                            for (d = 0; d < DAYS_IN_WEEK; d += 1) {
-                                date = new Date(weekdate.getTime() + d * OFFSET);
-                                date_str = '{0}-{1}-{2}'.format(
-                                    date.getFullYear(),
-                                    ('0' + (date.getMonth() + 1)).slice(-2),
-                                    ('0' + date.getDate()).slice(-2)
-                                );
-                                if (aggHeatmap.hasOwnProperty(date_str)) {
-                                    aggHeatmap[date_str] += repo.stats.commit_activity[w].days[d];
-                                } else {
-                                    aggHeatmap[date_str] = repo.stats.commit_activity[w].days[d];
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        console.log('');
-        console.log(aggHeatmap);
-        console.log('');
-        renderHeatmap('#heatmap', aggHeatmap);
+        renderHeatmap('#heatmap', aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
     }
 
     function aggregateLanguages(user) {
-        var aggLanguages = [],
-            punchRepos = [],
-            language = '',
-            key = '',
-            repo = {};
-
+        var repos = [];
         // Gather which repos, time, and who to include
         $('#languages-checklist input:checked').each(function () {
-            punchRepos.push($(this).attr('name'));
+            repos.push($(this).attr('name'));
         });
-
-        // Aggregate language data
-        console.log('Aggregating Languages:');
-        for (key in user.repos) {
-            if (user.repos.hasOwnProperty(key)) {
-                repo = user.repos[key];
-                if ($.inArray(repo.name, punchRepos) > -1) {
-                    console.log('    ' + repo.name);
-                    for (language in repo.languages) {
-                        if (repo.languages.hasOwnProperty(language)) {
-                            if (aggLanguages.hasOwnProperty(language)) {
-                                aggLanguages[language] += repo.languages[language];
-                            } else {
-                                aggLanguages[language] = repo.languages[language];
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        console.log('');
-        renderLanguages('#languages', aggLanguages);
+        renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
     }
 
     function renderUser(user, errors) {
@@ -756,7 +607,6 @@ $(document).ready(function () {
         updateBar(100, 100, '100%');
         setTimeout(function () {
 
-            var repos = ["aggregit", "allisondavenport", "compfipy", "dffrnet", "ende", "eugene", "juxtapy", "quilt", "tmthydvnprt.github.io", "utilipy"];
             console.log(aggregitor.agg_contributors(aggregitor.process_contributors(user), repos));
             console.log(aggregitor.agg_code_frequency(aggregitor.process_code_frequency(user), repos));
             console.log(aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));

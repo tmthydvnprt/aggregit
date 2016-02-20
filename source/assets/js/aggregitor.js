@@ -307,6 +307,7 @@ var DAYS_IN_WEEK = 7,
             /* Aggregate contributors across provided repos */
             var contributors = {},
                 r = 0,
+                author = 0,
                 date = '',
                 repo = '';
 
@@ -317,7 +318,26 @@ var DAYS_IN_WEEK = 7,
                 repo = repos[r];
                 if (repo_contributors.hasOwnProperty(repo)) {
                     console.log('    ' + repo);
-
+                    for (author in repo_contributors[repo]) {
+                        if (!contributors.hasOwnProperty(author)) {
+                            contributors[author] = {a: {}, d: {}, c: {}};
+                        }
+                        if (repo_contributors[repo].hasOwnProperty(author)) {
+                            for (date in repo_contributors[repo][author]) {
+                                if (repo_contributors[repo][author].hasOwnProperty(date)) {
+                                    if (contributors[author].a.hasOwnProperty(date)) {
+                                        contributors[author].a[date] += repo_contributors[repo][author][date].a;
+                                        contributors[author].d[date] += repo_contributors[repo][author][date].d;
+                                        contributors[author].c[date] += repo_contributors[repo][author][date].c;
+                                    } else {
+                                        contributors[author].a[date] = repo_contributors[repo][author][date].a;
+                                        contributors[author].d[date] = repo_contributors[repo][author][date].d;
+                                        contributors[author].c[date] = repo_contributors[repo][author][date].c;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 } else {
                     console.log('    ' + repo + ' ! could not aggregate contributors');
                 }

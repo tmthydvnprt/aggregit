@@ -334,13 +334,13 @@ var DAYS_IN_WEEK = 7,
                 if (repo_contributors.hasOwnProperty(repo)) {
                     console.log('    ' + repo);
                     for (author in repo_contributors[repo]) {
-                        if (!contributors.hasOwnProperty(author)) {
-                            contributors[author] = {};
-                        }
                         if (repo_contributors[repo].hasOwnProperty(author)) {
+                            if (!contributors.hasOwnProperty(author)) {
+                                contributors[author] = {};
+                            }
                             for (date in repo_contributors[repo][author]) {
                                 if (repo_contributors[repo][author].hasOwnProperty(date)) {
-                                    if (contributors[author]hasOwnProperty(date)) {
+                                    if (contributors[author].hasOwnProperty(date)) {
                                         contributors[author][date].a += repo_contributors[repo][author][date].a;
                                         contributors[author][date].d += repo_contributors[repo][author][date].d;
                                         contributors[author][date].c += repo_contributors[repo][author][date].c;

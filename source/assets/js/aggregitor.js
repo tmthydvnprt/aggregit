@@ -48,6 +48,9 @@ var DAYS_IN_WEEK = 7,
                     contributions = {};
                     author = 'unknown';
                     weekdate = null;
+                    mindates[key] = Infinity;
+                    maxdates[key] = 0;
+
 
                     // If there is contributors for this repo, get it.
                     if (repo.hasOwnProperty('stats') && repo.stats.hasOwnProperty('contributors') && !$.isEmptyObject(repo.stats.contributors)) {
@@ -59,8 +62,8 @@ var DAYS_IN_WEEK = 7,
                                 if (repo.stats.contributors[c].hasOwnProperty('weeks')) {
 
                                     // Set min/max
-                                    mindates[key] = new Date(repo.stats.contributors[c].weeks[0].w * MS_IN_S);
-                                    maxdates[key] = new Date(repo.stats.contributors[c].weeks[repo.stats.contributors[c].weeks.length - 1].w * MS_IN_S);
+                                    mindates[key] = Math.min(mindates[key], new Date(repo.stats.contributors[c].weeks[0].w * MS_IN_S));
+                                    maxdates[key] = Math.max(maxdates[key], new Date(repo.stats.contributors[c].weeks[repo.stats.contributors[c].weeks.length - 1].w * MS_IN_S));
                                     // Loop thru each contributors
                                     for (w = 0; w < repo.stats.contributors[c].weeks.length; w += 1) {
                                         // Get date for this week
@@ -87,6 +90,8 @@ var DAYS_IN_WEEK = 7,
 
             // Once all commit_activities are converted to date list, ensure all dates exist for each repo
             // TBD
+            console.log(mindates);
+            console.log(maxdates);
 
             return repo_contributors;
         },
@@ -149,6 +154,8 @@ var DAYS_IN_WEEK = 7,
 
             // Once all commit_activities are converted to date list, ensure all dates exist for each repo
             // TBD
+            console.log(mindates);
+            console.log(maxdates);
 
             return repo_commit_activity;
         },
@@ -207,6 +214,8 @@ var DAYS_IN_WEEK = 7,
 
             // Once all commit_activities are converted to date list, ensure all dates exist for each repo
             // TBD
+            console.log(mindates);
+            console.log(maxdates);
 
             return repo_code_frequency;
         },
@@ -338,8 +347,9 @@ var DAYS_IN_WEEK = 7,
         },
         agg_code_frequency : function (repo_code_frequency, repos) {
             /* Aggregate code_frequency across provided repos */
-            var code_frequency = [],
+            var code_frequency = {a: {}, d: {}},
                 r = 0,
+                date = '',
                 repo = '';
 
             // Aggregate code_frequency data
@@ -349,12 +359,21 @@ var DAYS_IN_WEEK = 7,
                 repo = repos[r];
                 if (repo_code_frequency.hasOwnProperty(repo)) {
                     console.log('    ' + repo);
-
+                    for (date in repo_code_frequency[repo]) {
+                        if (repo_code_frequency[repo].hasOwnProperty(date)) {
+                            if (code_frequency.a.hasOwnProperty(date)) {
+                                code_frequency.a[date] += repo_code_frequency[repo][date].a;
+                                code_frequency.d[date] += repo_code_frequency[repo][date].d;
+                            } else {
+                                code_frequency.a[date] = repo_code_frequency[repo][date].a;
+                                code_frequency.d[date] = repo_code_frequency[repo][date].d;
+                            }
+                        }
+                    }
                 } else {
                     console.log('    ' + repo + ' ! could not aggregate code_frequency');
                 }
             }
-
             return code_frequency;
         },
         agg_participation : function (repo_participation, repos) {

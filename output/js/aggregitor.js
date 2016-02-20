@@ -89,9 +89,6 @@ var DAYS_IN_WEEK = 7,
             }
 
             // Once all commit_activities are converted to date list, ensure all dates exist for each repo
-            // TBD
-            console.log(mindates);
-            console.log(maxdates);
 
             return repo_contributors;
         },
@@ -153,9 +150,6 @@ var DAYS_IN_WEEK = 7,
             }
 
             // Once all commit_activities are converted to date list, ensure all dates exist for each repo
-            // TBD
-            console.log(mindates);
-            console.log(maxdates);
 
             return repo_commit_activity;
         },
@@ -213,9 +207,6 @@ var DAYS_IN_WEEK = 7,
             }
 
             // Once all commit_activities are converted to date list, ensure all dates exist for each repo
-            // TBD
-            console.log(mindates);
-            console.log(maxdates);
 
             return repo_code_frequency;
         },

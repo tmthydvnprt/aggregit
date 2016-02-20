@@ -217,7 +217,7 @@ var DAYS_IN_WEEK = 7,
             arrays are pre filled with 0 so that empty or unavailable repos will be aggregated gracefully later.
             */
             var repo_participation = {},
-                participation = {},
+                participation = [],
                 w = 0,
                 key = '',
                 repo = {};
@@ -229,10 +229,9 @@ var DAYS_IN_WEEK = 7,
                     repo = user.repos[key];
 
                     // Fill empty participation
-                    participation = {owner: [], all: []};
+                    participation = [];
                     for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
-                        participation.owner.push(0);
-                        participation.all.push(0);
+                        participation.push({owner: 0, all: 0});
                     }
 
                     // If there is commit activity for this repo, get it.
@@ -241,8 +240,8 @@ var DAYS_IN_WEEK = 7,
                         // Loop thru each week
                         for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
                             // Add owner and all particiation for the week
-                            participation.owner[w] += repo.stats.participation.owner[w];
-                            participation.all[w] += repo.stats.participation.all[w];
+                            participation[w].owner += repo.stats.participation.owner[w];
+                            participation[w].all += repo.stats.participation.all[w];
                         }
                     } else {
                         console.log('    ' + repo.name + ' ! could not process participation');
@@ -336,19 +335,19 @@ var DAYS_IN_WEEK = 7,
                     console.log('    ' + repo);
                     for (author in repo_contributors[repo]) {
                         if (!contributors.hasOwnProperty(author)) {
-                            contributors[author] = {a: {}, d: {}, c: {}};
+                            contributors[author] = {};
                         }
                         if (repo_contributors[repo].hasOwnProperty(author)) {
                             for (date in repo_contributors[repo][author]) {
                                 if (repo_contributors[repo][author].hasOwnProperty(date)) {
-                                    if (contributors[author].a.hasOwnProperty(date)) {
-                                        contributors[author].a[date] += repo_contributors[repo][author][date].a;
-                                        contributors[author].d[date] += repo_contributors[repo][author][date].d;
-                                        contributors[author].c[date] += repo_contributors[repo][author][date].c;
+                                    if (contributors[author]hasOwnProperty(date)) {
+                                        contributors[author][date].a += repo_contributors[repo][author][date].a;
+                                        contributors[author][date].d += repo_contributors[repo][author][date].d;
+                                        contributors[author][date].c += repo_contributors[repo][author][date].c;
                                     } else {
-                                        contributors[author].a[date] = repo_contributors[repo][author][date].a;
-                                        contributors[author].d[date] = repo_contributors[repo][author][date].d;
-                                        contributors[author].c[date] = repo_contributors[repo][author][date].c;
+                                        contributors[author][date].a = repo_contributors[repo][author][date].a;
+                                        contributors[author][date].d = repo_contributors[repo][author][date].d;
+                                        contributors[author][date].c = repo_contributors[repo][author][date].c;
                                     }
                                 }
                             }
@@ -393,7 +392,7 @@ var DAYS_IN_WEEK = 7,
         },
         agg_code_frequency : function (repo_code_frequency, repos) {
             /* Aggregate code_frequency across provided repos */
-            var code_frequency = {a: {}, d: {}},
+            var code_frequency = {},
                 r = 0,
                 date = '',
                 repo = '';
@@ -407,12 +406,12 @@ var DAYS_IN_WEEK = 7,
                     console.log('    ' + repo);
                     for (date in repo_code_frequency[repo]) {
                         if (repo_code_frequency[repo].hasOwnProperty(date)) {
-                            if (code_frequency.a.hasOwnProperty(date)) {
-                                code_frequency.a[date] += repo_code_frequency[repo][date].a;
-                                code_frequency.d[date] += repo_code_frequency[repo][date].d;
+                            if (code_frequency.hasOwnProperty(date)) {
+                                code_frequency[date].a += repo_code_frequency[repo][date].a;
+                                code_frequency[date].d += repo_code_frequency[repo][date].d;
                             } else {
-                                code_frequency.a[date] = repo_code_frequency[repo][date].a;
-                                code_frequency.d[date] = repo_code_frequency[repo][date].d;
+                                code_frequency[date].a = repo_code_frequency[repo][date].a;
+                                code_frequency[date].d = repo_code_frequency[repo][date].d;
                             }
                         }
                     }
@@ -424,7 +423,7 @@ var DAYS_IN_WEEK = 7,
         },
         agg_participation : function (repo_participation, repos) {
             /* Aggregate participation across provided repos */
-            var participation = {owner: [], all: []},
+            var participation = [],
                 r = 0,
                 repo = '',
                 w = 0;
@@ -445,8 +444,8 @@ var DAYS_IN_WEEK = 7,
                     // Loop thru each week
                     for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
                         // Add owner and all particiation for the week
-                        participation.owner[w] += repo_participation[repo].owner[w];
-                        participation.all[w] += repo_participation[repo].all[w];
+                        participation[w].owner += repo_participation[repo][w].owner;
+                        participation[w].all += repo_participation[repo][w].all;
                     }
                 } else {
                     console.log('    ' + repo + ' ! could not aggregate participation');

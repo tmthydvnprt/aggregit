@@ -401,6 +401,7 @@
 <script rel="javascript" src="../js/cookieJar.js" type="text/javascript"></script>
 <script rel="javascript" src="../js/common.js" type="text/javascript"></script>
 <script rel="javascript" src="../js/github.js" type="text/javascript"></script>
+<script rel="javascript" src="../js/aggregitor.js" type="text/javascript"></script>
 <script rel="javascript" src="../js/aggregit.js" type="text/javascript"></script>
 </body>
 </html>

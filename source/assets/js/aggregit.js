@@ -1,4 +1,4 @@
-/*globals $,console,d3,cookieJar,formatDate,github,opr,InstallTrigger,Blob */
+/*globals $,console,d3,cookieJar,formatDate,github,aggregitor,opr,InstallTrigger,Blob */
 /*!
  * aggregit.js
  *
@@ -427,12 +427,12 @@ $(document).ready(function () {
             });
 
 //        g.append("text")
-//            .attr("transform", function(d) {
+//            .attr("transform", function (d) {
 //                return "translate(" + arc.centroid(d) + ")";
 //            })
 //            .attr("dy", ".35em")
 //            .style("text-anchor", "middle")
-//            .text(function(d) {
+//            .text(function (d) {
 //                return d.data.language;
 //            });
 
@@ -447,7 +447,7 @@ $(document).ready(function () {
             var array = [],
                 key = '';
             for (key in obj) {
-                if (data.hasOwnProperty(key)) {
+                if (obj.hasOwnProperty(key)) {
                     array.push(obj[key]);
                 }
             }
@@ -458,8 +458,8 @@ $(document).ready(function () {
         d3.select("#heatmap-svg").remove();
 
         // Setup parameters and variables
-        var WEEKDAY = {0:'Sun', 1:'Mon', 2:'Tue', 3:'Wed', 4:'Thu', 5:'Fri', 6:'Sat'},
-            OFFSET = 24*60*60*1000,
+        var WEEKDAY = {0: 'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat'},
+            OFFSET = 24 * 60 * 60 * 1000,
             w = parseInt($(elem).width(), 10),
             h = parseInt(w / 6, 10),
             cell_size = parseInt(w / 56, 10),
@@ -469,9 +469,9 @@ $(document).ready(function () {
             MIN_T = format.parse(Object.keys(data)[0]),
             MAX_T = format.parse(Object.keys(data).slice(-1)[0]),
             MAX_C = d3.max(getValues(data)),
-            color = d3.scale.quantize()
-                .domain([0, MAX_C])
-                .range(d3.range(8).map(function(d) { return "q" + d + "-8"; })),
+            color = d3.scale.threshold()
+                .domain(d3.range(1, MAX_C, MAX_C / 8))
+                .range(d3.range(8).map(function (d) { return "q" + d + "-8"; })),
             svg = d3.select(elem).selectAll("svg")
                     .data([0])
                 .enter().append("svg")
@@ -482,71 +482,73 @@ $(document).ready(function () {
                 .append("g")
                     .attr("transform", "translate(" + ((w - cell_size * 53) / 2) + "," + (h - cell_size * 7 - 1) + ")"),
             rect = svg.selectAll(".day")
-                    .data(function(d) {
-                        return d3.time.days(MIN_T, MAX_T);
-                    })
+                .data(function (d) {
+                    return d3.time.days(MIN_T, MAX_T);
+                })
                 .enter().append("rect")
-                    .attr("class", "day")
-                    .attr("width", cell_size)
-                    .attr("height", cell_size)
-                    .attr("x", function(d) {
-                        if (d.getDay() == 0) {
-                            return (d3.time.weeks(MIN_T, d).length + 1) * cell_size;
-                        } else {
-                            return d3.time.weeks(MIN_T, d).length * cell_size;
-                        }
-                    })
-                    .attr("y", function(d) { return d.getDay() * cell_size; })
-                    .datum(format);
+                .attr("class", "day")
+                .attr("width", cell_size)
+                .attr("height", cell_size)
+                .attr("x", function (d) {
+                    if (d.getDay() === 0) {
+                        return (d3.time.weeks(MIN_T, d).length + 1) * cell_size;
+                    } else {
+                        return d3.time.weeks(MIN_T, d).length * cell_size;
+                    }
+                })
+                .attr("y", function (d) { return d.getDay() * cell_size; })
+                .datum(format);
 
         // svg.append("text")
         //     .attr("transform", "translate(-6," + cell_size * 3.5 + ")rotate(-90)")
         //     .style("text-anchor", "middle")
-        //     .text(function(d) { return d; });
-        rect.append("title")
-            .text(function(d) { return d; });
-        svg.selectAll(".month")
-                .data(function(d) {
-                    var m0 = d3.time.months(MIN_T, MAX_T),
-                        m1 = d3.time.months(MIN_T, MAX_T),
-                        m = [],
-                        i = 0;
-                    for (i = 0; i < m1.length; i += 1) {
-                        m1[i] = new Date(m1[i].getTime() - OFFSET);
-                    }
-                    m0.splice(0, 0, MIN_T);
-                    m1.push(MAX_T);
-                    for (i = 0; i < m0.length; i += 1) {
-                        m.push({'m0':m0[i], 'm1':m1[i]});
-                    }
-                    return m;
-                })
-            .enter().append("path")
-                .attr("class", "month")
-                .attr("d", monthPath);
-
-        rect//.filter(function(d) { return d in data; })
-                .attr("class", function(d) { return "day " + color(data[d]); })
-            .select("title")
-                .text(function(d) { return WEEKDAY[format.parse(d).getDay()] + " " + d + ": " + data[d]; });
+        //     .text(function (d) { return d; });
+        rect.append("title").text(function (d) { return d; });
 
         function monthPath(m) {
-          var t0 = m['m0'],
-              t1 = m['m1'],
-              d0 = t0.getDay(), w0 = d3.time.weeks(MIN_T, t0).length,
-              d1 = t1.getDay(), w1 = d3.time.weeks(MIN_T, t1).length;
-              if (d0 == 0) {
-                  w0 += 1;
-              }
-              if (d1 == 0) {
-                  w1 += 1;
-              }
-          return "M" + (w0 + 1) * cell_size + "," + d0 * cell_size
-              + "H" + w0 * cell_size + "V" + 7 * cell_size
-              + "H" + w1 * cell_size + "V" + (d1 + 1) * cell_size
-              + "H" + (w1 + 1) * cell_size + "V" + 0
-              + "H" + (w0 + 1) * cell_size + "Z";
+            var t0 = m.m0,
+                t1 = m.m1,
+                d0 = t0.getDay(),
+                w0 = d3.time.weeks(MIN_T, t0).length,
+                d1 = t1.getDay(),
+                w1 = d3.time.weeks(MIN_T, t1).length;
+            if (d0 === 0) {
+                w0 += 1;
+            }
+            if (d1 === 0) {
+                w1 += 1;
+            }
+            return "M" + (w0 + 1) * cell_size + "," + d0 * cell_size
+                + "H" + w0 * cell_size + "V" + 7 * cell_size
+                + "H" + w1 * cell_size + "V" + (d1 + 1) * cell_size
+                + "H" + (w1 + 1) * cell_size + "V" + "0"
+                + "H" + (w0 + 1) * cell_size + "Z";
         }
+
+        svg.selectAll(".month")
+            .data(function (d) {
+                var m0 = d3.time.months(MIN_T, MAX_T),
+                    m1 = d3.time.months(MIN_T, MAX_T),
+                    m = [],
+                    i = 0;
+                for (i = 0; i < m1.length; i += 1) {
+                    m1[i] = new Date(m1[i].getTime() - OFFSET);
+                }
+                m0.splice(0, 0, MIN_T);
+                m1.push(MAX_T);
+                for (i = 0; i < m0.length; i += 1) {
+                    m.push({'m0': m0[i], 'm1': m1[i]});
+                }
+                return m;
+            })
+            .enter().append("path")
+            .attr("class", "month")
+            .attr("d", monthPath);
+
+        rect//.filter(function (d) { return d in data; })
+                .attr("class", function (d) { return "day " + color(data[d]); })
+            .select("title")
+                .text(function (d) { return WEEKDAY[format.parse(d).getDay()] + " " + d + ": " + data[d]; });
 
             // heatmapTooltip = d3.select("body")
             //     .append("div")
@@ -557,202 +559,54 @@ $(document).ready(function () {
     }
 
     function aggregatePunchCard(user) {
-
-        var aggPunchCard = [],
-            h = 0,
-            d = 0,
-            i = 0,
-            punchRepos = [],
-            key = '',
-            repo = {};
-
-        // Fill empty punchcard
-        for (d = 0; d < 7; d += 1) {
-            for (h = 0; h < 24; h += 1) {
-                aggPunchCard.push([d, h, 0]);
-            }
-        }
-
+        var repos = [];
         // Gather which repos to include
         $('#punchcard-checklist input:checked').each(function () {
-            punchRepos.push($(this).attr('name'));
+            repos.push($(this).attr('name'));
         });
-
-        // Aggregate punch card data
-        console.log('Aggregating Punch Card:');
-        for (key in user.repos) {
-            if (user.repos.hasOwnProperty(key)) {
-                repo = user.repos[key];
-                if ($.inArray(repo.name, punchRepos) > -1) {
-                    if (!$.isEmptyObject(repo.stats.punch_card)) {
-                        console.log('    ' + repo.name);
-                        for (i = 0; i < repo.stats.punch_card.length; i += 1) {
-                            aggPunchCard[i][2] += repo.stats.punch_card[i][2];
-                        }
-                    }
-                }
-            }
-        }
-        console.log('');
-        renderPunchCard('#punchcard', aggPunchCard);
+        renderPunchCard('#punchcard', aggregitor.agg_punch_card(aggregitor.process_punch_card(user), repos));
     }
 
     function aggregateParticipation(user) {
-        var aggParticipation = [],
-            d = 0,
-            x = 0,
-            z = 0,
-            PARTICIPATION_SIZE = 52,
-            punchRepos = [],
-            owner = false,
+        var repos = [],
             all = false,
-            zoom = false,
-            key = '',
-            repo = {};
-
+            owner = true,
+            zoom = false;
         // Gather which repos, time, and who to include
         $('#participation-checklist input:checked').each(function () {
-            punchRepos.push($(this).attr('name'));
+            repos.push($(this).attr('name'));
         });
         $('#ownerall-checklist input:checked').each(function () {
             owner = ($(this).attr('name') === 'owner') ? true : owner;
             all = ($(this).attr('name') === 'all') ? true : all;
         });
         zoom = $('#zoom-checklist input:checked').length > 0 ? true : zoom;
-
-        // Fill empty participation
-        for (d = 0; d < PARTICIPATION_SIZE; d += 1) {
-            x = {};
-            if (owner) {
-                x.owner = 0;
-            }
-            if (all) {
-                x.all = 0;
-            }
-            aggParticipation.push(x);
-        }
-
-        // Aggregate participation data
-        console.log('Aggregating Participation:');
-        for (key in user.repos) {
-            if (user.repos.hasOwnProperty(key)) {
-                repo = user.repos[key];
-                if ($.inArray(repo.name, punchRepos) > -1) {
-                    console.log('    ' + repo.name);
-                    for (d = 0; d < PARTICIPATION_SIZE; d += 1) {
-                        if (owner && repo.stats.participation.hasOwnProperty('owner')) {
-                            aggParticipation[d].owner += repo.stats.participation.owner[d];
-                        }
-                        if (all && repo.stats.participation.hasOwnProperty('all')) {
-                            aggParticipation[d].all += repo.stats.participation.all[d];
-                        }
-                    }
-                }
-            }
-        }
-        if (zoom) {
-            for (z = 0; z < aggParticipation.length; z += 1) {
-                if (aggParticipation[z].owner > 0 || aggParticipation[z].all > 0) {
-                    aggParticipation = aggParticipation.slice(z);
-                    break;
-                }
-            }
-        }
-        console.log('');
-        renderParticipation('#participation', aggParticipation);
+        renderParticipation('#participation', aggregitor.agg_participation(aggregitor.process_participation(user), repos));
     }
 
     function aggregateHeatmap(user) {
-        var aggHeatmap = {},
-            key = '',
-            heatRepos = [],
-            WEEKS_IN_YEAR = 52,
-            DAYS_IN_WEEK = 7,
-            d = 0,
-            w = 0,
-            weekdate = null,
-            date = null,
-            date_str = '',
-            OFFSET = 24*60*60*1000,
-            repo = {};
-
+        var repos = [];
         // Gather which repos, time, and who to include
         $('#participation-checklist input:checked').each(function () {
-            heatRepos.push($(this).attr('name'));
+            repos.push($(this).attr('name'));
         });
-
-        console.log('Aggregating Heatmap (code activity):');
-        for (key in user.repos) {
-            if (user.repos.hasOwnProperty(key)) {
-                repo = user.repos[key];
-                if ($.inArray(repo.name, heatRepos) > -1) {
-                    console.log('    ' + repo.name);
-                    if (!$.isEmptyObject(repo.stats.commit_activity)) {
-                        for (w = 0; w < WEEKS_IN_YEAR; w += 1) {
-                            weekdate = new Date(repo.stats.commit_activity[w].week * 1000);
-                            for (d = 0; d < DAYS_IN_WEEK; d += 1) {
-                                date = new Date(weekdate.getTime() + d * OFFSET);
-                                date_str = '{0}-{1}-{2}'.format(
-                                    date.getFullYear(),
-                                    ('0' + (date.getMonth() + 1)).slice(-2),
-                                    ('0' + date.getDate()).slice(-2)
-                                );
-                                if (aggHeatmap.hasOwnProperty(date_str)) {
-                                    aggHeatmap[date_str] += repo.stats.commit_activity[w].days[d];
-                                } else {
-                                    aggHeatmap[date_str] = repo.stats.commit_activity[w].days[d];
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        console.log('');
-        console.log(aggHeatmap);
-        console.log('');
-        renderHeatmap('#heatmap', aggHeatmap);
+        renderHeatmap('#heatmap', aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
     }
 
     function aggregateLanguages(user) {
-        var aggLanguages = [],
-            punchRepos = [],
-            language = '',
-            key = '',
-            repo = {};
-
+        var repos = [];
         // Gather which repos, time, and who to include
         $('#languages-checklist input:checked').each(function () {
-            punchRepos.push($(this).attr('name'));
+            repos.push($(this).attr('name'));
         });
-
-        // Aggregate language data
-        console.log('Aggregating Languages:');
-        for (key in user.repos) {
-            if (user.repos.hasOwnProperty(key)) {
-                repo = user.repos[key];
-                if ($.inArray(repo.name, punchRepos) > -1) {
-                    console.log('    ' + repo.name);
-                    for (language in repo.languages) {
-                        if (repo.languages.hasOwnProperty(language)) {
-                            if (aggLanguages.hasOwnProperty(language)) {
-                                aggLanguages[language] += repo.languages[language];
-                            } else {
-                                aggLanguages[language] = repo.languages[language];
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        console.log('');
-        renderLanguages('#languages', aggLanguages);
+        renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
     }
 
     function renderUser(user, errors) {
 
         updateBar(100, 100, '100%');
         setTimeout(function () {
+
             console.log('Render the User');
             console.log('---------------------------------------------');
             // Update the DOM

@@ -86,7 +86,7 @@
 <div class="media-body">
 <h1 class="media-heading">
 <span id="name">{name}</span><br/>
-<small alt="username" class="force-hover" id="username" title="username">{login}</small>
+<small alt="username" class="force-hover" id="username" title="username"><code>{login}</code></small>
 </h1>
 <hr/>
 <ul class="list-inline">
@@ -104,65 +104,24 @@
 </div>
 </div>
 </div>
-<div class="col-sm-6"></div>
 </div>
 </template>
 <template id="user-data-template">
 <div class="row">
 <div class="col-sm-10 col-sm-offset-1">
-<h2>When does {login} code?</h2>
+<h2>When does <code>{login}</code> code?</h2>
 <hr/>
-<div class="well well-sm">
-<div class="row">
-<div class="col-xs-2">
-<p class="text-right"><strong>Repos:</strong></p>
-</div>
-<div class="col-xs-10">
-<ul class="checklist list-inline" id="punchcard-checklist"></ul>
-</div>
-</div>
-</div>
 <div id="punchcard"></div>
-<h2>How long has {login} been coding?</h2>
+<h2>How long has <code>{login}</code> been coding?</h2>
 <hr/>
-<div class="well well-sm">
-<div class="row">
-<div class="col-xs-2">
-<p class="text-right"><strong>Repos:</strong></p>
-</div>
-<div class="col-xs-10">
-<ul class="checklist list-inline" id="participation-checklist"></ul>
-</div>
-</div>
-<div class="row">
-<div class="col-xs-2">
-<p class="text-right"><strong>Who:</strong></p>
-</div>
-<div class="col-xs-4">
-<ul class="checklist list-inline" id="ownerall-checklist">
-<li><input checked="" name="owner" type="checkbox"/>owner</li>
-<li><input name="all" type="checkbox"/>all</li>
-</ul>
-</div>
-<div class="col-xs-2">
-<p class="text-right"><strong>Zoom:</strong></p>
-</div>
-<div class="col-xs-4">
-<ul class="checklist list-inline" id="zoom-checklist">
-<li><input checked="" name="owner" type="checkbox"/>ignore time before first commit</li>
-</ul>
-</div>
-</div>
-</div>
 <div id="participation"></div>
 <div id="heatmap"></div>
-<h2>What languages does {login} speak?</h2>
+<h2>What languages does <code>{login}</code> speak?</h2>
 <hr/>
 <div class="well well-sm">
 <div class="row">
 <div class="col-xs-3">
-<p><strong>Repos:</strong></p>
-<ul class="checklist" id="languages-checklist"></ul>
+<ul class="checklist" id="language-list"></ul>
 </div>
 <div class="col-xs-9">
 <div id="languages"></div>
@@ -244,6 +203,17 @@
 </div>
 </div>
 </div>
+</div>
+<div id="user-select">
+<div class="row" id="repo-selector">
+<div class="col-sm-1 col-sm-offset-1">
+<p class="text-left"><strong>Repos:</strong></p>
+</div>
+<div class="col-sm-9">
+<ul class="checklist list-inline" id="repo-list"></ul>
+</div>
+</div>
+<hr/>
 </div>
 <div id="user-data"></div>
 </section>

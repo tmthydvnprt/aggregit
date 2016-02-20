@@ -474,50 +474,6 @@
             //     .text("heatmap");
     };
 
-    window.aggregatePunchCard = function (user) {
-        var repos = [];
-        // Gather which repos to include
-        $('#punchcard-checklist input:checked').each(function () {
-            repos.push($(this).attr('name'));
-        });
-        renderPunchCard('#punchcard', aggregitor.agg_punch_card(aggregitor.process_punch_card(user), repos));
-    };
-
-    window.aggregateParticipation = function (user) {
-        var repos = [],
-            all = false,
-            owner = true,
-            zoom = false;
-        // Gather which repos, time, and who to include
-        $('#participation-checklist input:checked').each(function () {
-            repos.push($(this).attr('name'));
-        });
-        $('#ownerall-checklist input:checked').each(function () {
-            owner = ($(this).attr('name') === 'owner') ? true : owner;
-            all = ($(this).attr('name') === 'all') ? true : all;
-        });
-        zoom = $('#zoom-checklist input:checked').length > 0 ? true : zoom;
-        renderParticipation('#participation', aggregitor.agg_participation(aggregitor.process_participation(user), repos));
-    };
-
-    window.aggregateHeatmap = function (user) {
-        var repos = [];
-        // Gather which repos, time, and who to include
-        $('#participation-checklist input:checked').each(function () {
-            repos.push($(this).attr('name'));
-        });
-        renderHeatmap('#heatmap', aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
-    };
-
-    window.aggregateLanguages = function (user) {
-        var repos = [];
-        // Gather which repos, time, and who to include
-        $('#languages-checklist input:checked').each(function () {
-            repos.push($(this).attr('name'));
-        });
-        renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
-    };
-
     window.renderUser = function (user, errors) {
 
         updateBar(100, 100, '100%');
@@ -539,7 +495,8 @@
                     key = '',
                     repo = {},
                     check = '',
-                    fork = '';
+                    fork = '',
+                    repos = [];
 
                 // Format dates
                 user.created_at = formatDate(new Date(user.created_at));
@@ -581,36 +538,34 @@
                     }
                 }
 
-                // Draw punchcard, and update when repo selector clicked
-                $('#punchcard-checklist').html(repoChecklist.join(''));
-                aggregatePunchCard(user);
-                $('#punchcard-checklist input').click(function () {
-                    aggregatePunchCard(user);
+                // Render Repo selector
+                $('#repo-list').html(repoChecklist.join(''));
+
+                // Gather which repos to include
+                $('#repo-list input:checked').each(function () {
+                    repos.push($(this).attr('name'));
                 });
 
-                // Draw participation/commit_activity, and update when clicked
-                $('#participation-checklist').html(repoChecklist.join(''));
-                aggregateParticipation(user);
-                aggregateHeatmap(user);
-                $('#participation-checklist input').click(function () {
-                    aggregateParticipation(user);
-                    aggregateHeatmap(user);
-                });
-                $('#ownerall-checklist input').click(function () {
-                    aggregateParticipation(user);
-                    aggregateHeatmap(user);
-                });
-                $('#zoom-checklist input').click(function () {
-                    aggregateParticipation(user);
-                    aggregateHeatmap(user);
+                // Draw punchcard, participation/commit_activity and languages
+                renderPunchCard('#punchcard', aggregitor.agg_punch_card(aggregitor.process_punch_card(user), repos));
+                renderParticipation('#participation', aggregitor.agg_participation(aggregitor.process_participation(user), repos));
+                renderHeatmap('#heatmap', aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
+                renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
+
+                // Update when clicked
+                $('#repo-list input').click(function () {
+                    var repos = [];
+                    // Gather which repos to include
+                    $('#repo-list input:checked').each(function () {
+                        repos.push($(this).attr('name'));
+                    });
+
+                    renderPunchCard('#punchcard', aggregitor.agg_punch_card(aggregitor.process_punch_card(user), repos));
+                    renderParticipation('#participation', aggregitor.agg_participation(aggregitor.process_participation(user), repos));
+                    renderHeatmap('#heatmap', aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
+                    renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
                 });
 
-                // Draw languages, and update when repo selector clicked
-                $('#languages-checklist').html(repoChecklist.join(''));
-                aggregateLanguages(user);
-                $('#languages-checklist input').click(function () {
-                    aggregateLanguages(user);
-                });
             }
         }, RENDER_DELAY);
     };

@@ -307,6 +307,7 @@ var DAYS_IN_WEEK = 7,
             /* Aggregate contributors across provided repos */
             var contributors = {},
                 r = 0,
+                date = '',
                 repo = '';
 
             // Aggregate contributors data
@@ -328,6 +329,7 @@ var DAYS_IN_WEEK = 7,
             /* Aggregate commit_activity across provided repos */
             var commit_activity = {},
                 r = 0,
+                date = '',
                 repo = '';
 
             // Aggregate commit activity data
@@ -337,7 +339,15 @@ var DAYS_IN_WEEK = 7,
                 repo = repos[r];
                 if (repo_commit_activitiy.hasOwnProperty(repo)) {
                     console.log('    ' + repo);
-
+                    for (date in repo_commit_activitiy[repo]) {
+                        if (repo_commit_activitiy[repo].hasOwnProperty(date)) {
+                            if (commit_activity.hasOwnProperty(date)) {
+                                commit_activity[date] += repo_commit_activitiy[repo][date];
+                            } else {
+                                commit_activity[date] = repo_commit_activitiy[repo][date];
+                            }
+                        }
+                    }
                 } else {
                     console.log('    ' + repo + ' ! could not aggregate commit_activity');
                 }

@@ -469,8 +469,8 @@ $(document).ready(function () {
             MIN_T = format.parse(Object.keys(data)[0]),
             MAX_T = format.parse(Object.keys(data).slice(-1)[0]),
             MAX_C = d3.max(getValues(data)),
-            color = d3.scale.quantize()
-                .domain([0, MAX_C])
+            color = d3.scale.threshold()
+                .domain(d3.range(1, MAX_C, MAX_C / 8))
                 .range(d3.range(8).map(function (d) { return "q" + d + "-8"; })),
             svg = d3.select(elem).selectAll("svg")
                     .data([0])

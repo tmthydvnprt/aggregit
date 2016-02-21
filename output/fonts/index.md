@@ -41,14 +41,14 @@
 </ul>
 </div>
 </div>
-<div class="container-fluid" id="user-select-inline">
+<div class="container-fluid" id="user-select-navbar">
 <div class="well well-sm">
 <div class="row">
 <div class="col-sm-1 col-sm-offset-1">
 <p class="text-left"><strong>Repos:</strong></p>
 </div>
 <div class="col-sm-9">
-<ul class="repo-list checklist list-inline" id="repo-list-inline"></ul>
+<ul class="repo-list checklist list-inline" id="repo-list-navbar"></ul>
 </div>
 </div>
 </div>
@@ -222,7 +222,7 @@
 </div>
 </div>
 <div id="sticky"></div>
-<div id="user-select">
+<div id="user-select-inline">
 <div class="row">
 <div class="col-sm-1 col-sm-offset-1">
 <p class="text-left"><strong>Repos:</strong></p>

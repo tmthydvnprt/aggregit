@@ -532,6 +532,9 @@
                 for (key in user.repos) {
                     if (user.repos.hasOwnProperty(key)) {
                         repo = user.repos[key];
+                        if (!repo.fork) {
+                            repos.push(key);
+                        }
                         check = (repo.fork) ? '' : 'checked=""';
                         fork = (repo.fork) ? '<i class="fa fa-code-fork text-info"></i> ' : '';
                         repoChecklist.push(REPO_CHECKLIST_TEMPLATE.format(repo.name, check, fork));
@@ -539,18 +542,29 @@
                 }
 
                 // Render Repo selector
-                $('.repo-list').html(repoChecklist.join(''));
-
-                // Gather which repos to include
-                $('.repo-list input:checked').each(function () {
-                    repos.push($(this).attr('name'));
-                });
+                $('#repo-list-inline').html(repoChecklist.join(''));
 
                 // Draw punchcard, participation/commit_activity and languages
                 renderPunchCard('#punchcard', aggregitor.agg_punch_card(aggregitor.process_punch_card(user), repos));
                 renderParticipation('#participation', aggregitor.agg_participation(aggregitor.process_participation(user), repos));
                 renderHeatmap('#heatmap', aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
                 renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
+
+                // // Update when clicked
+                // $('#repo-list-navbar input').click(function (e) {
+                //
+                //     var repos = [];
+                //     // Gather which repos to include
+                //     $('#repo-list-navbar input:checked').each(function () {
+                //         repos.push($(this).attr('name'));
+                //     });
+                //
+                //     renderPunchCard('#punchcard', aggregitor.agg_punch_card(aggregitor.process_punch_card(user), repos));
+                //     renderParticipation('#participation', aggregitor.agg_participation(aggregitor.process_participation(user), repos));
+                //     renderHeatmap('#heatmap', aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
+                //     renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
+                //
+                // });
 
                 // Update when clicked
                 $('.repo-list input').click(function (e) {

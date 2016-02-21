@@ -112,6 +112,22 @@ $(document).ready(function () {
         }
     }
 
+    function sticky() {
+        var window_top = $(window).scrollTop(),
+            div_top = $('#sticky').offset().top;
+        if (window_top > (div_top - 48)) {
+            $('#repo-list-navbar').append($('#repo-list-inline').contents());
+            $('#repo-list-inline').html('');
+            $('#user-select-navbar').addClass('sticky');
+        } else {
+            if ($('#repo-list-navbar').children().length > 0) {
+                $('#repo-list-inline').append($('#repo-list-navbar').contents());
+                $('#repo-list-navbar').html('');
+                $('#user-select-navbar').removeClass('sticky');
+            }
+        }
+    }
+
     // Page js
     // -------------------------------------------------------------------------------------
     var page        = $('#page'),
@@ -401,4 +417,8 @@ $(document).ready(function () {
     // Listen for hash change or page load
     $(window).on('hashchange', router);
     $(window).on('load', router);
+
+    // Listen for scroll
+    $(window).scroll(sticky);
+
 });

@@ -444,6 +444,32 @@ nav #nav-search-user.form-control {
 #user-info hr {
     margin: 4px;
 }
+#user-select-navbar {
+    display: none;
+}
+#user-select-navbar .well {
+    margin-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+#user-select-navbar #repo-list-navbar {
+    margin-bottom: 0px;
+}
+#user-select-navbar.sticky {
+    display: block;
+}
+#user-select {
+    background-color: #fff;
+    padding-top: 8px;
+}
+#user-select.stick {
+    position: absolute;
+    z-index: 10000;
+}
+#user-select hr {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
 
 /* User Data
  ---------------------- */

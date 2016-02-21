@@ -45,7 +45,12 @@
 <div class="well well-sm">
 <div class="row">
 <div class="col-xs-1">
-<p class="text-left"><strong>Repos:</strong></p>
+<p class="text-left">
+<strong>
+<span class="hidden-xs">Repos:</span>
+<span class="visible-xs" title="Repos"><i class="fa fa-2x fa-book"></i></span>
+</strong>
+</p>
 </div>
 <div class="col-xs-11">
 <ul class="repo-list checklist list-inline" id="repo-list-navbar"></ul>
@@ -226,7 +231,12 @@
 <div>
 <div class="row">
 <div class="col-xs-1">
-<p class="text-left"><strong>Repos:</strong></p>
+<p class="text-left">
+<strong>
+<span class="hidden-xs">Repos:</span>
+<span class="visible-xs" title="Repos"><i class="fa fa-2x fa-book"></i></span>
+</strong>
+</p>
 </div>
 <div class="col-xs-11">
 <ul class="repo-list checklist list-inline" id="repo-list-inline"></ul>

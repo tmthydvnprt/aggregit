@@ -543,6 +543,7 @@
 
                 // Render Repo selector
                 $('#repo-list-inline').html(repoChecklist.join(''));
+                $('#user-select-inline').addClass('show');
 
                 // Draw punchcard, participation/commit_activity and languages
                 renderPunchCard('#punchcard', aggregitor.agg_punch_card(aggregitor.process_punch_card(user), repos));

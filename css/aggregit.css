@@ -444,6 +444,7 @@ nav #nav-search-user.form-control {
 #user-info hr {
     margin: 4px;
 }
+
 #user-select-navbar {
     display: none;
 }
@@ -458,15 +459,13 @@ nav #nav-search-user.form-control {
 #user-select-navbar.sticky {
     display: block;
 }
-#user-select {
-    background-color: #fff;
-    padding-top: 8px;
+#user-select-inline {
+    display: none;
 }
-#user-select.stick {
-    position: absolute;
-    z-index: 10000;
+#user-select-inline.show {
+    display: block;
 }
-#user-select hr {
+#user-select-inline hr {
     margin-top: 2px;
     margin-bottom: 2px;
 }

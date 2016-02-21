@@ -448,6 +448,13 @@ nav #nav-search-user.form-control {
 #user-select-navbar {
     display: none;
 }
+#user-select-navbar div ,
+#user-select-inline div {
+    margin-right: 0px;
+    margin-left: 0px;
+    /*padding-left: 16px;
+    padding-right: 16px;*/
+}
 #user-select-navbar .well {
     margin-bottom: 0px;
     padding-left: 0px;

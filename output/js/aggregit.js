@@ -116,10 +116,9 @@ $(document).ready(function () {
         var window_top = $(window).scrollTop(),
             div_top = $('#sticky').offset().top;
         if (window_top > (div_top - 48)) {
-            $('#user-select').addClass('stick');
-            $('#user-select').attr('style', 'top:'+String(window_top) + 'px;');
+            $('#user-select-inline').addClass('sticky');
         } else {
-            $('#user-select').removeClass('stick');
+            $('#user-select-inline').removeClass('sticky');
         }
     }
 

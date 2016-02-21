@@ -539,10 +539,10 @@
                 }
 
                 // Render Repo selector
-                $('#repo-list').html(repoChecklist.join(''));
+                $('.repo-list').html(repoChecklist.join(''));
 
                 // Gather which repos to include
-                $('#repo-list input:checked').each(function () {
+                $('.repo-list input:checked').each(function () {
                     repos.push($(this).attr('name'));
                 });
 
@@ -553,11 +553,11 @@
                 renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
 
                 // Update when clicked
-                $('#repo-list input').click(function (e) {
+                $('.repo-list input').click(function (e) {
 
                     var repos = [];
                     // Gather which repos to include
-                    $('#repo-list input:checked').each(function () {
+                    $('.repo-list input:checked').each(function () {
                         repos.push($(this).attr('name'));
                     });
 

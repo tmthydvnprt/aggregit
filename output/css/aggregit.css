@@ -444,6 +444,20 @@ nav #nav-search-user.form-control {
 #user-info hr {
     margin: 4px;
 }
+#user-select-inline {
+    display: none;
+}
+#user-select-inline .well {
+    margin-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+#user-select-inline #repo-list-inline {
+    margin-bottom: 0px;
+}
+#user-select-inline.sticky {
+    display: block;
+}
 #user-select {
     background-color: #fff;
     padding-top: 8px;

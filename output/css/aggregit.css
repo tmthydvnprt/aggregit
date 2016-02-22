@@ -466,6 +466,9 @@ nav #nav-search-user.form-control {
 #user-select-navbar.sticky {
     display: block;
 }
+#user-select-navbar p {
+    margin-bottom: 0px;
+}
 #user-select-inline {
     display: none;
 }

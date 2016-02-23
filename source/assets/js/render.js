@@ -248,7 +248,9 @@
         d3.select("#languages-tooltip").remove();
 
         // Setup parameters and variables
-        var tipStr = '<strong>{0}</strong><br>{1} kiB<br>{2}%',
+        var lang = '',
+            langlist = '',
+            tipStr = '<strong>{0}</strong><br>{1} kiB<br>{2}%',
             w = parseInt($(elem).width(), 10),
             h = parseInt(w / 3, 10),
             radius = Math.min(w, h) / 2,
@@ -282,6 +284,15 @@
                 .attr("class", "tooltip")
                 .style("opacity", 1)
                 .html(tipStr.format(MAX_LANG + ' Languages', MAX_kiB, 100.00));
+
+
+        // Place list
+        for (lang in data) {
+            if (data.hasOwnProperty(lang)) {
+                langlist += '<li>{0} - {1} kiB - {2}%</li>'.format(lang, data[lang], Math.round(10000.0 * data[lang] / MAX_kiB) / 100);
+            }
+        }
+        $('#language-list').html(langlist);
 
         // Use object keys for series color domain
         color.domain(d3.keys(data));

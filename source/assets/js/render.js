@@ -252,7 +252,7 @@
             langlist = '',
             tipStr = '<strong>{0}</strong><br>{1} kiB<br>{2}%',
             w = parseInt($(elem).width(), 10),
-            h = parseInt(w / 3, 10),
+            h = parseInt(Math.min(w, 400), 10),
             radius = Math.min(w, h) / 2,
             pad = 20,
             bottom_pad = 40,
@@ -289,7 +289,7 @@
         // Place list
         for (lang in data) {
             if (data.hasOwnProperty(lang)) {
-                langlist += '<li>{0} - {1} kiB - {2}%</li>'.format(lang, data[lang], Math.round(10000.0 * data[lang] / MAX_kiB) / 100);
+                langlist += '<tr><td><code>{0}</code></td><td>{1}</td><td>{2}%</td></tr>'.format(lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
             }
         }
         $('#language-list').html(langlist);

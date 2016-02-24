@@ -96,6 +96,11 @@ input[type="checkbox"]:checked::after,
 .checkbox-inline input[type="checkbox"]:checked::after {
     content: "x";
 }
+input[type="checkbox"]:checked::before,
+.checkbox input[type="checkbox"]:checked::before,
+.checkbox-inline input[type="checkbox"]:checked::before {
+    display: none;
+}
 
 .force-hover[title]::before,
 abbr[title]::before,

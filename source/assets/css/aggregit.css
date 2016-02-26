@@ -242,6 +242,9 @@ h6,
 .h6 {
   font-size: 12px;
 }
+.input-group-addon {
+    font-size: 12px;
+}
 @media (min-width: 600px) {
     body {
         font-size: 14px;
@@ -269,6 +272,9 @@ h6,
     h6,
     .h6 {
       font-size: 14px;
+    }
+    .input-group-addon {
+        font-size: 13px;
     }
 }
 

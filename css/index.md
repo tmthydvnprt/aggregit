@@ -45,7 +45,7 @@
 <div class="well well-sm">
 <div class="row">
 <div class="col-xs-1">
-<p class="text-left">
+<p class="text-center">
 <strong>
 <span class="hidden-xs">Repos:</span>
 <span class="visible-xs" title="Repos"><i class="fa fa-2x fa-book"></i></span>
@@ -251,7 +251,7 @@
 <div>
 <div class="row">
 <div class="col-xs-1">
-<p class="text-left">
+<p class="text-center">
 <strong>
 <span class="hidden-xs">Repos:</span>
 <span class="visible-xs" title="Repos"><i class="fa fa-2x fa-book"></i></span>

@@ -516,7 +516,7 @@
                     $('#error-template').html()
                 );
             } else {
-                var REPO_CHECKLIST_TEMPLATE = '<li><input {1} type="checkbox" name="{0}" class="{3}">{2}{0}</li>',
+                var REPO_CHECKLIST_TEMPLATE = '<li class="checkbox"><label><input {1} type="checkbox" name="{0}" class="{3}">{2}<code>{0}</code></label></li>',
                     repoChecklist = [],
                     key = '',
                     repo = {},
@@ -580,7 +580,11 @@
                 renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
 
                 // Update when clicked
-                $('.repo-list input').change(reRender);
+                $('.repo-list input').change(function(e) {
+                    $('input[name="repo-all-none"]').parent().removeClass('active').children().removeAttr('checked');
+                    // rerender the plots
+                    reRender();
+                });
 
                 // Toggle all/none when clicked
                 $('input[name="repo-all-none"]').change(function (e) {

@@ -1,0 +1,41 @@
+<nav class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#!/home" alt="home" title="home">
+                <img id="nav-logo" src="{{relativepath}}imgs/aggregit_logo_brand.svg" class="img-responsive" alt="aggregit">
+            </a>
+            <span id="beta" class="label label-warning">beta</span>
+        </div>
+        <div class="">
+            <form id="nav-search" class="navbar-form navbar-left">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-search fa-2x"></i></span>
+                    <input id="nav-search-user" type="text" class="form-control" placeholder="Search username">
+                </div>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#!/about" alt="Find out more about aggregit." title="Find out more about aggregit."><i class="fa fa-info-circle fa-2x"></i></a></li>
+                <li><a href="#!/help" alt="Need help using aggregit?" title="Need help using aggregit?"><i class="fa fa-question-circle fa-2x"></i></a></li>
+                <li><a id="nav-user" href="https://github.com" target="_blank" alt="go to GitHub" title="Go to GitHub"><i class="fa fa-github fa-2x"></i></a></li>
+                <li><a id="auth-icon" href="#!/authorize" alt="GitHub access is locked! You should authorize Aggregit for full experience." title=""><i class="fa fa-times-circle fa-2x"></i></a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="user-select-navbar" class="container-fluid">
+        <div class="well well-sm">
+            <div class="row">
+                <div class="col-xs-1">
+                    <p class="text-left">
+                        <strong>
+                            <span class="hidden-xs">Repos:</span>
+                            <span class="visible-xs" title="Repos"><i class="fa fa-2x fa-book"></i></span>
+                        </strong>
+                    </p>
+                </div>
+                <div class="col-xs-11">
+                    <ul id="repo-list-navbar" class="repo-list checklist list-inline"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

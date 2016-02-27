@@ -487,6 +487,21 @@
 
     window.renderUser = function (user, errors) {
 
+        function reRender(e) {
+
+            var repos = [];
+            // Gather which repos to include
+            $('.repo-list input:checked').each(function () {
+                repos.push($(this).attr('name'));
+            });
+
+            renderPunchCard('#punchcard', aggregitor.agg_punch_card(aggregitor.process_punch_card(user), repos));
+            renderParticipation('#participation', aggregitor.agg_participation(aggregitor.process_participation(user), repos));
+            renderHeatmap('#heatmap', aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
+            renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
+
+        }
+
         updateBar(100, 100, '100%');
         setTimeout(function () {
 
@@ -501,12 +516,13 @@
                     $('#error-template').html()
                 );
             } else {
-                var REPO_CHECKLIST_TEMPLATE = '<li><input {1} type="checkbox" name="{0}">{2}{0}</li>',
+                var REPO_CHECKLIST_TEMPLATE = '<li><input {1} type="checkbox" name="{0}" class="{3}">{2}{0}</li>',
                     repoChecklist = [],
                     key = '',
                     repo = {},
                     check = '',
                     fork = '',
+                    forkClass = '',
                     repos = [];
 
                 // Format dates
@@ -548,7 +564,8 @@
                         }
                         check = (repo.fork) ? '' : 'checked=""';
                         fork = (repo.fork) ? '<i class="fa fa-code-fork text-info"></i> ' : '';
-                        repoChecklist.push(REPO_CHECKLIST_TEMPLATE.format(repo.name, check, fork));
+                        forkClass = (repo.fork) ? 'fork' : '';
+                        repoChecklist.push(REPO_CHECKLIST_TEMPLATE.format(repo.name, check, fork, forkClass));
                     }
                 }
 
@@ -562,36 +579,24 @@
                 renderHeatmap('#heatmap', aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
                 renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
 
-                // // Update when clicked
-                // $('#repo-list-navbar input').click(function (e) {
-                //
-                //     var repos = [];
-                //     // Gather which repos to include
-                //     $('#repo-list-navbar input:checked').each(function () {
-                //         repos.push($(this).attr('name'));
-                //     });
-                //
-                //     renderPunchCard('#punchcard', aggregitor.agg_punch_card(aggregitor.process_punch_card(user), repos));
-                //     renderParticipation('#participation', aggregitor.agg_participation(aggregitor.process_participation(user), repos));
-                //     renderHeatmap('#heatmap', aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
-                //     renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
-                //
-                // });
-
                 // Update when clicked
-                $('.repo-list input').click(function (e) {
+                $('.repo-list input').change(reRender);
 
-                    var repos = [];
-                    // Gather which repos to include
-                    $('.repo-list input:checked').each(function () {
-                        repos.push($(this).attr('name'));
+                // Toggle all/none when clicked
+                $('input[name="repo-all-none"]').change(function (e) {
+                    var allnone = (this.id === 'repo-all') ? 'all' : 'none';
+                    $(this).parent().addClass('active').siblings().removeClass('active');
+                    $(this).attr('checked', 'checked').parent().siblings().children().removeAttr('checked');
+                    // Update repo list checkboxes
+                    $('.repo-list input:not(.fork)').each(function () {
+                        if (allnone === 'all') {
+                            this.checked = true;
+                        } else {
+                            this.checked = false;
+                        }
                     });
-
-                    renderPunchCard('#punchcard', aggregitor.agg_punch_card(aggregitor.process_punch_card(user), repos));
-                    renderParticipation('#participation', aggregitor.agg_participation(aggregitor.process_participation(user), repos));
-                    renderHeatmap('#heatmap', aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
-                    renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
-
+                    // rerender the plots
+                    reRender();
                 });
 
             }

@@ -580,7 +580,11 @@
                 renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
 
                 // Update when clicked
-                $('.repo-list input').change(reRender);
+                $('.repo-list input').change(function(e) {
+                    $('input[name="repo-all-none"]').parent().removeClass('active').children().removeAttr('checked');
+                    // rerender the plots
+                    reRender();
+                });
 
                 // Toggle all/none when clicked
                 $('input[name="repo-all-none"]').change(function (e) {

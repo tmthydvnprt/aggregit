@@ -516,7 +516,7 @@
                     $('#error-template').html()
                 );
             } else {
-                var REPO_CHECKLIST_TEMPLATE = '<li class="checkbox"><label><input {1} type="checkbox" name="{0}" class="{3}">{2}{0}</label></li>',
+                var REPO_CHECKLIST_TEMPLATE = '<li class="checkbox"><label><input {1} type="checkbox" name="{0}" class="{3}">{2}<code>{0}</code></label></li>',
                     repoChecklist = [],
                     key = '',
                     repo = {},

@@ -561,6 +561,11 @@ nav #nav-search-user.form-control {
     margin-bottom: 2px;
 }
 
+#user-select-inline div[class*="col-xs-"] {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
 /* User Data
  ---------------------- */
 #user-data {

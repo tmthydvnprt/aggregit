@@ -249,6 +249,8 @@
 
         // Setup parameters and variables
         var lang = '',
+            l = 0,
+            value_sorted_keys = Object.keys(data).sort(function (a, b) {return data[a] - data[b]; }),
             langlist = '',
             tipStr = '<strong>{0}</strong><br>{1} kiB<br>{2}%',
             w = parseInt($(elem).width(), 10),
@@ -286,11 +288,12 @@
                 .html(tipStr.format(MAX_LANG + ' Languages', MAX_kiB, 100.00));
 
 
-        // Place list
-        for (lang in data) {
-            if (data.hasOwnProperty(lang)) {
-                langlist += '<tr><td><code>{0}</code></td><td>{1}</td><td>{2}%</td></tr>'.format(lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
-            }
+        // Place table
+        value_sorted_keys.reverse();
+        for (l = 0; l < value_sorted_keys.length; l += 1) {
+            lang = value_sorted_keys[l];
+            langlist += '<tr><td><code>{0}</code></td><td>{1}</td><td>{2}%</td></tr>'.format(lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
+
         }
         $('#language-list').html(langlist);
 

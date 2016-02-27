@@ -518,10 +518,17 @@ nav #nav-search-user.form-control {
     overflow: visible;
 }
 #avatar {
-    width: 128px;
-    height: 128px;
-    padding: 4px;
+    width: 64px;
+    height: 64px;
+    padding: 1px;
     border: 1px solid #ddd;
+}
+@media (min-width: 600px) {
+    #avatar {
+        width: 128px;
+        height: 128px;
+        padding: 4px;
+    }
 }
 #follower-list,
 #repogist-list,

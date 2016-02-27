@@ -595,8 +595,8 @@
                     $(this).parent().addClass('active').siblings().removeClass('active');
                     $(this).attr('checked', 'checked').parent().siblings().children().removeAttr('checked');
                     // Update repo list checkboxes
-                    $('.repo-list input:not(.fork)').each(function () {
-                        if (allnone === 'all') {
+                    $('.repo-list input').each(function () {
+                        if (allnone === 'all' && !$(this).hasClass('fork')) {
                             this.checked = true;
                         } else {
                             this.checked = false;

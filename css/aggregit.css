@@ -422,8 +422,19 @@ textarea, textarea.form-control, input.form-control, input[type=text], input[typ
 }
 
 nav #nav-search-user.form-control {
-    width:130px!important;
+    width:45px!important;
 }
+@media (min-width: 350px) {
+    nav #nav-search-user.form-control {
+        width:115px!important;
+    }
+}
+@media (min-width: 600px) {
+    nav #nav-search-user.form-control {
+        width:150px!important;
+    }
+}
+
 #nav-logo {
     width: 48px;
 }

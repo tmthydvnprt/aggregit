@@ -245,6 +245,9 @@ h6,
 .input-group-addon {
     font-size: 12px;
 }
+textarea, textarea.form-control, input.form-control, input[type=text], input[type=password], input[type=email], input[type=number], [type=text].form-control, [type=password].form-control, [type=email].form-control, [type=tel].form-control, [contenteditable].form-control {
+    font-size: 12px;
+}
 @media (min-width: 600px) {
     body {
         font-size: 14px;
@@ -274,6 +277,9 @@ h6,
       font-size: 14px;
     }
     .input-group-addon {
+        font-size: 13px;
+    }
+    textarea, textarea.form-control, input.form-control, input[type=text], input[type=password], input[type=email], input[type=number], [type=text].form-control, [type=password].form-control, [type=email].form-control, [type=tel].form-control, [contenteditable].form-control{
         font-size: 13px;
     }
 }

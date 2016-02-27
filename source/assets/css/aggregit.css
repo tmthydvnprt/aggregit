@@ -519,7 +519,8 @@ nav #nav-search-user.form-control {
 #user-info hr {
     margin: 4px;
 }
-
+/* User Repo Selector
+ ---------------------- */
 #user-select-navbar {
     display: none;
 }
@@ -527,8 +528,6 @@ nav #nav-search-user.form-control {
 #user-select-inline div {
     margin-right: 0px;
     margin-left: 0px;
-    /*padding-left: 16px;
-    padding-right: 16px;*/
 }
 #user-select-navbar .well {
     margin-bottom: 0px;
@@ -560,10 +559,13 @@ nav #nav-search-user.form-control {
     margin-top: 0px;
     margin-bottom: 2px;
 }
-
-#user-select-inline div[class*="col-xs-"] {
+div[id*="user-select-"] div[class*="col-xs-"] {
     padding-left: 8px;
     padding-right: 8px;
+}
+.repo-list li.checkbox {
+    margin: 0px!important;
+
 }
 
 /* User Data

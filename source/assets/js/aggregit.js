@@ -116,6 +116,7 @@ $(document).ready(function () {
         var window_top = $(window).scrollTop(),
             div_top = $('#sticky').offset().top;
         if (window_top > (div_top - 48 - 16)) {
+            $('#repo-list-inline').height($('#repo-list-inline').height());
             $('#repo-list-navbar').append($('#repo-list-inline').contents());
             $('#repo-list-inline').html('');
             $('#user-select-navbar').addClass('sticky');

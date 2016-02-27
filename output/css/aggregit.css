@@ -550,6 +550,7 @@ nav #nav-search-user.form-control {
     /*padding-left: 0px;*/
     /*padding-right: 0px;*/
 }
+#user-select-inline .well,
 #user-select-navbar .well {
     margin-bottom: 0px;
     padding-left: 0px;
@@ -572,7 +573,7 @@ nav #nav-search-user.form-control {
     display: block;
 }
 #user-select-inline {
-    margin-top: -7px;
+    margin-top: -16px;
 }
 #user-select-inline ul {
     margin-bottom: 9px;

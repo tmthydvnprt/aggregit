@@ -14,7 +14,8 @@ var DAYS_IN_WEEK = 7,
     CF_WEEK_INDEX = 0,
     CF_A_INDEX = 1,
     CF_D_INDEX = 2,
-    MS_IN_DAY = HOURS_IN_DAY * M_IN_H * S_IN_M * MS_IN_S;
+    MS_IN_DAY = HOURS_IN_DAY * M_IN_H * S_IN_M * MS_IN_S,
+    DAYS_IN_YEAR = DAYS_IN_WEEK * WEEKS_IN_YEAR;
 
 (function () {
     'use strict';
@@ -364,8 +365,24 @@ var DAYS_IN_WEEK = 7,
             /* Aggregate commit_activity across provided repos */
             var commit_activity = {},
                 r = 0,
+                d = 0,
                 date = '',
+                date_str = '',
+                today = new Date(),
+                date_offset = null,
                 repo = '';
+
+            if (repos.length === 0) {
+                // Fill empty commit_activity with last year
+                for (d = 0; d < DAYS_IN_YEAR; d += 1) {
+                    // Get offset from today
+                    date_offset = new Date(today.getTime() - d * MS_IN_DAY);
+                    // Convert date into YYYY-MM-DD string
+                    date_str = date2str(date_offset);
+                    // Fill empty object
+                    commit_activity[date_str] = 0;
+                }
+            }
 
             // Aggregate commit activity data
             console.log('Aggregating Commit Activity:');
@@ -394,8 +411,22 @@ var DAYS_IN_WEEK = 7,
             /* Aggregate code_frequency across provided repos */
             var code_frequency = {},
                 r = 0,
+                d = 0,
                 date = '',
+                date_str = '',
+                today = new Date(),
+                date_offset = null,
                 repo = '';
+
+            // Fill empty code_frequency with last year
+            for (d = 0; d < DAYS_IN_YEAR; d += 1) {
+                // Get offset from today
+                date_offset = new Date(today.getTime() - d * MS_IN_DAY);
+                // Convert date into YYYY-MM-DD string
+                date_str = date2str(date_offset);
+                // Fill empty object
+                code_frequency[date_str] = {a: 0, d: 0};
+            }
 
             // Aggregate code_frequency data
             console.log('Aggregating Code Frequency:');

@@ -248,9 +248,13 @@
         d3.select("#languages-tooltip").remove();
 
         // Setup parameters and variables
-        var tipStr = '<strong>{0}</strong><br>{1} kiB<br>{2}%',
+        var lang = '',
+            l = 0,
+            value_sorted_keys = Object.keys(data).sort(function (a, b) {return data[a] - data[b]; }),
+            langlist = '',
+            tipStr = '<strong>{0}</strong><br>{1} kiB<br>{2}%',
             w = parseInt($(elem).width(), 10),
-            h = parseInt(w / 3, 10),
+            h = parseInt(Math.min(w, 400), 10),
             radius = Math.min(w, h) / 2,
             pad = 20,
             bottom_pad = 40,
@@ -282,6 +286,16 @@
                 .attr("class", "tooltip")
                 .style("opacity", 1)
                 .html(tipStr.format(MAX_LANG + ' Languages', MAX_kiB, 100.00));
+
+
+        // Place table
+        value_sorted_keys.reverse();
+        for (l = 0; l < value_sorted_keys.length; l += 1) {
+            lang = value_sorted_keys[l];
+            langlist += '<tr><td><code>{0}</code></td><td>{1}</td><td>{2}%</td></tr>'.format(lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
+
+        }
+        $('#language-list').html(langlist);
 
         // Use object keys for series color domain
         color.domain(d3.keys(data));
@@ -382,8 +396,8 @@
             pad = 20,
             left_pad = 100,
             format = d3.time.format("%Y-%m-%d"),
-            MIN_T = format.parse(Object.keys(data)[0]),
-            MAX_T = format.parse(Object.keys(data).slice(-1)[0]),
+            MIN_T = format.parse(Object.keys(data).sort()[0]),
+            MAX_T = format.parse(Object.keys(data).sort().slice(-1)[0]),
             MAX_C = d3.max(getValues(data)),
             color = d3.scale.threshold()
                 .domain(d3.range(1, MAX_C, MAX_C / 8))
@@ -474,51 +488,22 @@
             //     .text("heatmap");
     };
 
-    window.aggregatePunchCard = function (user) {
-        var repos = [];
-        // Gather which repos to include
-        $('#punchcard-checklist input:checked').each(function () {
-            repos.push($(this).attr('name'));
-        });
-        renderPunchCard('#punchcard', aggregitor.agg_punch_card(aggregitor.process_punch_card(user), repos));
-    };
-
-    window.aggregateParticipation = function (user) {
-        var repos = [],
-            all = false,
-            owner = true,
-            zoom = false;
-        // Gather which repos, time, and who to include
-        $('#participation-checklist input:checked').each(function () {
-            repos.push($(this).attr('name'));
-        });
-        $('#ownerall-checklist input:checked').each(function () {
-            owner = ($(this).attr('name') === 'owner') ? true : owner;
-            all = ($(this).attr('name') === 'all') ? true : all;
-        });
-        zoom = $('#zoom-checklist input:checked').length > 0 ? true : zoom;
-        renderParticipation('#participation', aggregitor.agg_participation(aggregitor.process_participation(user), repos));
-    };
-
-    window.aggregateHeatmap = function (user) {
-        var repos = [];
-        // Gather which repos, time, and who to include
-        $('#participation-checklist input:checked').each(function () {
-            repos.push($(this).attr('name'));
-        });
-        renderHeatmap('#heatmap', aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
-    };
-
-    window.aggregateLanguages = function (user) {
-        var repos = [];
-        // Gather which repos, time, and who to include
-        $('#languages-checklist input:checked').each(function () {
-            repos.push($(this).attr('name'));
-        });
-        renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
-    };
-
     window.renderUser = function (user, errors) {
+
+        function reRender(e) {
+
+            var repos = [];
+            // Gather which repos to include
+            $('.repo-list input:checked').each(function () {
+                repos.push($(this).attr('name'));
+            });
+
+            renderPunchCard('#punchcard', aggregitor.agg_punch_card(aggregitor.process_punch_card(user), repos));
+            renderParticipation('#participation', aggregitor.agg_participation(aggregitor.process_participation(user), repos));
+            renderHeatmap('#heatmap', aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
+            renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
+
+        }
 
         updateBar(100, 100, '100%');
         setTimeout(function () {
@@ -534,12 +519,14 @@
                     $('#error-template').html()
                 );
             } else {
-                var REPO_CHECKLIST_TEMPLATE = '<li><input {1} type="checkbox" name="{0}">{2}{0}</li>',
+                var REPO_CHECKLIST_TEMPLATE = '<li class="checkbox"><label><input {1} type="checkbox" name="{0}" class="{3}">{2}<code>{0}</code></label></li>',
                     repoChecklist = [],
                     key = '',
                     repo = {},
                     check = '',
-                    fork = '';
+                    fork = '',
+                    forkClass = '',
+                    repos = [];
 
                 // Format dates
                 user.created_at = formatDate(new Date(user.created_at));
@@ -575,42 +562,50 @@
                 for (key in user.repos) {
                     if (user.repos.hasOwnProperty(key)) {
                         repo = user.repos[key];
+                        if (!repo.fork) {
+                            repos.push(key);
+                        }
                         check = (repo.fork) ? '' : 'checked=""';
                         fork = (repo.fork) ? '<i class="fa fa-code-fork text-info"></i> ' : '';
-                        repoChecklist.push(REPO_CHECKLIST_TEMPLATE.format(repo.name, check, fork));
+                        forkClass = (repo.fork) ? 'fork' : '';
+                        repoChecklist.push(REPO_CHECKLIST_TEMPLATE.format(repo.name, check, fork, forkClass));
                     }
                 }
 
-                // Draw punchcard, and update when repo selector clicked
-                $('#punchcard-checklist').html(repoChecklist.join(''));
-                aggregatePunchCard(user);
-                $('#punchcard-checklist input').click(function () {
-                    aggregatePunchCard(user);
+                // Render Repo selector
+                $('#repo-list-inline').html(repoChecklist.join(''));
+                $('#user-select-inline').addClass('show');
+
+                // Draw punchcard, participation/commit_activity and languages
+                renderPunchCard('#punchcard', aggregitor.agg_punch_card(aggregitor.process_punch_card(user), repos));
+                renderParticipation('#participation', aggregitor.agg_participation(aggregitor.process_participation(user), repos));
+                renderHeatmap('#heatmap', aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
+                renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
+
+                // Update when clicked
+                $('.repo-list input').change(function (e) {
+                    $('input[name="repo-all-none"]').parent().removeClass('active').children().removeAttr('checked');
+                    // rerender the plots
+                    reRender();
                 });
 
-                // Draw participation/commit_activity, and update when clicked
-                $('#participation-checklist').html(repoChecklist.join(''));
-                aggregateParticipation(user);
-                aggregateHeatmap(user);
-                $('#participation-checklist input').click(function () {
-                    aggregateParticipation(user);
-                    aggregateHeatmap(user);
-                });
-                $('#ownerall-checklist input').click(function () {
-                    aggregateParticipation(user);
-                    aggregateHeatmap(user);
-                });
-                $('#zoom-checklist input').click(function () {
-                    aggregateParticipation(user);
-                    aggregateHeatmap(user);
+                // Toggle all/none when clicked
+                $('input[name="repo-all-none"]').change(function (e) {
+                    var allnone = (this.id === 'repo-all') ? 'all' : 'none';
+                    $(this).parent().addClass('active').siblings().removeClass('active');
+                    $(this).attr('checked', 'checked').parent().siblings().children().removeAttr('checked');
+                    // Update repo list checkboxes
+                    $('.repo-list input').each(function () {
+                        if (allnone === 'all' && !$(this).hasClass('fork')) {
+                            this.checked = true;
+                        } else {
+                            this.checked = false;
+                        }
+                    });
+                    // rerender the plots
+                    reRender();
                 });
 
-                // Draw languages, and update when repo selector clicked
-                $('#languages-checklist').html(repoChecklist.join(''));
-                aggregateLanguages(user);
-                $('#languages-checklist input').click(function () {
-                    aggregateLanguages(user);
-                });
             }
         }, RENDER_DELAY);
     };

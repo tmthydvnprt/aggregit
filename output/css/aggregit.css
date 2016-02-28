@@ -554,8 +554,6 @@ nav #nav-search-user.form-control {
 #user-select-inline div {
     margin-right: 0px;
     margin-left: 0px;
-    /*padding-left: 0px;*/
-    /*padding-right: 0px;*/
 }
 #user-select-inline .well,
 #user-select-navbar .well {
@@ -611,6 +609,10 @@ div[id*="user-select-"] li.checkbox input {
     margin-left: -18px;
 }
 
+div[id*="user-select-"] input[type="checkbox"] {
+    width:13px;
+    height: 13px;
+}
 div[id*="user-select-"] input[type="checkbox"]::after,
 div[id*="user-select-"] .checkbox input[type="checkbox"]::after,
 div[id*="user-select-"] .checkbox-inline input[type="checkbox"]::after {
@@ -637,7 +639,10 @@ div[id*="user-select-"] .checkbox-inline input[type="checkbox"]:after {
     div[id*="user-select-"] li.checkbox input {
         margin-left: -25px;
     }
-
+    div[id*="user-select-"] input[type="checkbox"] {
+        width:16px;
+        height: 16px;   
+    }
     div[id*="user-select-"] input[type="checkbox"]::after,
     div[id*="user-select-"] .checkbox input[type="checkbox"]::after,
     div[id*="user-select-"] .checkbox-inline input[type="checkbox"]::after {

@@ -272,11 +272,15 @@
 <div class="col-xs-1">
 <div class="btn-group-vertical" data-toggle="buttons">
 <label class="btn btn-primary btn-xs active">
-<input autocomplete="off" checked="" id="repo-all" name="repo-all-none" type="radio"/>All
-                            </label>
+<input autocomplete="off" checked="" id="repo-all" name="repo-all-none" type="radio"/>
+<span class="hidden-xs">All</span>
+<span class="visible-xs" title="All"><i class="fa fa-check-square-o"></i></span>
+</label>
 <label class="btn btn-xs btn-primary">
-<input autocomplete="off" id="repo-none" name="repo-all-none" type="radio"/>None
-                            </label>
+<input autocomplete="off" id="repo-none" name="repo-all-none" type="radio"/>
+<span class="hidden-xs">None</span>
+<span class="visible-xs" title="None"><i class="fa fa-square-o"></i></span>
+</label>
 </div>
 </div>
 </div>

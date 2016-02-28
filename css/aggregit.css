@@ -631,7 +631,7 @@ div[id*="user-select-"] .checkbox-inline input[type="checkbox"]:checked::after {
 }
 div[id*="user-select-"] .btn-group-vertical label[class*="btn"] {
     padding: 1px 1px;
-    font-size: 10px;
+    font-size: 8px;
 }
 
 

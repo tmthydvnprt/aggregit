@@ -550,13 +550,11 @@ nav #nav-search-user.form-control {
 #user-select-navbar {
     display: none;
 }
-#user-select-navbar div ,
-#user-select-inline div {
+div[id*="user-select-"] .row {
     margin-right: 0px;
     margin-left: 0px;
 }
-#user-select-inline .well,
-#user-select-navbar .well {
+div[id*="user-select-"] .well {
     margin-bottom: 0px;
     padding-left: 0px;
     padding-right: 0px;
@@ -634,6 +632,14 @@ div[id*="user-select-"] .btn-group-vertical label[class*="btn"] {
     font-size: 8px;
 }
 
+div[id*="user-select-"] .btn-group-vertical {
+    margin-left: -8px;
+}
+@media (min-width: 350px) {
+    div[id*="user-select-"] .btn-group-vertical {
+        margin-left: 0px;
+    }
+}
 
 @media (min-width: 600px) {
     div[id*="user-select-"] {

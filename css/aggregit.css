@@ -611,10 +611,12 @@ div[id*="user-select-"] li.checkbox input {
     margin-left: -18px;
 }
 
+div[id*="user-select-"] input[type="checkbox"]::after,
 div[id*="user-select-"] .checkbox input[type="checkbox"]::after,
 div[id*="user-select-"] .checkbox-inline input[type="checkbox"]::after {
     font-size: 13px;
 }
+div[id*="user-select-"] input[type="checkbox"]:after,
 div[id*="user-select-"] .checkbox input[type="checkbox"]:after,
 div[id*="user-select-"] .checkbox-inline input[type="checkbox"]:after {
     width: 15px;
@@ -636,10 +638,12 @@ div[id*="user-select-"] .checkbox-inline input[type="checkbox"]:after {
         margin-left: -25px;
     }
 
+    div[id*="user-select-"] input[type="checkbox"]::after,
     div[id*="user-select-"] .checkbox input[type="checkbox"]::after,
     div[id*="user-select-"] .checkbox-inline input[type="checkbox"]::after {
         font-size: 16px;
     }
+    div[id*="user-select-"] input[type="checkbox"]:after,
     div[id*="user-select-"] .checkbox input[type="checkbox"]:after,
     div[id*="user-select-"] .checkbox-inline input[type="checkbox"]:after {
         width: 18px;

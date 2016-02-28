@@ -396,8 +396,8 @@
             pad = 20,
             left_pad = 100,
             format = d3.time.format("%Y-%m-%d"),
-            MIN_T = format.parse(Object.keys(data)[0]),
-            MAX_T = format.parse(Object.keys(data).slice(-1)[0]),
+            MIN_T = format.parse(Object.keys(data).sort()[0]),
+            MAX_T = format.parse(Object.keys(data).sort().slice(-1)[0]),
             MAX_C = d3.max(getValues(data)),
             color = d3.scale.threshold()
                 .domain(d3.range(1, MAX_C, MAX_C / 8))

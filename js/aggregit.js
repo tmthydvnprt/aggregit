@@ -19,7 +19,15 @@ var FIVE_MIN_IN_MS = 5 * 60 * 1000,
     // Chrome 1+
     isChrome = !!window.chrome && !!window.chrome.webstore,
     // Blink engine detection
-    isBlink = (isChrome || isOpera) && !!window.CSS;
+    isBlink = (isChrome || isOpera) && !!window.CSS,
+    // Check for touch
+    isTouch = 'ontouchstart' in window || navigator.maxTouchPoints;
+
+if (isTouch) {
+    $('body').addClass('touch');
+} else {
+    $('body').addClass('no-touch');
+}
 
 console.log('Is Opera: ' + isOpera);
 console.log('Is FireFox: ' + isFirefox);

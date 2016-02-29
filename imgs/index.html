@@ -24,7 +24,7 @@
 <a alt="home" class="navbar-brand" href="#!/home" title="home">
 <img alt="aggregit" class="img-responsive" id="nav-logo" src="../imgs/aggregit_logo_brand.svg" title="../imgs/aggregit_logo_brand.svg"/>
 </a>
-<span class="label label-warning" id="beta">beta</span>
+<!-- <span id="beta" class="label label-warning">beta</span> -->
 </div>
 <div class="">
 <form class="navbar-form navbar-left" id="nav-search">

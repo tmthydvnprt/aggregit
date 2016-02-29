@@ -116,7 +116,7 @@ time[datetime]:not(.no-hover)::before {
     word-break: break-all!important;
     opacity: 0;
     transition: all 0.5s ease;
-    z-index: 20;
+    z-index: 2000;
     pointer-events: none;
 }
 .pull-right .force-hover[title]::before,
@@ -178,7 +178,7 @@ nav time[datetime]:not(.no-hover):hover::before {
     background-color: #30c2a4;
     color:#fdfefd;
     transition: all 0.5s ease;
-    z-index: 20;
+    z-index: 2000;
     pointer-events: none;
 }
 .progress {
@@ -397,9 +397,11 @@ textarea, textarea.form-control, input.form-control, input[type=text], input[typ
     position: relative;
 }
 #cached-user {
+    z-index: 1000;
     animation: fadeInDn 1000ms ease 100ms 1 both;
 }
 #export-user {
+    z-index: 1000;
     animation: fadeInDn 1000ms ease 200ms 1 both;
 }
 @keyframes fadeInDn {

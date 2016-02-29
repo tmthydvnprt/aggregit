@@ -114,17 +114,21 @@ $(document).ready(function () {
 
     function sticky() {
         var window_top = $(window).scrollTop(),
-            div_top = $('#sticky').offset().top;
-        if (window_top > (div_top - 48 - 16)) {
-            $('#repo-list-inline').height($('#repo-list-inline').height());
-            $('#repo-list-navbar').append($('#repo-list-inline').contents());
-            $('#repo-list-inline').html('');
-            $('#user-select-navbar').addClass('sticky');
-        } else {
-            if ($('#repo-list-navbar').children().length > 0) {
-                $('#repo-list-inline').append($('#repo-list-navbar').contents());
-                $('#repo-list-navbar').html('');
-                $('#user-select-navbar').removeClass('sticky');
+            sticky = $('#sticky').offset(),
+            div_top = null;
+        if (sticky) {
+            div_top = sticky.top;
+            if (window_top > (div_top - 48 - 16)) {
+                $('#repo-list-inline').height($('#repo-list-inline').height());
+                $('#repo-list-navbar').append($('#repo-list-inline').contents());
+                $('#repo-list-inline').html('');
+                $('#user-select-navbar').addClass('sticky');
+            } else {
+                if ($('#repo-list-navbar').children().length > 0) {
+                    $('#repo-list-inline').append($('#repo-list-navbar').contents());
+                    $('#repo-list-navbar').html('');
+                    $('#user-select-navbar').removeClass('sticky');
+                }
             }
         }
     }

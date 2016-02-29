@@ -41,6 +41,39 @@
 </ul>
 </div>
 </div>
+<div class="container-fluid" id="user-select-navbar">
+<div class="well well-sm">
+<div class="row">
+<div class="col-xs-1">
+<p class="text-center">
+<strong>
+<span class="hidden-xs">Repos:</span>
+<span class="visible-xs" title="Repos"><i class="fa fa-2x fa-book"></i></span>
+</strong>
+</p>
+</div>
+<div class="col-xs-10">
+<ul class="repo-list checklist list-inline" id="repo-list-navbar"></ul>
+</div>
+<div class="col-xs-1">
+<div class="btn-group-vertical" data-toggle="buttons">
+<label class="btn btn-primary btn-xs active">
+<input autocomplete="off" checked="" id="repo-all" name="repo-all-none" type="radio"/>
+                            All
+                            <!-- <span class="hidden-xs">All</span> -->
+<!-- <span class="visible-xs" title="All"><i class="fa fa-check-square-o"></i></span> -->
+</label>
+<label class="btn btn-xs btn-primary">
+<input autocomplete="off" id="repo-none" name="repo-all-none" type="radio"/>
+                            None
+                            <!-- <span class="hidden-xs">None</span> -->
+<!-- <span class="visible-xs" title="None"><i class="fa fa-square-o"></i></span> -->
+</label>
+</div>
+</div>
+</div>
+</div>
+</div>
 </nav>
 <!--quilted page patch-->
 <div class="container text-center" id="page">
@@ -91,7 +124,7 @@
 <div class="media-body">
 <h1 class="media-heading">
 <span id="name">{name}</span><br/>
-<small alt="username" class="force-hover" id="username" title="username">{login}</small>
+<small alt="username" class="force-hover" id="username" title="username"><code>{login}</code></small>
 </h1>
 <hr/>
 <ul class="list-inline">
@@ -109,67 +142,36 @@
 </div>
 </div>
 </div>
-<div class="col-sm-6"></div>
 </div>
 </template>
 <template id="user-data-template">
 <div class="row">
 <div class="col-sm-10 col-sm-offset-1">
-<h2>When does {login} code?</h2>
+<h2>When does <code>{login}</code> code?</h2>
 <hr/>
-<div class="well well-sm">
-<div class="row">
-<div class="col-xs-2">
-<p class="text-right"><strong>Repos:</strong></p>
-</div>
-<div class="col-xs-10">
-<ul class="checklist list-inline" id="punchcard-checklist"></ul>
-</div>
-</div>
-</div>
 <div id="punchcard"></div>
-<h2>How long has {login} been coding?</h2>
+<h2>How long has <code>{login}</code> been coding?</h2>
 <hr/>
-<div class="well well-sm">
-<div class="row">
-<div class="col-xs-2">
-<p class="text-right"><strong>Repos:</strong></p>
-</div>
-<div class="col-xs-10">
-<ul class="checklist list-inline" id="participation-checklist"></ul>
-</div>
-</div>
-<div class="row">
-<div class="col-xs-2">
-<p class="text-right"><strong>Who:</strong></p>
-</div>
-<div class="col-xs-4">
-<ul class="checklist list-inline" id="ownerall-checklist">
-<li><input checked="" name="owner" type="checkbox"/>owner</li>
-<li><input name="all" type="checkbox"/>all</li>
-</ul>
-</div>
-<div class="col-xs-2">
-<p class="text-right"><strong>Zoom:</strong></p>
-</div>
-<div class="col-xs-4">
-<ul class="checklist list-inline" id="zoom-checklist">
-<li><input checked="" name="owner" type="checkbox"/>ignore time before first commit</li>
-</ul>
-</div>
-</div>
-</div>
 <div id="participation"></div>
 <div id="heatmap"></div>
-<h2>What languages does {login} speak?</h2>
+<h2>What languages does <code>{login}</code> speak?</h2>
 <hr/>
 <div class="well well-sm">
 <div class="row">
-<div class="col-xs-3">
-<p><strong>Repos:</strong></p>
-<ul class="checklist" id="languages-checklist"></ul>
+<div class="col-sm-6">
+<table class="table table table-striped table-hover table-responsive">
+<thead>
+<tr>
+<th>Language</th>
+<th>Amount [kBi]</th>
+<th>Amount [%]</th>
+</tr>
+</thead>
+<tbody class="checklist" id="language-list">
+</tbody>
+</table>
 </div>
-<div class="col-xs-9">
+<div class="col-sm-6">
 <div id="languages"></div>
 </div>
 </div>
@@ -183,22 +185,30 @@
 <div class="jumbotron">
 <div class="row">
 <div class="col-sm-8 col-sm-offset-2">
-<h1>Help? <small>&mdash; it's easy!</small></h1>
+<h2>Help? <small>&mdash; it's easy!</small></h2>
 <hr/>
-<h4>
+<h5>
 <ol>
 <li>Type in a GitHub username.</li>
 <li>Press <kbd>enter</kbd>.</li>
-<li>Aggregit will aggregate thats user's data.
+<li> You'll be sent to the <code>#!/user</code> page.
                                 <ul>
-<li><small>If it is your first time, you will be asked to authorize GitHub access.</small></li>
+<li><small class="text-success">If it is your first time, you will be asked to authorize GitHub access.</small></li>
 </ul>
 </li>
-<li>View or download the results and enjoy the data!</li>
+<li>Aggregit will aggregate and render thats user's data.</li>
+<li>View the results and enjoy the data!
+                                <ul>
+<li>Download the raw data as a <code>json</code> file by clicking <i class="fa fa-cloud-download"></i>.</li>
+<li>View cached result by clicking <i class="fa fa-area-chart"></i>.</li>
+</ul>
+</li>
 </ol>
-</h4>
+</h5>
 <hr/>
-<h2><small>Or check out this <a alt="example of user data" href="#!/user=tmthydvnprt_example" title="example of user data">example of user data</a>.</small></h2>
+<h5 class="text-muted">
+                        Or check out this <a alt="example of user data" href="#!/user=tmthydvnprt_example" title="example of user data">example of user data</a>.
+                    </h5>
 </div>
 </div>
 </div>
@@ -250,6 +260,41 @@
 </div>
 </div>
 </div>
+<div id="sticky"></div>
+<div id="user-select-inline">
+<div class="well well-sm">
+<div class="row">
+<div class="col-xs-1">
+<p class="text-center">
+<strong>
+<span class="hidden-xs">Repos:</span>
+<span class="visible-xs" title="Repos"><i class="fa fa-2x fa-book"></i></span>
+</strong>
+</p>
+</div>
+<div class="col-xs-10">
+<ul class="repo-list checklist list-inline" id="repo-list-inline"></ul>
+</div>
+<div class="col-xs-1">
+<div class="btn-group-vertical" data-toggle="buttons">
+<label class="btn btn-primary btn-xs active">
+<input autocomplete="off" checked="" id="repo-all" name="repo-all-none" type="radio"/>
+                                All
+                                <!-- <span class="hidden-xs">All</span> -->
+<!-- <span class="visible-xs" title="All"><i class="fa fa-check-square-o"></i></span> -->
+</label>
+<label class="btn btn-xs btn-primary">
+<input autocomplete="off" id="repo-none" name="repo-all-none" type="radio"/>
+                                None
+                                <!-- <span class="hidden-xs">None</span> -->
+<!-- <span class="visible-xs" title="None"><i class="fa fa-square-o"></i></span> -->
+</label>
+</div>
+</div>
+</div>
+</div>
+<hr/>
+</div>
 <div id="user-data"></div>
 </section>
 </template>
@@ -287,7 +332,7 @@
 <div class="col-sm-8 col-sm-offset-2">
 <h1>Contact</h1>
 <hr/>
-<p class="lead">If you need to get in touch, you may send emails to <a alt="info@aggregit.com" href="mailto:info@aggregit.com" title="info@aggregit.com">info@aggregit.com</a>, begin a conversation at the <a alt="aggregit" href="https://github.com/tmthydvnprt/aggregit" title="aggregit">aggregit</a> GitHub repo, or reach me directly on GitHub as <a alt="tmthydvnprt" href="https://github.com/tmthydvnprt" title="tmthydvnprt">tmthydvnprt</a>.</p>
+<p class="lead">If you need to discuss something about aggregit, you may send emails to <a alt="info@aggregit.com" href="mailto:info@aggregit.com" title="info@aggregit.com">info@aggregit.com</a>, begin a conversation at the <a alt="aggregit" href="https://github.com/tmthydvnprt/aggregit" title="aggregit">aggregit</a> GitHub repo, or reach me directly on GitHub as <a alt="tmthydvnprt" href="https://github.com/tmthydvnprt" title="tmthydvnprt">tmthydvnprt</a>.</p>
 <hr/>
 </div>
 </div>
@@ -354,7 +399,7 @@
 </div>
 </form>
 </div>
-<h3 class="text-center"><small>(maybe yourself, a friend or future employee)</small></h3>
+<h3 class="text-center"><small>(Maybe yourself, a friend or future employee?)</small></h3>
 </div>
 </div>
 </section>
@@ -402,6 +447,7 @@
 <script rel="javascript" src="../js/common.js" type="text/javascript"></script>
 <script rel="javascript" src="../js/github.js" type="text/javascript"></script>
 <script rel="javascript" src="../js/aggregitor.js" type="text/javascript"></script>
+<script rel="javascript" src="../js/render.js" type="text/javascript"></script>
 <script rel="javascript" src="../js/aggregit.js" type="text/javascript"></script>
 </body>
 </html>

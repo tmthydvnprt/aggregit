@@ -69,6 +69,8 @@
             'auth_user' : {},
             'user' : {}
         },
+        calls : 0,
+        number_of_calls : 0,
 
         // Authorize and Authenticate
         //--------------------------------------------------------------------------------------------------------------------------
@@ -226,6 +228,8 @@
                 } else {
                     route_log += ' Unknown Type';
                 }
+                // Record successful call
+                github.calls += 1;
 
             // Response was accepted, background processing needed, try again
             } else if (xhr.status === 202) {
@@ -495,6 +499,8 @@
         },
         // Try to get everything public from a queried user
         get_all_user_data : function (user, callback) {
+            // Estimate number of calls needed (user, repos, 1 repo, 1 lang, 5 stats)
+            this.total_calls = 9;
             // Start with user Object
             this.get_user(user);
             // Then get user's repos list
@@ -502,6 +508,9 @@
                 user,
                 // Then loop thru each repo
                 function (repos) {
+                    // Estimate number of calls needed
+                    // (user + repos + number_of_repos * (repo + lang + 5 stats))
+                    github.total_calls = 2 + (1 + 1 + 5) * github.data.user.public_repos;
                     repos.forEach(function (repo) {
                         var i = 0;
                         // Get each individual repo data

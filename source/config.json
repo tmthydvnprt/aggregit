@@ -9,7 +9,7 @@
     "changefreq"  : "monthly",
     "priority"    : "0.5",
     "local"       : false,
-    "combinejs"   : true,
+    "combinejs"   : false,
     "patchcomment": true,
     "quiltcomment": false,
     "assetcomment": true,

@@ -7,8 +7,52 @@
                         <i class="fa fa-spinner fa-pulse"></i>
                     </div>
                     <h1>Aggre<strong>git</strong>ing</h1>
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="00" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                                    0%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div id="sticky"></div>
+        <div id="user-select-inline">
+            <div class="well well-sm">
+                <div class="row">
+                    <div class="col-xs-1">
+                        <p class="text-center">
+                            <strong>
+                                <span class="hidden-xs">Repos:</span>
+                                <span class="visible-xs" title="Repos"><i class="fa fa-2x fa-book"></i></span>
+                            </strong>
+                        </p>
+                    </div>
+                    <div class="col-xs-10">
+                        <ul id="repo-list-inline" class="repo-list checklist list-inline"></ul>
+                    </div>
+                    <div class="col-xs-1">
+                        <div class="btn-group-vertical" data-toggle="buttons">
+                            <label class="btn btn-primary btn-xs active">
+                                <input type="radio" name="repo-all-none" id="repo-all" autocomplete="off" checked>
+                                All
+                                <!-- <span class="hidden-xs">All</span> -->
+                                <!-- <span class="visible-xs" title="All"><i class="fa fa-check-square-o"></i></span> -->
+                            </label>
+                            <label class="btn btn-xs btn-primary">
+                                <input type="radio" name="repo-all-none" id="repo-none" autocomplete="off">
+                                None
+                                <!-- <span class="hidden-xs">None</span> -->
+                                <!-- <span class="visible-xs" title="None"><i class="fa fa-square-o"></i></span> -->
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
         </div>
         <div id="user-data"></div>
     </section>

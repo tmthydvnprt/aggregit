@@ -70,7 +70,7 @@ footer p {
 footer a::before {
     margin-top:-24px!important;
 }
-footer a:hover::before {
+.no-touch footer a:hover::before {
     margin-top:-64px!important;
 }
 .container-fluid {
@@ -102,10 +102,10 @@ input[type="checkbox"]:checked::before,
     display: none;
 }
 
-.force-hover[title]::before,
-abbr[title]::before,
-a[href]:not(.no-hover)::before,
-time[datetime]:not(.no-hover)::before {
+.no-touch .force-hover[title]::before,
+.no-touch abbr[title]::before,
+.no-touch a[href]:not(.no-hover)::before,
+.no-touch time[datetime]:not(.no-hover)::before {
     position: absolute;
     margin-top:0px;
     padding: 4px;
@@ -119,55 +119,55 @@ time[datetime]:not(.no-hover)::before {
     z-index: 2000;
     pointer-events: none;
 }
-.pull-right .force-hover[title]::before,
-.pull-right abbr[title]::before,
-.pull-right a[href]:not(.no-hover)::before,
-.pull-right time[datetime]:not(.no-hover)::before {
+.no-touch .pull-right .force-hover[title]::before,
+.no-touch .pull-right abbr[title]::before,
+.no-touch .pull-right a[href]:not(.no-hover)::before,
+.no-touch .pull-right time[datetime]:not(.no-hover)::before {
     right: 2px;
 }
-.pull-left .force-hover[title]::before,
-.pull-left abbr[title]::before,
-.pull-left a[href]:not(.no-hover)::before,
-.pull-left time[datetime]:not(.no-hover)::before {
+.no-touch .pull-left .force-hover[title]::before,
+.no-touch .pull-left abbr[title]::before,
+.no-touch .pull-left a[href]:not(.no-hover)::before,
+.no-touch .pull-left time[datetime]:not(.no-hover)::before {
     left: 4px;
 }
-.navbar-right .force-hover[title]::before,
-.navbar-right abbr[title]::before,
-.navbar-right a[href]:not(.no-hover)::before,
-.navbar-right time[datetime]:not(.no-hover)::before {
+.no-touch .navbar-right .force-hover[title]::before,
+.no-touch .navbar-right abbr[title]::before,
+.no-touch .navbar-right a[href]:not(.no-hover)::before,
+.no-touch .navbar-right time[datetime]:not(.no-hover)::before {
     right: 2px;
 }
 
-time[datetime]:not(.no-hover)::before {
+.no-touch time[datetime]:not(.no-hover)::before {
     background-color: #24af92;
 }
 abbr[title]::before {
     background-color: #1a9d82;
 }
-.force-hover[title]::before,
-abbr[title]::before {
+.no-touch .force-hover[title]::before,
+.no-touch abbr[title]::before {
     content: attr(title);
 }
-a[href]:not(.no-hover)::before {
+.no-touch a[href]:not(.no-hover)::before {
     content: attr(href) "\a(" attr(alt) ")";
 }
-time[datetime]:not(.no-hover)::before {
+.no-touch time[datetime]:not(.no-hover)::before {
     content: "ISO8601 : " attr(datetime);
 }
-.force-hover[title]:hover::before,
-abbr[title]:hover::before,
-a[href]:not(.no-hover):hover::before,
-time[datetime]:not(.no-hover):hover::before {
+.no-touch .force-hover[title]:hover::before,
+.no-touch abbr[title]:hover::before,
+.no-touch a[href]:not(.no-hover):hover::before,
+.no-touch time[datetime]:not(.no-hover):hover::before {
     opacity: 1;
     margin-top:-48px;
 }
-a[href]:not(.no-hover):hover::before {
+.no-touch a[href]:not(.no-hover):hover::before {
     margin-top:-64px;
 }
-nav .force-hover[title]:hover::before,
-nav abbr[title]:hover::before,
-nav a[href]:not(.no-hover):hover::before,
-nav time[datetime]:not(.no-hover):hover::before {
+.no-touch nav .force-hover[title]:hover::before,
+.no-touch nav abbr[title]:hover::before,
+.no-touch nav a[href]:not(.no-hover):hover::before,
+.no-touch nav time[datetime]:not(.no-hover):hover::before {
     opacity: 1;
     margin-top:48px;
 }
@@ -408,7 +408,7 @@ textarea, textarea.form-control, input.form-control, input[type=text], input[typ
     0%   {opacity: 0; transform: translateY(-32px);}
     100% {opacity: 1; transform: translateY(0px);}
 }
-.navbar .input-group-addon a:hover {
+.no-touch .navbar .input-group-addon a:hover {
     color:#fff;
 }
 #beta {
@@ -725,7 +725,7 @@ div[id*="user-select-"] .btn-group-vertical {
     fill:#0c84e4;
     transition: fill 256ms ease;
 }
-#punchcard .circle:hover {
+.no-touch #punchcard .circle:hover {
     fill:#b2dbfb;
     stroke:#0c84e4;
 }

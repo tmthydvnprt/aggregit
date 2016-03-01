@@ -7,10 +7,12 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Page stitched together with quilt.py
+Page stitched together with quilt:
+quilt          : v0.1.1, make-blog-index-a-patch, 70f676652495299c9697f012e6e0c6a3c3373f11
 url            : aggregit.com/css/index.html
-quilted on     : 2016-03-01 05:43:35
-source hash    : c82d3e7e263372fa362dc67c2dafe56835daf8d8
+quilted on     : 2016-03-01 06:33:11
+source branch  : master
+source hash    : a60742065c7ab7fa3b646bc2485eff6771cc4ac9
 stitching took : 0.048 s
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->

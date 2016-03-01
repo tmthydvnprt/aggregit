@@ -11,7 +11,7 @@
     "local"       : false,
     "combinejs"   : false,
     "patchcomment": true,
-    "quiltcomment": false,
+    "quiltcomment": true,
     "assetcomment": true,
     "pagecomment" : false,
     "pageobject"  : false,

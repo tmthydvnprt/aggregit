@@ -5,7 +5,15 @@
 <meta charset="utf-8"/>
 <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<!---->
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Page stitched together with quilt.py
+url            : aggregit.com/js/index.html
+quilted on     : 2016-03-01 05:43:35
+source hash    : c82d3e7e263372fa362dc67c2dafe56835daf8d8
+stitching took : 0.046 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
 <title>js directory index</title>
 <meta content="tmthydvnprt" name="author"/>
 <meta content="blank index page of js directory" name="description"/>

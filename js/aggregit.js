@@ -21,7 +21,7 @@ var FIVE_MIN_IN_MS = 5 * 60 * 1000,
     // Blink engine detection
     isBlink = (isChrome || isOpera) && !!window.CSS,
     // Check for touch
-    isTouch = 'ontouchstart' in window || navigator.maxTouchPoints;
+    isTouch = window.hasOwnProperty('ontouchstart') || navigator.maxTouchPoints;
 
 if (isTouch) {
     $('body').addClass('touch');
@@ -122,10 +122,10 @@ $(document).ready(function () {
 
     function sticky() {
         var window_top = $(window).scrollTop(),
-            sticky = $('#sticky').offset(),
+            stick = $('#sticky').offset(),
             div_top = null;
-        if (sticky) {
-            div_top = sticky.top;
+        if (stick) {
+            div_top = stick.top;
             if (window_top > (div_top - 48 - 16)) {
                 $('#repo-list-inline').height($('#repo-list-inline').height());
                 $('#repo-list-navbar').append($('#repo-list-inline').contents());

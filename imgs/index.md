@@ -8,11 +8,11 @@
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Page stitched together with quilt:
-quilt          : v0.1.1, make-blog-index-a-patch, 70f676652495299c9697f012e6e0c6a3c3373f11
+quilt          : v0.1.1, make-blog-index-a-patch, 9a9eca57226d7f64011dfe9e1b50b12f7b9e5bbe
 url            : aggregit.com/imgs/index.html
-quilted on     : 2016-03-01 06:33:11
+quilted on     : 2016-03-02 06:02:50
 source branch  : master
-source hash    : a60742065c7ab7fa3b646bc2485eff6771cc4ac9
+source hash    : dd733bf527d5428e03f5c88c8386ccad87dec900
 stitching took : 0.047 s
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->

@@ -8,12 +8,12 @@
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Page stitched together with quilt:
-quilt          : v0.1.1, make-blog-index-a-patch, 9a9eca57226d7f64011dfe9e1b50b12f7b9e5bbe
+quilt          : v0.1.1, only-quilt-diffs, d2131386f92fa23320c9732bfd90ea31ec8c16f9
 url            : aggregit.com/css/index.html
-quilted on     : 2016-03-02 06:02:50
-source branch  : master
-source hash    : dd733bf527d5428e03f5c88c8386ccad87dec900
-stitching took : 0.052 s
+quilted on     : 2016-03-05 11:45:07
+source branch  : 
+source hash    : 
+stitching took : 0.051 s
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
 <title>css directory index</title>

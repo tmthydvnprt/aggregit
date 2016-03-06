@@ -21,5 +21,6 @@
     "buildicon"   : true,
     "buildindex"  : true,
     "copydate"    : 2015,
+    "git"         : "../",
     "copyrighter" : "tmthydvnprt"
 }

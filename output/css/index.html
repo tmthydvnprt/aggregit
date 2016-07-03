@@ -8,18 +8,18 @@
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Page stitched together with quilt:
-quilt          : v0.1.1, make-blog-index-a-patch, 109a5e04bc134de4ad18d70901fe4318c181b2fd
+quilt          : v0.1.1, master, eed22e23df8d193a2dcb834d2f29fff943c50aba
 url            : http://aggregit.com/css/index.html
-quilted on     : 2016-03-05 18:21:31
+quilted on     : 2016-07-03 10:31:03
 source branch  : new-quilt
-source hash    : 9ea2c7ff63bd1a09f784c679814838f111cea79a
-stitching took : 0.048 s
+source hash    : 45cc8ebf3449af68c1bdef35cb955d81ccac8136
+stitching took : 0.046 s
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
 <title>css directory index</title>
 <meta content="tmthydvnprt" name="author"/>
 <meta content="blank index page of css directory" name="description"/>
-<meta content="i,n,d,e,x" name="keywords"/>
+<meta content="i,n,d,e,x,,, ,c,s,s" name="keywords"/>
 <link href="../imgs/favicon.ico" rel="favicon"/>
 <link href="../imgs/icon_60x60.png" rel="apple-touch-icon"/>
 <link href="../imgs/icon_76x76.png" rel="apple-touch-icon" sizes="76x76"/>
@@ -173,7 +173,7 @@ stitching took : 0.048 s
 <thead>
 <tr>
 <th>Language</th>
-<th>Amount [kBi]</th>
+<th>Amount [kiB]</th>
 <th>Amount [%]</th>
 </tr>
 </thead>

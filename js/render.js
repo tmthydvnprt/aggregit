@@ -129,8 +129,9 @@
         var w = parseInt($(elem).width(), 10),
             h = parseInt(w / 3, 10),
             pad = 20,
+            yaxisOffset = 5,
             bottom_pad = 40,
-            left_pad = 100,
+            left_pad = 60,
             participations,
             MAX_X = data.length,
             MAX_Y = d3.max(data.map(function (d) {
@@ -190,19 +191,19 @@
             .call(xAxis);
         svg.append("g")
             .attr("class", "axis")
-            .attr("transform", "translate(" + (left_pad - pad) + ", 0)")
+            .attr("transform", "translate(" + (left_pad - pad + yaxisOffset) + ", 0)")
             .call(yAxis);
         svg.append("text")
-            .attr("class", "x label")
+            .attr("class", "xlabel")
             .attr("text-anchor", "end")
             .attr("x", w - pad)
             .attr("y", h - 10)
             .text("time (# of weeks ago)");
         svg.append("text")
-            .attr("class", "y label")
+            .attr("class", "ylabel")
             .attr("text-anchor", "end")
             .attr("x", -pad)
-            .attr("y", pad)
+            .attr("y", 0)
             .attr("dy", ".75em")
             .attr("transform", "rotate(-90)")
             .text("activity (# of commits)");
@@ -383,6 +384,13 @@
             }
             return array;
         }
+        function rotate(array, times) {
+            while(times--) {
+                var temp = array.shift();
+                array.push(temp);
+            }
+            return array;
+        }
 
         // Remove last plot if there
         d3.select("#heatmap-svg").remove();
@@ -390,16 +398,22 @@
         // Setup parameters and variables
         var WEEKDAY = {0: 'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat'},
             OFFSET = 24 * 60 * 60 * 1000,
+            DAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+            MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             w = parseInt($(elem).width(), 10),
             h = parseInt(w / 6, 10),
             cell_size = parseInt(w / 56, 10),
-            pad = 20,
-            left_pad = 100,
+            pad = 0,
+            left_pad = 0,
             format = d3.time.format("%Y-%m-%d"),
             sorted_keys = Object.keys(data).sort(),
-            MIN_T = format.parse(sorted_keys[0]),
-            MAX_T = format.parse(sorted_keys.slice(-1)[0]),
-            MAX_C = d3.max(getValues(data)),
+            MAX_T = new Date(), //new Date(), // format.parse(sorted_keys.slice(-1)[0]),
+            MIN_T = new Date(), // format.parse(sorted_keys[0]),
+            dateOffset = 53 * 7 + 1;
+
+        MIN_T.setTime(MIN_T.getTime() - (86400000 * dateOffset));
+
+        var MAX_C = d3.max(getValues(data)),
             color = d3.scale.threshold()
                 .domain(d3.range(1, MAX_C, MAX_C / 8))
                 .range(d3.range(8).map(function (d) { return "q" + d + "-8"; })),
@@ -430,10 +444,26 @@
                 .attr("y", function (d) { return d.getDay() * cell_size; })
                 .datum(format);
 
-        // svg.append("text")
-        //     .attr("transform", "translate(-6," + cell_size * 3.5 + ")rotate(-90)")
-        //     .style("text-anchor", "middle")
-        //     .text(function (d) { return d; });
+        var dayLabels = svg.selectAll(".dayLabel")
+            .data(DAYS)
+            .enter().append("text")
+            .text(function (d) { return d; })
+            .attr("x", 0)
+            .attr("y", function (d, i) { return i * cell_size; })
+            .style("text-anchor", "end")
+            .attr("transform", "translate(6," + cell_size / 1.5 + ")")
+            .attr("class", "dayLabel");
+
+        var monthLabels = svg.selectAll(".monthLabel")
+            .data(d3.time.months(MIN_T, MAX_T))
+            .enter().append("text")
+            .text(function (d) { return MONTHS[d.getMonth()]; })
+            .attr("x", function(d, i) { return d3.time.weeks(MIN_T, d).length * cell_size ; })
+            .attr("y", 0)
+            .style("text-anchor", "start")
+            .attr("transform", "translate(1, -6)")
+            .attr("class", "monthLabel");
+
         rect.append("title").text(function (d) { return d; });
 
         function monthPath(m) {
@@ -456,37 +486,38 @@
                 + "H" + (w0 + 1) * cell_size + "Z";
         }
 
-        svg.selectAll(".month")
-            .data(function (d) {
-                var m0 = d3.time.months(MIN_T, MAX_T),
-                    m1 = d3.time.months(MIN_T, MAX_T),
-                    m = [],
-                    i = 0;
-                for (i = 0; i < m1.length; i += 1) {
-                    m1[i] = new Date(m1[i].getTime() - OFFSET);
-                }
-                m0.splice(0, 0, MIN_T);
-                m1.push(MAX_T);
-                for (i = 0; i < m0.length; i += 1) {
-                    m.push({'m0': m0[i], 'm1': m1[i]});
-                }
-                return m;
-            })
-            .enter().append("path")
-            .attr("class", "month")
-            .attr("d", monthPath);
+        // svg.selectAll(".month")
+        //     .data(function (d) {
+        //         var m0 = d3.time.months(MIN_T, MAX_T),
+        //             m1 = d3.time.months(MIN_T, MAX_T),
+        //             m = [],
+        //             i = 0;
+        //         for (i = 0; i < m1.length; i += 1) {
+        //             m1[i] = new Date(m1[i].getTime() - OFFSET);
+        //         }
+        //         m0.splice(0, 0, MIN_T);
+        //         m1.push(MAX_T);
+        //         for (i = 0; i < m0.length; i += 1) {
+        //             m.push({'m0': m0[i], 'm1': m1[i]});
+        //         }
+        //         return m;
+        //     })
+        //     .enter().append("path")
+        //     .attr("class", "month")
+        //     .attr("d", monthPath);
 
-        rect//.filter(function (d) { return d in data; })
-                .attr("class", function (d) { return "day " + color(data[d]); })
+        rect.attr("class", function (d) { return "day " + color(data[d]); })
             .select("title")
-                .text(function (d) { return WEEKDAY[format.parse(d).getDay()] + " " + d + ": " + data[d]; });
+            .text(function (d) {
+                return (data[d]) ? WEEKDAY[format.parse(d).getDay()] + " " + d + ": " + data[d] : WEEKDAY[format.parse(d).getDay()] + " " + d + ": 0";
+            });
 
-            // heatmapTooltip = d3.select("body")
-            //     .append("div")
-            //     .attr("id", "heatmap-tooltip")
-            //     .attr("class", "tooltip")
-            //     .style("opacity", 0)
-            //     .text("heatmap");
+        // heatmapTooltip = d3.select("body")
+        //     .append("div")
+        //     .attr("id", "heatmap-tooltip")
+        //     .attr("class", "tooltip")
+        //     .style("opacity", 0)
+        //     .text("heatmap");
     };
 
     window.renderUser = function (user, errors) {

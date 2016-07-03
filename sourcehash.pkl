@@ -109,7 +109,7 @@ S'\x97\xc69"o*>L\xed|V*\xe6f,x\x89J\xea\xb2'
 p54
 sS'/Users/timothydavenport/GitHub/aggregit/source/templates/user-data.html'
 p55
-S'\x0f\x9fX4\x96l\x98\xaaJ\x0e\x92v\xab\xc6\xcdv6X\x0c\xed'
+S'\xfc+\xfe.\xb6Q2P\x8a\x0c\x9a\xdfm\x15.\xb5\xf4\x98\xdb>'
 p56
 sS'/Users/timothydavenport/GitHub/aggregit/source/patches/index.html'
 p57
@@ -201,7 +201,7 @@ S'\x9f\xf7\x93l\xe5\xd2\x16\x15I\x0b\x12j\x96\xba\xd0\x03\x8fjbl'
 p100
 sS'/Users/timothydavenport/GitHub/aggregit/source/correct_words.txt'
 p101
-S'\x84\xf5\x92\xae\x84\xe0]\xbc\x0b\x0bmP\xb0\xfe\xc4\x00G\xa1\xeb\xaf'
+S'A}"\xc2\xa5z\x06\x99*\x84\xcc\xfcM\xac\xa6$\xc5\x99\xf5^'
 p102
 sS'/Users/timothydavenport/GitHub/aggregit/source/patches/footer.html'
 p103

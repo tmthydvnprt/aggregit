@@ -10,10 +10,10 @@
 Page stitched together with quilt:
 quilt          : v0.1.1, master, eed22e23df8d193a2dcb834d2f29fff943c50aba
 url            : http://aggregit.com/data/index.html
-quilted on     : 2016-07-03 10:31:03
+quilted on     : 2016-07-03 12:50:37
 source branch  : new-quilt
-source hash    : 45cc8ebf3449af68c1bdef35cb955d81ccac8136
-stitching took : 0.042 s
+source hash    : 20fe7e5033ce10c3a3c36688b62554efe01b59b6
+stitching took : 0.044 s
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
 <title>data directory index</title>
@@ -157,10 +157,10 @@ stitching took : 0.042 s
 <template id="user-data-template">
 <div class="row">
 <div class="col-sm-10 col-sm-offset-1">
-<h2>When does <code>{login}</code> code?</h2>
+<h2>When does <code>{login}</code> commit during the week?</h2>
 <hr/>
 <div id="punchcard"></div>
-<h2>How long has <code>{login}</code> been coding?</h2>
+<h2>What times of the year does <code>{login}</code> commit?</h2>
 <hr/>
 <div id="participation"></div>
 <div id="heatmap"></div>

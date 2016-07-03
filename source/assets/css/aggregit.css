@@ -737,6 +737,13 @@ div[id*="user-select-"] .btn-group-vertical {
     stroke: :#0c84e4;
     stroke-width: 1.5px;
 }
+.xlabel,
+.ylabel,
+.dayLabel,
+.monthLabel,
+.axis .tick text {
+    fill: #909090;
+}
 
 /* User HeatMap
  ---------------------- */
@@ -747,7 +754,11 @@ div[id*="user-select-"] .btn-group-vertical {
 
  .month {
    fill: none;
-   stroke: #cbcbcb;
+   stroke: #e2e2e2;
+ }
+
+ .dayLabel, .monthLabel {
+     font-size: 11px;
  }
 
  .RdYlGn .q0-8{ fill: #eeeeee;}

@@ -288,16 +288,6 @@
                 .style("opacity", 1)
                 .html(tipStr.format(MAX_LANG + ' Languages', MAX_kiB, 100.00));
 
-
-        // Place table
-        value_sorted_keys.reverse();
-        for (l = 0; l < value_sorted_keys.length; l += 1) {
-            lang = value_sorted_keys[l];
-            // langlist += '<tr><td><code>{1}</code></td><td>{2}</td><td>{3}%</td></tr>'.format(lang.replace(' ', '-'), lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
-            langlist += '<tr><td><lable><input checked="" type="checkbox" name="{0}" class="lang-check"><code>{1}</code></label></td><td>{2}</td><td>{3}%</td></tr>'.format(lang.replace(' ', '-'), lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
-        }
-        $('#language-list').html(langlist);
-
         // Use object keys for series color domain
         color.domain(d3.keys(data));
 
@@ -544,11 +534,32 @@
         //     .text("heatmap");
     };
 
+    window.renderLanguagesTable = function(elem, data) {
+        var value_sorted_keys,
+            l = 0,
+            lang = '',
+            langlist = '',
+            MAX_kiB = 0;
+
+        $(elem).children().remove();
+
+        // Draw language table
+        MAX_kiB = Math.floor(d3.sum(d3.values(data)) / 10.24) / 100;
+        value_sorted_keys = Object.keys(data).sort(function (a, b) {return data[a] - data[b]; });
+        value_sorted_keys.reverse();
+        for (l = 0; l < value_sorted_keys.length; l += 1) {
+            lang = value_sorted_keys[l];
+            langlist += '<tr><td><lable><input checked="" type="checkbox" name="{0}" class="lang-check"><code>{1}</code></label></td><td>{2}</td><td>{3}%</td></tr>'.format(lang.replace(' ', '-'), lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
+        }
+        $(elem).html(langlist);
+    }
+
     window.renderUser = function (user, errors) {
 
         function reRender(e) {
 
-            var repos = [];
+            var repos = [],
+                langData;
             // Gather which repos to include
             $('.repo-list input:checked').each(function () {
                 repos.push($(this).attr('name'));
@@ -557,7 +568,9 @@
             renderPunchCard('#punchcard', aggregitor.agg_punch_card(aggregitor.process_punch_card(user), repos));
             renderParticipation('#participation', aggregitor.agg_participation(aggregitor.process_participation(user), repos));
             renderHeatmap('#heatmap', aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
-            renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
+            langData = aggregitor.agg_languages(aggregitor.process_languages(user), repos);
+            renderLanguages('#languages', langData);
+            renderLanguagesTable('#language-list', langData);
 
         }
 
@@ -582,7 +595,8 @@
                     check = '',
                     fork = '',
                     forkClass = '',
-                    repos = [];
+                    repos = [],
+                    langData;
 
                 // Format dates
                 user.created_at = formatDate(new Date(user.created_at));
@@ -636,7 +650,9 @@
                 renderPunchCard('#punchcard', aggregitor.agg_punch_card(aggregitor.process_punch_card(user), repos));
                 renderParticipation('#participation', aggregitor.agg_participation(aggregitor.process_participation(user), repos));
                 renderHeatmap('#heatmap', aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
-                renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
+                langData = aggregitor.agg_languages(aggregitor.process_languages(user), repos);
+                renderLanguages('#languages', langData);
+                renderLanguagesTable('#language-list', langData);
 
                 // Update when clicked
                 $('.repo-list input').change(function (e) {

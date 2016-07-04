@@ -133,7 +133,7 @@ S'>c\xfc\x9b=\xe4X\x0f\x1f;\xec\x061Cou[\x80\xf1g'
 p66
 sS'/Users/timothydavenport/GitHub/aggregit/source/assets/css/aggregit.css'
 p67
-S'e\xae\xa6\x02\xc3\x8c\xcb\xbd;3\xd8\xf1\xc2\xbf\xd2U\x0c$\x14/'
+S'{1\xe0>Y\xc0\xc2\x03\xc5\xbf\x07\xcb\x1c\xee\xfa\xe9\x03\xdc]\x08'
 p68
 sS'/Users/timothydavenport/GitHub/aggregit/source/assets/imgs/aggregit_logo_brand.svg'
 p69

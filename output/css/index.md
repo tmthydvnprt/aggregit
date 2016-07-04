@@ -10,10 +10,10 @@
 Page stitched together with quilt:
 quilt          : v0.1.1, master, eed22e23df8d193a2dcb834d2f29fff943c50aba
 url            : http://aggregit.com/css/index.html
-quilted on     : 2016-07-04 06:53:22
+quilted on     : 2016-07-04 07:25:28
 source branch  : new-quilt
-source hash    : e8867764d2b2deb5e7f8f545b79c691a4d196961
-stitching took : 0.048 s
+source hash    : c4bb69b54ea6e21dd88cd33f1ee7cc1bb1a5468d
+stitching took : 0.051 s
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
 <title>css directory index</title>

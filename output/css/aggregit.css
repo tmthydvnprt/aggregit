@@ -747,42 +747,43 @@ div[id*="user-select-"] .btn-group-vertical {
 
 /* User HeatMap
  ---------------------- */
- .day {
-   fill: #eeeeee;
-   stroke: #fff;
- }
+.day {
+    fill: #eeeeee;
+    stroke: #fff;
+    transform:translate(0px, 0px);
+}
+.no-touch .day:hover {
+    stroke:#0c84e4;
+    transform:translate(-1px, -1px);
+}
 
- .month {
-   fill: none;
-   stroke: #e2e2e2;
- }
- .xlabel,
- .ylabel,
- .dayLabel, .monthLabel {
-     font-size: 11px;
- }
+.xlabel,
+.ylabel,
+.dayLabel, .monthLabel {
+    font-size: 11px;
+}
 
- .RdYlGn .q0-8{ fill: #eeeeee;}
- .RdYlGn .q1-8{ fill: #c6dbef;}
- .RdYlGn .q2-8{ fill: #9ecae1;}
- .RdYlGn .q3-8{ fill: #6baed6;}
- .RdYlGn .q4-8{ fill: #4292c6;}
- .RdYlGn .q5-8{ fill: #2171b5;}
- .RdYlGn .q6-8{ fill: #08519c;}
- .RdYlGn .q7-8{ fill: #08306b;}
+.RdYlGn .q0-8{ fill: #eeeeee;}
+.RdYlGn .q1-8{ fill: #c6dbef;}
+.RdYlGn .q2-8{ fill: #9ecae1;}
+.RdYlGn .q3-8{ fill: #6baed6;}
+.RdYlGn .q4-8{ fill: #4292c6;}
+.RdYlGn .q5-8{ fill: #2171b5;}
+.RdYlGn .q6-8{ fill: #08519c;}
+.RdYlGn .q7-8{ fill: #08306b;}
 
- .RdYlGn .q0-8 + text { fill: #08306b;}
- .RdYlGn .q1-8 + text { fill: #08519c;}
- .RdYlGn .q2-8 + text { fill: #2171b5;}
- .RdYlGn .q3-8 + text { fill: #4292c6;}
- .RdYlGn .q4-8 + text { fill: #6baed6;}
- .RdYlGn .q5-8 + text { fill: #9ecae1;}
- .RdYlGn .q6-8 + text { fill: #c6dbef;}
- .RdYlGn .q7-8 + text { fill: #eeeeee;}
+.RdYlGn .q0-8 + text { fill: #08306b;}
+.RdYlGn .q1-8 + text { fill: #08519c;}
+.RdYlGn .q2-8 + text { fill: #2171b5;}
+.RdYlGn .q3-8 + text { fill: #4292c6;}
+.RdYlGn .q4-8 + text { fill: #6baed6;}
+.RdYlGn .q5-8 + text { fill: #9ecae1;}
+.RdYlGn .q6-8 + text { fill: #c6dbef;}
+.RdYlGn .q7-8 + text { fill: #eeeeee;}
 
- .legend text {
-     font-size: 10px;
- }
+.legend text {
+    font-size: 10px;
+}
 
 /* User Languages
  ---------------------- */

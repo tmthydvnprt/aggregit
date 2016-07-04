@@ -57,6 +57,8 @@
                 .attr("id", "punchcard-tooltip")
                 .attr("class", "tooltip")
                 .style("opacity", 0)
+                .style("top", "50%")
+                .style("left", "50%")
                 .text("punchcard");
 
         // Add axis
@@ -101,7 +103,7 @@
             .on("mouseover", function (d) {
                 punchTooltip.html(d[2])
                     .style("left", (d3.event.pageX) + "px")
-                    .style("top", (d3.event.pageY - 10) + "px");
+                    .style("top", (d3.event.pageY - 16) + "px");
                 punchTooltip.transition()
                     .duration(200)
                     .style("opacity", 0.9);
@@ -111,7 +113,7 @@
                     .duration(500)
                     .style("opacity", 0);
             })
-            .transition(1000)
+            .transition(700)
             .attr("r", function (d) {
                 return r(d[2]);
             });
@@ -169,6 +171,8 @@
                 .attr("id", "participation-tooltip")
                 .attr("class", "tooltip")
                 .style("opacity", 0)
+                .style("top", "50%")
+                .style("left", "50%")
                 .text("participation");
 
         // Use object keys for series color domain
@@ -429,6 +433,16 @@
                     .attr("class", "RdYlGn")
                 .append("g")
                     .attr("transform", "translate(" + ((w - cell_size * 53) / 2) + "," + (h - cell_size * 8.5 - 1) + ")"),
+            heatmapTooltip = d3.select("body")
+                .append("div")
+
+                .attr("id", "heatmap-tooltip")
+                .attr("class", "tooltip")
+                .style("opacity", 0)
+                .style("top", "50%")
+                .style("left", "50%")
+                .text("heatmap"),
+
             rect = svg.selectAll(".day")
                 .data(function (d) {
                     return d3.time.days(MIN_T, MAX_T);
@@ -469,8 +483,6 @@
                     .style("alignment-baseline", "central")
                     .text(function (d, i) { return Math.floor(d); });
 
-            legend.append("title").text(function (d, i) { return (i == 0) ? d : '≥ ' + Math.floor(d); });
-
         var dayLabels = svg.selectAll(".dayLabel")
             .data(DAYS)
             .enter().append("text")
@@ -491,60 +503,23 @@
             .attr("transform", "translate(1, -6)")
             .attr("class", "monthLabel");
 
-        rect.append("title").text(function (d) { return d; });
+        rect.attr("class", function (d) { return "day " + color(data[d]); });
 
-        function monthPath(m) {
-            var t0 = m.m0,
-                t1 = m.m1,
-                d0 = t0.getDay(),
-                w0 = d3.time.weeks(MIN_T, t0).length,
-                d1 = t1.getDay(),
-                w1 = d3.time.weeks(MIN_T, t1).length;
-            if (d0 === 0) {
-                w0 += 1;
-            }
-            if (d1 === 0) {
-                w1 += 1;
-            }
-            return "M" + (w0 + 1) * cell_size + "," + d0 * cell_size
-                + "H" + w0 * cell_size + "V" + 7 * cell_size
-                + "H" + w1 * cell_size + "V" + (d1 + 1) * cell_size
-                + "H" + (w1 + 1) * cell_size + "V" + "0"
-                + "H" + (w0 + 1) * cell_size + "Z";
-        }
+        rect.on("mouseover", function (d) {
+                heatmapTooltip.text((data[d]) ? WEEKDAY[format.parse(d).getDay()] + " " + d + ": " + data[d] : WEEKDAY[format.parse(d).getDay()] + " " + d + ": 0")
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 16) + "px");
+                heatmapTooltip.transition()
+                    .duration(200)
+                    .style("opacity", 0.9);
+            })
+            .on("mouseout", function (d) {
+                heatmapTooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            })
+            .transition(700);
 
-        // svg.selectAll(".month")
-        //     .data(function (d) {
-        //         var m0 = d3.time.months(MIN_T, MAX_T),
-        //             m1 = d3.time.months(MIN_T, MAX_T),
-        //             m = [],
-        //             i = 0;
-        //         for (i = 0; i < m1.length; i += 1) {
-        //             m1[i] = new Date(m1[i].getTime() - OFFSET);
-        //         }
-        //         m0.splice(0, 0, MIN_T);
-        //         m1.push(MAX_T);
-        //         for (i = 0; i < m0.length; i += 1) {
-        //             m.push({'m0': m0[i], 'm1': m1[i]});
-        //         }
-        //         return m;
-        //     })
-        //     .enter().append("path")
-        //     .attr("class", "month")
-        //     .attr("d", monthPath);
-
-        rect.attr("class", function (d) { return "day " + color(data[d]); })
-            .select("title")
-            .text(function (d) {
-                return (data[d]) ? WEEKDAY[format.parse(d).getDay()] + " " + d + ": " + data[d] : WEEKDAY[format.parse(d).getDay()] + " " + d + ": 0";
-            });
-
-        // heatmapTooltip = d3.select("body")
-        //     .append("div")
-        //     .attr("id", "heatmap-tooltip")
-        //     .attr("class", "tooltip")
-        //     .style("opacity", 0)
-        //     .text("heatmap");
     };
 
     window.renderLanguagesTable = function(elem, data, lang_select) {

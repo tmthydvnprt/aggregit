@@ -770,6 +770,15 @@ div[id*="user-select-"] .btn-group-vertical {
  .RdYlGn .q6-8{ fill: #08519c;}
  .RdYlGn .q7-8{ fill: #08306b;}
 
+ .RdYlGn .q0-8 + text { fill: #08306b;}
+ .RdYlGn .q1-8 + text { fill: #08519c;}
+ .RdYlGn .q2-8 + text { fill: #2171b5;}
+ .RdYlGn .q3-8 + text { fill: #4292c6;}
+ .RdYlGn .q4-8 + text { fill: #6baed6;}
+ .RdYlGn .q5-8 + text { fill: #9ecae1;}
+ .RdYlGn .q6-8 + text { fill: #c6dbef;}
+ .RdYlGn .q7-8 + text { fill: #eeeeee;}
+
 /* User Languages
  ---------------------- */
 #languages .arc path {
@@ -786,4 +795,7 @@ div[id*="user-select-"] .btn-group-vertical {
     font-size: 200%;
     transition: all 0.5s ease;
     transform: translate(-50%,-50%);
+}
+.lang-check {
+    margin-left: 0px!important;
 }

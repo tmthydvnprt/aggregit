@@ -10,9 +10,9 @@
 Page stitched together with quilt:
 quilt          : v0.1.1, master, eed22e23df8d193a2dcb834d2f29fff943c50aba
 url            : http://aggregit.com/js/index.html
-quilted on     : 2016-07-03 12:50:37
+quilted on     : 2016-07-04 05:53:21
 source branch  : new-quilt
-source hash    : 20fe7e5033ce10c3a3c36688b62554efe01b59b6
+source hash    : f2ac28479957c422693dadc146af59da4308b86a
 stitching took : 0.044 s
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
@@ -172,6 +172,7 @@ stitching took : 0.044 s
 <table class="table table table-striped table-hover table-responsive">
 <thead>
 <tr>
+<!-- <th>&nbsp;</th> -->
 <th>Language</th>
 <th>Amount [kiB]</th>
 <th>Amount [%]</th>

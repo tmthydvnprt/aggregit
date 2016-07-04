@@ -293,7 +293,8 @@
         value_sorted_keys.reverse();
         for (l = 0; l < value_sorted_keys.length; l += 1) {
             lang = value_sorted_keys[l];
-            langlist += '<tr><td><code>{0}</code></td><td>{1}</td><td>{2}%</td></tr>'.format(lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
+            langlist += '<tr><td><code>{1}</code></td><td>{2}</td><td>{3}%</td></tr>'.format(lang.replace(' ', '-'), lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
+            // langlist += '<tr><td><lable><input checked="" type="checkbox" name="{0}" class="lang-check"></label></td><td><code>{1}</code></td><td>{2}</td><td>{3}%</td></tr>'.format(lang.replace(' ', '-'), lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
 
         }
         $('#language-list').html(langlist);
@@ -370,7 +371,7 @@
     };
 
     window.renderHeatmap = function (elem, data) {
-        // Reference: http://bl.ocks.org/mbostock/4063318
+        // Reference: http://bl.ocks.org/mbostock/4063318 & http://bl.ocks.org/tjdecke/5558084
         console.log('Rendering Heatmap');
         console.log('');
 
@@ -401,22 +402,22 @@
             DAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
             MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             w = parseInt($(elem).width(), 10),
-            h = parseInt(w / 6, 10),
+            h = parseInt(w / 5.5, 10),
             cell_size = parseInt(w / 56, 10),
             pad = 0,
             left_pad = 0,
             format = d3.time.format("%Y-%m-%d"),
             sorted_keys = Object.keys(data).sort(),
-            MAX_T = new Date(), //new Date(), // format.parse(sorted_keys.slice(-1)[0]),
-            MIN_T = new Date(), // format.parse(sorted_keys[0]),
-            dateOffset = 53 * 7 + 1;
+            MAX_T = new Date(),
+            MIN_T = new Date(),
+            dateOffset = 53 * 7 + 1 + MAX_T.getDay();
 
         MIN_T.setTime(MIN_T.getTime() - (86400000 * dateOffset));
 
         var MAX_C = d3.max(getValues(data)),
             color = d3.scale.threshold()
-                .domain(d3.range(1, MAX_C, MAX_C / 8))
-                .range(d3.range(8).map(function (d) { return "q" + d + "-8"; })),
+                .domain(d3.range(1, MAX_C, MAX_C / 7).map(function(d) {return Math.floor(d)}))
+                .range(d3.range(8).map(function (d) { return "q" + Math.floor(Math.min(d, MAX_C)) + "-8"; })),
             svg = d3.select(elem).selectAll("svg")
                     .data([0])
                 .enter().append("svg")
@@ -425,7 +426,7 @@
                     .attr("height", h)
                     .attr("class", "RdYlGn")
                 .append("g")
-                    .attr("transform", "translate(" + ((w - cell_size * 53) / 2) + "," + (h - cell_size * 7 - 1) + ")"),
+                    .attr("transform", "translate(" + ((w - cell_size * 53) / 2) + "," + (h - cell_size * 8.5 - 1) + ")"),
             rect = svg.selectAll(".day")
                 .data(function (d) {
                     return d3.time.days(MIN_T, MAX_T);
@@ -443,6 +444,30 @@
                 })
                 .attr("y", function (d) { return d.getDay() * cell_size; })
                 .datum(format);
+
+            var legend = svg.selectAll(".legend")
+                    .data([0].concat(d3.range(1, MAX_C, MAX_C / 7).map(function(d) {return Math.floor(d)})));
+
+            legend.enter().append("g")
+                    .attr("class", "legend");
+
+            legend.append("rect")
+                    .attr("x", function(d, i) { return d3.time.weeks(MIN_T, MAX_T).length * cell_size - cell_size * (8 - i); })
+                    .attr("y", 7.2 * cell_size)
+                    .attr("width", cell_size)
+                    .attr("height", cell_size)
+                    .attr("class", function (d) {return "day " + color(d);});
+
+            legend.append("text")
+                    .attr("x", function(d, i) { return d3.time.weeks(MIN_T, MAX_T).length * cell_size - cell_size * (8 - i) + cell_size / 2; })
+                    .attr("y", 7.2 * cell_size + cell_size / 2.25)
+                    .attr("width", cell_size)
+                    .attr("height", cell_size)
+                    .style("text-anchor", "middle")
+                    .style("alignment-baseline", "central")
+                    .text(function (d, i) { return Math.floor(d); });
+
+            legend.append("title").text(function (d, i) { return (i == 0) ? d : '≥ ' + Math.floor(d); });
 
         var dayLabels = svg.selectAll(".dayLabel")
             .data(DAYS)

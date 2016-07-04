@@ -238,15 +238,28 @@
             });
     };
 
-    window.renderLanguages = function (elem, data) {
+    window.renderLanguages = function (elem, data, lang_select) {
         // Reference: http://bl.ocks.org/mbostock/3887193
         // Reference: http://jsfiddle.net/Nw62g/1/
         console.log('Rendering Languages');
         console.log('');
+        console.log(lang_select);
 
         // Remove last plot if there
         d3.select("#languages-svg").remove();
         d3.select("#languages-tooltip").remove();
+
+        // Filter languages if need be
+        var i = 0, key = '', temp = {};
+        if (lang_select) {
+            for (i in lang_select) {
+                key = lang_select[i];
+                if (data.hasOwnProperty(key)) {
+                    temp[key] = data[key];
+                }
+            }
+            data = temp;
+        }
 
         // Setup parameters and variables
         var lang = '',
@@ -549,12 +562,22 @@
         value_sorted_keys.reverse();
         for (l = 0; l < value_sorted_keys.length; l += 1) {
             lang = value_sorted_keys[l];
-            langlist += '<tr><td><lable><input checked="" type="checkbox" name="{0}" class="lang-check"><code>{1}</code></label></td><td>{2}</td><td>{3}%</td></tr>'.format(lang.replace(' ', '-'), lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
+            langlist += '<tr><td><lable><input checked="" type="checkbox" name="{0}" class="lang-check"><code>{1}</code></label></td><td>{2}</td><td>{3}%</td></tr>'.format(lang, lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
         }
         $(elem).html(langlist);
     }
 
     window.renderUser = function (user, errors) {
+
+        function reRenderLang(e, langData) {
+            // Gather which langs to include
+            var langs = [];
+            $('#language-list input:checked').each(function () {
+                langs.push($(this).attr('name'));
+            });
+            // Rerender the language plot based on language table change
+            renderLanguages('#languages', langData, langs);
+        }
 
         function reRender(e) {
 
@@ -571,6 +594,10 @@
             langData = aggregitor.agg_languages(aggregitor.process_languages(user), repos);
             renderLanguages('#languages', langData);
             renderLanguagesTable('#language-list', langData);
+
+            $('#language-list input').change(function (e) {
+                reRenderLang(e, langData);
+            });
 
         }
 
@@ -653,6 +680,11 @@
                 langData = aggregitor.agg_languages(aggregitor.process_languages(user), repos);
                 renderLanguages('#languages', langData);
                 renderLanguagesTable('#language-list', langData);
+
+                // Update Languages when clicked
+                $('#language-list input').change(function (e) {
+                    reRenderLang(e, langData);
+                });
 
                 // Update when clicked
                 $('.repo-list input').change(function (e) {

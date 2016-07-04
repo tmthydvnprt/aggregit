@@ -8,18 +8,18 @@
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Page stitched together with quilt:
-quilt          : v0.1.1, make-blog-index-a-patch, 9a9eca57226d7f64011dfe9e1b50b12f7b9e5bbe
-url            : aggregit.com/fonts/index.html
-quilted on     : 2016-03-02 06:02:50
-source branch  : master
-source hash    : dd733bf527d5428e03f5c88c8386ccad87dec900
-stitching took : 0.05 s
+quilt          : v0.1.1, master, eed22e23df8d193a2dcb834d2f29fff943c50aba
+url            : http://aggregit.com/fonts/index.html
+quilted on     : 2016-07-04 07:46:50
+source branch  : new-quilt
+source hash    : 89f26612a616b733e36cdb29790b84e6b3359c63
+stitching took : 0.044 s
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
 <title>fonts directory index</title>
 <meta content="tmthydvnprt" name="author"/>
 <meta content="blank index page of fonts directory" name="description"/>
-<meta content="i,n,d,e,x" name="keywords"/>
+<meta content="i,n,d,e,x,,, ,f,o,n,t,s" name="keywords"/>
 <link href="../imgs/favicon.ico" rel="favicon"/>
 <link href="../imgs/icon_60x60.png" rel="apple-touch-icon"/>
 <link href="../imgs/icon_76x76.png" rel="apple-touch-icon" sizes="76x76"/>
@@ -157,10 +157,10 @@ stitching took : 0.05 s
 <template id="user-data-template">
 <div class="row">
 <div class="col-sm-10 col-sm-offset-1">
-<h2>When does <code>{login}</code> code?</h2>
+<h2>When does <code>{login}</code> commit during the week?</h2>
 <hr/>
 <div id="punchcard"></div>
-<h2>How long has <code>{login}</code> been coding?</h2>
+<h2>What times of the year does <code>{login}</code> commit?</h2>
 <hr/>
 <div id="participation"></div>
 <div id="heatmap"></div>
@@ -173,7 +173,7 @@ stitching took : 0.05 s
 <thead>
 <tr>
 <th>Language</th>
-<th>Amount [kBi]</th>
+<th>Amount [kiB]</th>
 <th>Amount [%]</th>
 </tr>
 </thead>

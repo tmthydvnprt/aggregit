@@ -737,6 +737,13 @@ div[id*="user-select-"] .btn-group-vertical {
     stroke: :#0c84e4;
     stroke-width: 1.5px;
 }
+.xlabel,
+.ylabel,
+.dayLabel,
+.monthLabel,
+.axis .tick text {
+    fill: #909090;
+}
 
 /* User HeatMap
  ---------------------- */
@@ -747,7 +754,12 @@ div[id*="user-select-"] .btn-group-vertical {
 
  .month {
    fill: none;
-   stroke: #cbcbcb;
+   stroke: #e2e2e2;
+ }
+ .xlabel,
+ .ylabel,
+ .dayLabel, .monthLabel {
+     font-size: 11px;
  }
 
  .RdYlGn .q0-8{ fill: #eeeeee;}
@@ -758,6 +770,19 @@ div[id*="user-select-"] .btn-group-vertical {
  .RdYlGn .q5-8{ fill: #2171b5;}
  .RdYlGn .q6-8{ fill: #08519c;}
  .RdYlGn .q7-8{ fill: #08306b;}
+
+ .RdYlGn .q0-8 + text { fill: #08306b;}
+ .RdYlGn .q1-8 + text { fill: #08519c;}
+ .RdYlGn .q2-8 + text { fill: #2171b5;}
+ .RdYlGn .q3-8 + text { fill: #4292c6;}
+ .RdYlGn .q4-8 + text { fill: #6baed6;}
+ .RdYlGn .q5-8 + text { fill: #9ecae1;}
+ .RdYlGn .q6-8 + text { fill: #c6dbef;}
+ .RdYlGn .q7-8 + text { fill: #eeeeee;}
+
+ .legend text {
+     font-size: 10px;
+ }
 
 /* User Languages
  ---------------------- */
@@ -775,4 +800,7 @@ div[id*="user-select-"] .btn-group-vertical {
     font-size: 200%;
     transition: all 0.5s ease;
     transform: translate(-50%,-50%);
+}
+.lang-check {
+    margin-left: 0px!important;
 }

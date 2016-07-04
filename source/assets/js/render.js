@@ -129,8 +129,9 @@
         var w = parseInt($(elem).width(), 10),
             h = parseInt(w / 3, 10),
             pad = 20,
+            yaxisOffset = 5,
             bottom_pad = 40,
-            left_pad = 100,
+            left_pad = 60,
             participations,
             MAX_X = data.length,
             MAX_Y = d3.max(data.map(function (d) {
@@ -190,19 +191,19 @@
             .call(xAxis);
         svg.append("g")
             .attr("class", "axis")
-            .attr("transform", "translate(" + (left_pad - pad) + ", 0)")
+            .attr("transform", "translate(" + (left_pad - pad + yaxisOffset) + ", 0)")
             .call(yAxis);
         svg.append("text")
-            .attr("class", "x label")
+            .attr("class", "xlabel")
             .attr("text-anchor", "end")
             .attr("x", w - pad)
             .attr("y", h - 10)
             .text("time (# of weeks ago)");
         svg.append("text")
-            .attr("class", "y label")
+            .attr("class", "ylabel")
             .attr("text-anchor", "end")
             .attr("x", -pad)
-            .attr("y", pad)
+            .attr("y", 0)
             .attr("dy", ".75em")
             .attr("transform", "rotate(-90)")
             .text("activity (# of commits)");
@@ -237,15 +238,28 @@
             });
     };
 
-    window.renderLanguages = function (elem, data) {
+    window.renderLanguages = function (elem, data, lang_select) {
         // Reference: http://bl.ocks.org/mbostock/3887193
         // Reference: http://jsfiddle.net/Nw62g/1/
         console.log('Rendering Languages');
         console.log('');
+        console.log(lang_select);
 
         // Remove last plot if there
         d3.select("#languages-svg").remove();
         d3.select("#languages-tooltip").remove();
+
+        // Filter languages if need be
+        var i = 0, key = '', temp = {};
+        if (lang_select) {
+            for (i in lang_select) {
+                key = lang_select[i];
+                if (data.hasOwnProperty(key)) {
+                    temp[key] = data[key];
+                }
+            }
+            data = temp;
+        }
 
         // Setup parameters and variables
         var lang = '',
@@ -286,16 +300,6 @@
                 .attr("class", "tooltip")
                 .style("opacity", 1)
                 .html(tipStr.format(MAX_LANG + ' Languages', MAX_kiB, 100.00));
-
-
-        // Place table
-        value_sorted_keys.reverse();
-        for (l = 0; l < value_sorted_keys.length; l += 1) {
-            lang = value_sorted_keys[l];
-            langlist += '<tr><td><code>{0}</code></td><td>{1}</td><td>{2}%</td></tr>'.format(lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
-
-        }
-        $('#language-list').html(langlist);
 
         // Use object keys for series color domain
         color.domain(d3.keys(data));
@@ -369,7 +373,7 @@
     };
 
     window.renderHeatmap = function (elem, data) {
-        // Reference: http://bl.ocks.org/mbostock/4063318
+        // Reference: http://bl.ocks.org/mbostock/4063318 & http://bl.ocks.org/tjdecke/5558084
         console.log('Rendering Heatmap');
         console.log('');
 
@@ -383,6 +387,13 @@
             }
             return array;
         }
+        function rotate(array, times) {
+            while(times--) {
+                var temp = array.shift();
+                array.push(temp);
+            }
+            return array;
+        }
 
         // Remove last plot if there
         d3.select("#heatmap-svg").remove();
@@ -390,19 +401,25 @@
         // Setup parameters and variables
         var WEEKDAY = {0: 'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat'},
             OFFSET = 24 * 60 * 60 * 1000,
+            DAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+            MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             w = parseInt($(elem).width(), 10),
-            h = parseInt(w / 6, 10),
+            h = parseInt(w / 5.5, 10),
             cell_size = parseInt(w / 56, 10),
-            pad = 20,
-            left_pad = 100,
+            pad = 0,
+            left_pad = 0,
             format = d3.time.format("%Y-%m-%d"),
             sorted_keys = Object.keys(data).sort(),
-            MIN_T = format.parse(sorted_keys[0]),
-            MAX_T = format.parse(sorted_keys.slice(-1)[0]),
-            MAX_C = d3.max(getValues(data)),
+            MAX_T = new Date(),
+            MIN_T = new Date(),
+            dateOffset = 53 * 7 + 1 + MAX_T.getDay();
+
+        MIN_T.setTime(MIN_T.getTime() - (86400000 * dateOffset));
+
+        var MAX_C = d3.max(getValues(data)),
             color = d3.scale.threshold()
-                .domain(d3.range(1, MAX_C, MAX_C / 8))
-                .range(d3.range(8).map(function (d) { return "q" + d + "-8"; })),
+                .domain(d3.range(1, MAX_C, MAX_C / 7).map(function(d) {return Math.floor(d)}))
+                .range(d3.range(8).map(function (d) { return "q" + Math.floor(Math.min(d, MAX_C)) + "-8"; })),
             svg = d3.select(elem).selectAll("svg")
                     .data([0])
                 .enter().append("svg")
@@ -411,7 +428,7 @@
                     .attr("height", h)
                     .attr("class", "RdYlGn")
                 .append("g")
-                    .attr("transform", "translate(" + ((w - cell_size * 53) / 2) + "," + (h - cell_size * 7 - 1) + ")"),
+                    .attr("transform", "translate(" + ((w - cell_size * 53) / 2) + "," + (h - cell_size * 8.5 - 1) + ")"),
             rect = svg.selectAll(".day")
                 .data(function (d) {
                     return d3.time.days(MIN_T, MAX_T);
@@ -430,10 +447,50 @@
                 .attr("y", function (d) { return d.getDay() * cell_size; })
                 .datum(format);
 
-        // svg.append("text")
-        //     .attr("transform", "translate(-6," + cell_size * 3.5 + ")rotate(-90)")
-        //     .style("text-anchor", "middle")
-        //     .text(function (d) { return d; });
+            var legend = svg.selectAll(".legend")
+                    .data([0].concat(d3.range(1, MAX_C, MAX_C / 7).map(function(d) {return Math.floor(d)})));
+
+            legend.enter().append("g")
+                    .attr("class", "legend");
+
+            legend.append("rect")
+                    .attr("x", function(d, i) { return d3.time.weeks(MIN_T, MAX_T).length * cell_size - cell_size * (8 - i); })
+                    .attr("y", 7.2 * cell_size)
+                    .attr("width", cell_size)
+                    .attr("height", cell_size)
+                    .attr("class", function (d) {return "day " + color(d);});
+
+            legend.append("text")
+                    .attr("x", function(d, i) { return d3.time.weeks(MIN_T, MAX_T).length * cell_size - cell_size * (8 - i) + cell_size / 2; })
+                    .attr("y", 7.2 * cell_size + cell_size / 2.25)
+                    .attr("width", cell_size)
+                    .attr("height", cell_size)
+                    .style("text-anchor", "middle")
+                    .style("alignment-baseline", "central")
+                    .text(function (d, i) { return Math.floor(d); });
+
+            legend.append("title").text(function (d, i) { return (i == 0) ? d : '≥ ' + Math.floor(d); });
+
+        var dayLabels = svg.selectAll(".dayLabel")
+            .data(DAYS)
+            .enter().append("text")
+            .text(function (d) { return d; })
+            .attr("x", 0)
+            .attr("y", function (d, i) { return i * cell_size; })
+            .style("text-anchor", "end")
+            .attr("transform", "translate(6," + cell_size / 1.5 + ")")
+            .attr("class", "dayLabel");
+
+        var monthLabels = svg.selectAll(".monthLabel")
+            .data(d3.time.months(MIN_T, MAX_T))
+            .enter().append("text")
+            .text(function (d) { return MONTHS[d.getMonth()]; })
+            .attr("x", function(d, i) { return d3.time.weeks(MIN_T, d).length * cell_size ; })
+            .attr("y", 0)
+            .style("text-anchor", "start")
+            .attr("transform", "translate(1, -6)")
+            .attr("class", "monthLabel");
+
         rect.append("title").text(function (d) { return d; });
 
         function monthPath(m) {
@@ -456,44 +513,102 @@
                 + "H" + (w0 + 1) * cell_size + "Z";
         }
 
-        svg.selectAll(".month")
-            .data(function (d) {
-                var m0 = d3.time.months(MIN_T, MAX_T),
-                    m1 = d3.time.months(MIN_T, MAX_T),
-                    m = [],
-                    i = 0;
-                for (i = 0; i < m1.length; i += 1) {
-                    m1[i] = new Date(m1[i].getTime() - OFFSET);
-                }
-                m0.splice(0, 0, MIN_T);
-                m1.push(MAX_T);
-                for (i = 0; i < m0.length; i += 1) {
-                    m.push({'m0': m0[i], 'm1': m1[i]});
-                }
-                return m;
-            })
-            .enter().append("path")
-            .attr("class", "month")
-            .attr("d", monthPath);
+        // svg.selectAll(".month")
+        //     .data(function (d) {
+        //         var m0 = d3.time.months(MIN_T, MAX_T),
+        //             m1 = d3.time.months(MIN_T, MAX_T),
+        //             m = [],
+        //             i = 0;
+        //         for (i = 0; i < m1.length; i += 1) {
+        //             m1[i] = new Date(m1[i].getTime() - OFFSET);
+        //         }
+        //         m0.splice(0, 0, MIN_T);
+        //         m1.push(MAX_T);
+        //         for (i = 0; i < m0.length; i += 1) {
+        //             m.push({'m0': m0[i], 'm1': m1[i]});
+        //         }
+        //         return m;
+        //     })
+        //     .enter().append("path")
+        //     .attr("class", "month")
+        //     .attr("d", monthPath);
 
-        rect//.filter(function (d) { return d in data; })
-                .attr("class", function (d) { return "day " + color(data[d]); })
+        rect.attr("class", function (d) { return "day " + color(data[d]); })
             .select("title")
-                .text(function (d) { return WEEKDAY[format.parse(d).getDay()] + " " + d + ": " + data[d]; });
+            .text(function (d) {
+                return (data[d]) ? WEEKDAY[format.parse(d).getDay()] + " " + d + ": " + data[d] : WEEKDAY[format.parse(d).getDay()] + " " + d + ": 0";
+            });
 
-            // heatmapTooltip = d3.select("body")
-            //     .append("div")
-            //     .attr("id", "heatmap-tooltip")
-            //     .attr("class", "tooltip")
-            //     .style("opacity", 0)
-            //     .text("heatmap");
+        // heatmapTooltip = d3.select("body")
+        //     .append("div")
+        //     .attr("id", "heatmap-tooltip")
+        //     .attr("class", "tooltip")
+        //     .style("opacity", 0)
+        //     .text("heatmap");
     };
+
+    window.renderLanguagesTable = function(elem, data, lang_select) {
+        var value_sorted_keys,
+            l = 0,
+            lang = '',
+            langlist = '',
+            MAX_kiB = 0;
+
+        // Remove existing table if need be
+        $(elem).children().remove();
+
+        // Sort languages from largest language
+        value_sorted_keys = Object.keys(data).sort(function (a, b) {return data[a] - data[b]; });
+        value_sorted_keys.reverse();
+
+        // Default to display all languages
+        lang_select = (lang_select) ? lang_select : value_sorted_keys;
+
+        // Filter languages if need be and get max size for percentages
+        var i = 0, key = '', temp = {};
+        if (lang_select) {
+            for (i in lang_select) {
+                key = lang_select[i];
+                if (data.hasOwnProperty(key)) {
+                    temp[key] = data[key];
+                }
+            }
+        }
+        MAX_kiB = Math.floor(d3.sum(d3.values(temp)) / 10.24) / 100;
+
+        // Create table of languages with infor about size
+        for (l = 0; l < value_sorted_keys.length; l += 1) {
+            lang = value_sorted_keys[l];
+            // Only display info for selected languages
+            if ($.inArray(lang, lang_select) > -1) {
+                langlist += '<tr><td><lable><input checked="" type="checkbox" name="{0}" class="lang-check"><code>{1}</code></label></td><td>{2}</td><td>{3}%</td></tr>'.format(lang, lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
+            } else {
+                langlist += '<tr><td><lable><input type="checkbox" name="{0}" class="lang-check"><code>{1}</code></label></td><td>{2}</td><td>{3}%</td></tr>'.format(lang, lang, 0, 0);
+            }
+        }
+        $(elem).html(langlist);
+    }
 
     window.renderUser = function (user, errors) {
 
+        function reRenderLang(e, langData) {
+            // Gather which langs to include
+            var langs = [];
+            $('#language-list input:checked').each(function () {
+                langs.push($(this).attr('name'));
+            });
+            // Rerender the language plot based on language table change
+            renderLanguages('#languages', langData, langs);
+            renderLanguagesTable('#language-list', langData, langs);
+            $('#language-list input').change(function (e) {
+                reRenderLang(e, langData);
+            });
+        }
+
         function reRender(e) {
 
-            var repos = [];
+            var repos = [],
+                langData;
             // Gather which repos to include
             $('.repo-list input:checked').each(function () {
                 repos.push($(this).attr('name'));
@@ -502,7 +617,12 @@
             renderPunchCard('#punchcard', aggregitor.agg_punch_card(aggregitor.process_punch_card(user), repos));
             renderParticipation('#participation', aggregitor.agg_participation(aggregitor.process_participation(user), repos));
             renderHeatmap('#heatmap', aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
-            renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
+            langData = aggregitor.agg_languages(aggregitor.process_languages(user), repos);
+            renderLanguages('#languages', langData);
+            renderLanguagesTable('#language-list', langData);
+            $('#language-list input').change(function (e) {
+                reRenderLang(e, langData);
+            });
 
         }
 
@@ -527,7 +647,8 @@
                     check = '',
                     fork = '',
                     forkClass = '',
-                    repos = [];
+                    repos = [],
+                    langData;
 
                 // Format dates
                 user.created_at = formatDate(new Date(user.created_at));
@@ -581,7 +702,14 @@
                 renderPunchCard('#punchcard', aggregitor.agg_punch_card(aggregitor.process_punch_card(user), repos));
                 renderParticipation('#participation', aggregitor.agg_participation(aggregitor.process_participation(user), repos));
                 renderHeatmap('#heatmap', aggregitor.agg_commit_activity(aggregitor.process_commit_activity(user), repos));
-                renderLanguages('#languages', aggregitor.agg_languages(aggregitor.process_languages(user), repos));
+                langData = aggregitor.agg_languages(aggregitor.process_languages(user), repos);
+                renderLanguages('#languages', langData);
+                renderLanguagesTable('#language-list', langData);
+
+                // Update Languages when clicked
+                $('#language-list input').change(function (e) {
+                    reRenderLang(e, langData);
+                });
 
                 // Update when clicked
                 $('.repo-list input').change(function (e) {

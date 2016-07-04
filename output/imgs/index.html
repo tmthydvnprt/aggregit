@@ -10,10 +10,10 @@
 Page stitched together with quilt:
 quilt          : v0.1.1, master, eed22e23df8d193a2dcb834d2f29fff943c50aba
 url            : http://aggregit.com/imgs/index.html
-quilted on     : 2016-07-04 10:18:07
+quilted on     : 2016-07-04 10:36:36
 source branch  : master
-source hash    : d36df6eaef251da9a158270d30a19191e3b1b020
-stitching took : 0.106 s
+source hash    : 0a4009c4dd894475d2d4cbc3b86118524c680ec6
+stitching took : 0.044 s
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
 <title>imgs directory index</title>

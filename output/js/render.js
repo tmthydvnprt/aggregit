@@ -157,7 +157,7 @@
                         y0 = 0,
                         tip = '';
 
-                    if (x0 >= 0) {
+                    if (0 <= x0 && x0 < MAX_X) {
                         y0 = y(Math.max(data[x0].all, data[x0].owner))
                         tip = 'weeks ago: ' + (52 - x0) + '<br>all: ' + data[x0].all + '<br>owner:' + data[x0].owner;
                         partTooltip.html(tip)

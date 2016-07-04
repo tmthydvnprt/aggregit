@@ -10,10 +10,10 @@
 Page stitched together with quilt:
 quilt          : v0.1.1, master, eed22e23df8d193a2dcb834d2f29fff943c50aba
 url            : http://aggregit.com/js/index.html
-quilted on     : 2016-07-03 12:50:37
+quilted on     : 2016-07-04 06:53:22
 source branch  : new-quilt
-source hash    : 20fe7e5033ce10c3a3c36688b62554efe01b59b6
-stitching took : 0.044 s
+source hash    : e8867764d2b2deb5e7f8f545b79c691a4d196961
+stitching took : 0.043 s
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
 <title>js directory index</title>

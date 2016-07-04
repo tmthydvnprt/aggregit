@@ -10,10 +10,10 @@
 Page stitched together with quilt:
 quilt          : v0.1.1, master, eed22e23df8d193a2dcb834d2f29fff943c50aba
 url            : http://aggregit.com/fonts/index.html
-quilted on     : 2016-07-04 10:18:07
+quilted on     : 2016-07-04 10:57:42
 source branch  : master
-source hash    : d36df6eaef251da9a158270d30a19191e3b1b020
-stitching took : 0.117 s
+source hash    : 9e71e77fddb0249956b2b46a995af680c63a97f5
+stitching took : 0.045 s
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
 <title>fonts directory index</title>

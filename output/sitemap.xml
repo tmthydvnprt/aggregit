@@ -2,13 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>http://aggregit.com/404.html</loc>
-        <lastmod>2016-07-04T05:53:21</lastmod>
+        <lastmod>2016-07-04T05:55:46</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>http://aggregit.com/404.md</loc>
-        <lastmod>2016-07-04T05:53:21</lastmod>
+        <lastmod>2016-07-04T05:55:46</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
@@ -20,13 +20,13 @@
     </url>
     <url>
         <loc>http://aggregit.com/index.html</loc>
-        <lastmod>2016-07-04T05:53:21</lastmod>
+        <lastmod>2016-07-04T05:55:46</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>http://aggregit.com/index.md</loc>
-        <lastmod>2016-07-04T05:53:21</lastmod>
+        <lastmod>2016-07-04T05:55:46</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
@@ -68,25 +68,25 @@
     </url>
     <url>
         <loc>http://aggregit.com/css/index.html</loc>
-        <lastmod>2016-07-04T05:53:21</lastmod>
+        <lastmod>2016-07-04T05:55:46</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>http://aggregit.com/css/index.md</loc>
-        <lastmod>2016-07-04T05:53:21</lastmod>
+        <lastmod>2016-07-04T05:55:46</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>http://aggregit.com/data/index.html</loc>
-        <lastmod>2016-07-04T05:53:21</lastmod>
+        <lastmod>2016-07-04T05:55:46</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>http://aggregit.com/data/index.md</loc>
-        <lastmod>2016-07-04T05:53:21</lastmod>
+        <lastmod>2016-07-04T05:55:46</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
@@ -134,13 +134,13 @@
     </url>
     <url>
         <loc>http://aggregit.com/fonts/index.html</loc>
-        <lastmod>2016-07-04T05:53:22</lastmod>
+        <lastmod>2016-07-04T05:55:46</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>http://aggregit.com/fonts/index.md</loc>
-        <lastmod>2016-07-04T05:53:22</lastmod>
+        <lastmod>2016-07-04T05:55:46</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
@@ -224,13 +224,13 @@
     </url>
     <url>
         <loc>http://aggregit.com/imgs/index.html</loc>
-        <lastmod>2016-07-04T05:53:21</lastmod>
+        <lastmod>2016-07-04T05:55:46</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>http://aggregit.com/imgs/index.md</loc>
-        <lastmod>2016-07-04T05:53:22</lastmod>
+        <lastmod>2016-07-04T05:55:46</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
@@ -290,13 +290,13 @@
     </url>
     <url>
         <loc>http://aggregit.com/js/index.html</loc>
-        <lastmod>2016-07-04T05:53:21</lastmod>
+        <lastmod>2016-07-04T05:55:46</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>http://aggregit.com/js/index.md</loc>
-        <lastmod>2016-07-04T05:53:21</lastmod>
+        <lastmod>2016-07-04T05:55:46</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
@@ -308,7 +308,7 @@
     </url>
     <url>
         <loc>http://aggregit.com/js/render.js</loc>
-        <lastmod>2016-07-04T05:53:18</lastmod>
+        <lastmod>2016-07-04T05:55:43</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>

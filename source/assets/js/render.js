@@ -293,9 +293,8 @@
         value_sorted_keys.reverse();
         for (l = 0; l < value_sorted_keys.length; l += 1) {
             lang = value_sorted_keys[l];
-            langlist += '<tr><td><code>{1}</code></td><td>{2}</td><td>{3}%</td></tr>'.format(lang.replace(' ', '-'), lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
-            // langlist += '<tr><td><lable><input checked="" type="checkbox" name="{0}" class="lang-check"></label></td><td><code>{1}</code></td><td>{2}</td><td>{3}%</td></tr>'.format(lang.replace(' ', '-'), lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
-
+            // langlist += '<tr><td><code>{1}</code></td><td>{2}</td><td>{3}%</td></tr>'.format(lang.replace(' ', '-'), lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
+            langlist += '<tr><td><lable><input checked="" type="checkbox" name="{0}" class="lang-check"><code>{1}</code></label></td><td>{2}</td><td>{3}%</td></tr>'.format(lang.replace(' ', '-'), lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
         }
         $('#language-list').html(langlist);
 

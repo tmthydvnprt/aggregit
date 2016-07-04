@@ -10,9 +10,9 @@
 Page stitched together with quilt:
 quilt          : v0.1.1, master, eed22e23df8d193a2dcb834d2f29fff943c50aba
 url            : http://aggregit.com/imgs/index.html
-quilted on     : 2016-07-04 10:36:36
+quilted on     : 2016-07-04 10:57:42
 source branch  : master
-source hash    : 0a4009c4dd894475d2d4cbc3b86118524c680ec6
+source hash    : 9e71e77fddb0249956b2b46a995af680c63a97f5
 stitching took : 0.044 s
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->

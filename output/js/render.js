@@ -739,6 +739,8 @@
                     reRender();
                 });
 
+                // Rerender plots on window size change
+                $(window).resize(reRender);
             }
         }, RENDER_DELAY);
     };

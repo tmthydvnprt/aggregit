@@ -547,22 +547,44 @@
         //     .text("heatmap");
     };
 
-    window.renderLanguagesTable = function(elem, data) {
+    window.renderLanguagesTable = function(elem, data, lang_select) {
         var value_sorted_keys,
             l = 0,
             lang = '',
             langlist = '',
             MAX_kiB = 0;
 
+        // Remove existing table if need be
         $(elem).children().remove();
 
-        // Draw language table
-        MAX_kiB = Math.floor(d3.sum(d3.values(data)) / 10.24) / 100;
+        // Sort languages from largest language
         value_sorted_keys = Object.keys(data).sort(function (a, b) {return data[a] - data[b]; });
         value_sorted_keys.reverse();
+
+        // Default to display all languages
+        lang_select = (lang_select) ? lang_select : value_sorted_keys;
+
+        // Filter languages if need be and get max size for percentages
+        var i = 0, key = '', temp = {};
+        if (lang_select) {
+            for (i in lang_select) {
+                key = lang_select[i];
+                if (data.hasOwnProperty(key)) {
+                    temp[key] = data[key];
+                }
+            }
+        }
+        MAX_kiB = Math.floor(d3.sum(d3.values(temp)) / 10.24) / 100;
+
+        // Create table of languages with infor about size
         for (l = 0; l < value_sorted_keys.length; l += 1) {
             lang = value_sorted_keys[l];
-            langlist += '<tr><td><lable><input checked="" type="checkbox" name="{0}" class="lang-check"><code>{1}</code></label></td><td>{2}</td><td>{3}%</td></tr>'.format(lang, lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
+            // Only display info for selected languages
+            if ($.inArray(lang, lang_select) > -1) {
+                langlist += '<tr><td><lable><input checked="" type="checkbox" name="{0}" class="lang-check"><code>{1}</code></label></td><td>{2}</td><td>{3}%</td></tr>'.format(lang, lang, Math.floor(data[lang] / 10.24) / 100, Math.round(10000.0 * Math.floor(data[lang] / 10.24) / 100 / MAX_kiB) / 100);
+            } else {
+                langlist += '<tr><td><lable><input type="checkbox" name="{0}" class="lang-check"><code>{1}</code></label></td><td>{2}</td><td>{3}%</td></tr>'.format(lang, lang, 0, 0);
+            }
         }
         $(elem).html(langlist);
     }
@@ -577,6 +599,10 @@
             });
             // Rerender the language plot based on language table change
             renderLanguages('#languages', langData, langs);
+            renderLanguagesTable('#language-list', langData, langs);
+            $('#language-list input').change(function (e) {
+                reRenderLang(e, langData);
+            });
         }
 
         function reRender(e) {
@@ -594,7 +620,6 @@
             langData = aggregitor.agg_languages(aggregitor.process_languages(user), repos);
             renderLanguages('#languages', langData);
             renderLanguagesTable('#language-list', langData);
-
             $('#language-list input').change(function (e) {
                 reRenderLang(e, langData);
             });

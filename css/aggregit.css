@@ -756,7 +756,8 @@ div[id*="user-select-"] .btn-group-vertical {
    fill: none;
    stroke: #e2e2e2;
  }
-
+ .xlabel,
+ .ylabel,
  .dayLabel, .monthLabel {
      font-size: 11px;
  }
@@ -778,6 +779,10 @@ div[id*="user-select-"] .btn-group-vertical {
  .RdYlGn .q5-8 + text { fill: #9ecae1;}
  .RdYlGn .q6-8 + text { fill: #c6dbef;}
  .RdYlGn .q7-8 + text { fill: #eeeeee;}
+
+ .legend text {
+     font-size: 10px;
+ }
 
 /* User Languages
  ---------------------- */

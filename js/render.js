@@ -120,7 +120,7 @@
     };
 
     window.renderParticipation = function (elem, data) {
-        // Reference: http://bl.ocks.org/mbostock/3884955
+        // Reference: http://bl.ocks.org/mbostock/3884955 & http://bl.ocks.org/mbostock/3902569
         console.log('Rendering Participation');
         console.log('');
 
@@ -145,8 +145,37 @@
                 .append("svg")
                 .attr("id", "participation-svg")
                 .attr("width", w)
-                .attr("height", h),
-            x = d3.scale.linear().domain([0, MAX_X - 1]).range([left_pad, w - pad]),
+                .attr("height", h);
+
+        svg.append('rect')
+                .attr('width', w)
+                .attr('height', h)
+                .attr('fill', 'none')
+                .attr('pointer-events', 'all')
+                .on("mousemove", function () {
+                    var x0 = Math.floor(x.invert(d3.mouse(this)[0])),
+                        y0 = 0,
+                        tip = '';
+
+                    if (x0 >= 0) {
+                        y0 = y(Math.max(data[x0].all, data[x0].owner))
+                        tip = 'weeks ago: ' + (52 - x0) + '<br>all: ' + data[x0].all + '<br>owner:' + data[x0].owner;
+                        partTooltip.html(tip)
+                            .style("left", (d3.event.pageX) + "px")
+                            .style("top", (d3.event.pageY - d3.mouse(this)[1] + y0 - 40) + "px");
+                        partTooltip.transition()
+                            .duration(200)
+                            .style("opacity", 0.9);
+                    }
+                })
+                .on("mouseout", function (d) {
+                    partTooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                })
+                .transition(700);
+
+            var x = d3.scale.linear().domain([0, MAX_X - 1]).range([left_pad, w - pad]),
             y = d3.scale.linear()
                 .domain([d3.max(data, function (d) {
                     return d3.max([d.owner, d.all]);
@@ -240,6 +269,7 @@
             .style("stroke", function (d) {
                 return color(d.name);
             });
+
     };
 
     window.renderLanguages = function (elem, data, lang_select) {
@@ -247,7 +277,6 @@
         // Reference: http://jsfiddle.net/Nw62g/1/
         console.log('Rendering Languages');
         console.log('');
-        console.log(lang_select);
 
         // Remove last plot if there
         d3.select("#languages-svg").remove();

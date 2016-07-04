@@ -10,10 +10,10 @@
 Page stitched together with quilt:
 quilt          : v0.1.1, master, eed22e23df8d193a2dcb834d2f29fff943c50aba
 url            : http://aggregit.com/data/index.html
-quilted on     : 2016-07-04 07:46:50
-source branch  : new-quilt
-source hash    : 89f26612a616b733e36cdb29790b84e6b3359c63
-stitching took : 0.043 s
+quilted on     : 2016-07-04 08:45:01
+source branch  : master
+source hash    : 2a0b6d4b1d9a18b5317ba37531a899d4e82ee2c1
+stitching took : 0.045 s
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
 <title>data directory index</title>
